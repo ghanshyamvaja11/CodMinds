@@ -1,0 +1,101 @@
+{% extends "entry_base.html" %}
+
+{% block title %}About Us | CodMinds{% endblock %}
+
+{% block content %}
+<style>
+/* General Title Styling */
+h2 {
+    font-size: 36px;
+    color: #1e90ff;
+    margin-bottom: 10px;
+}
+
+/* Section Styling */
+section {
+    padding: 50px 20px;
+}
+
+section p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #444;
+}
+
+/* Image Styling */
+.about-img {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto; /* Centers the image */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .about-container {
+        display: flex;
+        flex-direction: column; /* Stack elements vertically on smaller screens */
+        align-items: center; /* Center all elements */
+    }
+
+    .about-container .left-content,
+    .about-container .right-content {
+        max-width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .about-container .right-content {
+        text-align: center;
+        margin-bottom: 20px; /* Space below the image */
+    }
+}
+</style>
+
+<section style="padding: 50px; background-color: #f9f9f9;">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h2>About Us</h2>
+        <p>Empowering Innovation, Driving Success</p>
+    </div>
+    <div class="about-container" style="display: flex; align-items: center; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;">
+        <!-- Right Image -->
+        <div class="right-content" style="flex: 1; text-align: center; padding: 20px; max-width: 600px;">
+            <img src="/media/logo.png" alt="CodMinds Team" class="about-img">
+        </div>
+        <!-- Left Content -->
+        <div class="left-content" style="flex: 1; padding: 20px; max-width: 600px;">
+            <p>
+                At CodMinds, we blend innovation with technology to create solutions that redefine possibilities. From AI-driven insights to web development and training, our goal is to empower your journey to success. We are dedicated to bridging the gap between cutting-edge technology and real-world applications, ensuring that businesses and individuals alike can thrive in the digital age.
+            </p>
+            <p>
+                Our team of expert developers, data scientists, and educators are passionate about building future-ready solutions tailored to your unique needs. Whether you're looking to develop a groundbreaking web platform, leverage the power of artificial intelligence, or gain hands-on technical skills, CodMinds is your trusted partner every step of the way.
+            </p>
+            <p>
+                Join hands with us to explore a world of technological wonders and unlock the true potential of your vision. Together, let’s innovate, transform, and create the future.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 50px; background-color: #eef7ef;">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h2>Our Mission</h2>
+        <p>Empowering Businesses and Individuals through Technology</p>
+    </div>
+    <p style="font-size: 18px; line-height: 1.8; color: #444; max-width: 800px; margin: 0 auto; text-align: justify;">
+        At CodMinds, our mission is to empower businesses and individuals with state-of-the-art technology solutions that drive transformation and growth. Through relentless innovation and a commitment to excellence, we aim to redefine what's possible and deliver impactful results that leave a lasting legacy.
+    </p>
+</section>
+
+<section style="padding: 50px; background-color: #eef7ff;">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h2>Our Vision</h2>
+        <p>Transforming Ideas into Reality</p>
+    </div>
+    <p style="font-size: 18px; line-height: 1.8; color: #444; max-width: 800px; margin: 0 auto; text-align: justify;">
+        We envision a world where technology seamlessly integrates with human creativity to solve complex problems, inspire innovation, and create a sustainable future. At CodMinds, we strive to be pioneers in developing solutions that empower people and businesses to achieve their true potential in the digital era.
+    </p>
+</section>
+
+{% endblock %}

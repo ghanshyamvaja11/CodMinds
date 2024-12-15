@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <h1>Make Payment</h1>
+    <button id="payBtn">Pay Now</button>
+
+    <!-- Add CSRF token -->
+    <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+
+    <script type="text/javascript">
+        document.getElementById('payBtn').onclick = function() {
+            // Fetch CSRF token from hidden input field
+            const csrfToken = document.getElementById('csrf_token').value;
+
+            // Initiate the order creation process
+            fetch('/create-order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken // Include CSRF token in the headers
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Error creating order: ' + data.error);
+                    return;
+                }
+
+                // Razorpay payment options
+                var options = {
+                    key: '{{ RAZORPAY_KEY }}', // Your Razorpay key
+                    amount: data.amount, // Amount in paise
+                    currency: 'INR',
+                    name: 'Your Company',
+                    description: 'Payment for Order',
+                    order_id: data.order_id, // Razorpay order ID
+                    handler: function (response) {
+                        // Send payment details to the server for verification
+                        fetch('/verify-payment/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrfToken // Include CSRF token in the headers
+                            },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert('Payment Successful!');
+                            } else {
+                                alert('Payment verification failed: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error verifying payment:', error);
+                            alert('An error occurred during payment verification.');
+                        });
+                    },
+                    prefill: {
+                        name: "Customer Name", // Pre-filled name
+                        email: data.email, // Email passed from server
+                        contact: "9876543210" // Contact number
+                    },
+                    theme: {
+                        color: "#F37254" // Customize color
+                    }
+                };
+
+                // Open Razorpay payment modal
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            })
+            .catch(error => {
+                console.error('Error creating order:', error);
+                alert('An error occurred while initiating the payment.');
+            });
+        };
+    </script>
+</body>
+</html>

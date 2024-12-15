@@ -1,0 +1,61 @@
+{% extends 'cert_base.html' %}
+
+{% block content %}
+<!-- Styles specific to verify certificate page -->
+<style>
+  .certificate-info {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    text-align: left;
+  }
+
+  .certificate-info h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    color: #1a73e8;
+  }
+
+  .certificate-info p {
+    margin: 10px 0;
+  }
+
+  .valid {
+    color: green;
+    font-weight: bold;
+  }
+
+  .invalid {
+    color: red;
+    font-weight: bold;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+</style>
+
+  {% if certificate %}
+  <div class="certificate-info">
+    <h2>Certificate Information</h2>
+    <p><strong>Certificate Code:</strong> {{ certificate.certificate_code }}</p>
+    <p><strong>Issued To:</strong> {{ certificate.recipient_name }}</p>
+    <p><strong>Field:</strong> {{ certificate.internship_field }}</p>
+    <p><strong>Project:</strong> {{ certificate.project }}</p>
+    <p><strong>Start Date:</strong> {{ certificate.start_date }}</p>
+    <p><strong>End Date:</strong> {{ certificate.end_date }}</p>
+    <p><strong>Issued On:</strong> {{ certificate.issued_at }}</p>
+    <p><strong>Status:</strong> 
+        <span class="valid">Valid</span>
+    </p>
+  </div>
+  {% elif certificate_code %}
+  <p class="error-message">Certificate not found or invalid. Please check the certificate code.</p>
+  {% endif %}
+</div>
+{% endblock %}

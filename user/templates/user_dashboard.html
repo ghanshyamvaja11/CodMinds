@@ -1,0 +1,145 @@
+{% extends 'user_base.html' %}
+
+{% block title %}Dashboard | CodMinds{% endblock %}
+
+{% block content %}
+<style>
+    /* Dashboard Container */
+    .dashboard-container {
+        padding: 40px;
+        background-color: #f4f7fa;
+        min-height: 100vh;
+    }
+
+    /* Page Title */
+    .page-title {
+        font-size: 28px;
+        color: #1e90ff;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    /* Dashboard Cards */
+    .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .card h3 {
+        font-size: 22px;
+        color: #444;
+        margin-bottom: 15px;
+    }
+
+    .card p {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .card a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #1e90ff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    .card a:hover {
+        background-color: #4c9aff;
+    }
+
+    /* Updated "Select Internship Project" Card */
+    .highlight-card {
+        background: linear-gradient(135deg, #ff6600, #ff9966);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .highlight-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .highlight-card h3 {
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .highlight-card p {
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+
+    .highlight-card a {
+        background-color: #f39c12;
+        color: white;
+        padding: 14px 30px;
+        font-size: 18px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .highlight-card a:hover {
+        background-color: #f1c40f;
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="dashboard-container">
+    <h2 class="page-title">Welcome, {{ name }}!</h2>
+
+    {% if internApplication.project_name == '' %}
+    <!-- Highlighted Card: Select Internship Project -->
+    <div class="highlight-card">
+        <h3>Select Internship Project</h3>
+        <p>Select a project that aligns with your interests.</p>
+        <a href="{% url 'project_selection' %}">Select Now</a>
+    </div>
+    {% endif %}
+
+    <!-- Other Dashboard Cards -->
+    <div class="dashboard-cards">
+        <div class="card">
+            <h3>Your Profile</h3>
+            <p>View and update your personal information.</p>
+            <a href="{% url 'user_profile' %}">View Profile</a>
+        </div>
+        <div class="card">
+            <h3>Certificates</h3>
+            <p>Access your earned certificates and achievements.</p>
+            <a href="{% url 'certificates' %}">View Certificates</a>
+        </div>
+        <div class="card">
+            <h3>Apply for Internship</h3>
+            <p>Explore and apply for internship opportunities.</p>
+            <a href="{% url 'apply_for_internship' %}">Apply Now</a>
+        </div>
+        <div class="card">
+            <h3>View Internship Applications</h3>
+            <p>Track the status of your internship applications.</p>
+            <a href="{% url 'view_internship_application_status' %}">View Status</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

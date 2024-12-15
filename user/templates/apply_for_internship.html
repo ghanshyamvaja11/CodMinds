@@ -1,0 +1,136 @@
+{% extends 'user_base.html' %}
+
+{% block title %}Apply for Internship | CodMinds{% endblock %}
+
+{% block content %}
+<style>
+    .application-container {
+        max-width: 800px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .application-container h2 {
+        text-align: center;
+        color: #1e90ff;
+        margin-bottom: 20px;
+    }
+
+    .application-container form label {
+        font-size: 16px;
+        color: #444;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .application-container form input,
+    .application-container form select,
+    .application-container form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .application-container form input[type="file"] {
+        padding: 5px;
+    }
+
+    .application-container form button {
+        background-color: #1e90ff;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .application-container form button:hover {
+        background-color: #4c9aff;
+    }
+
+/* Message Styles */
+.messages {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: fit-content;  /* Ensure the width of the message is based on its content */
+    max-width: 80%; /* Optional: Prevent the message from becoming too wide */
+    margin-left: auto;
+    margin-right: auto; /* Center horizontally */
+}
+
+/* Centering the messages container on the page */
+.edit-profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center */
+    align-items: center; /* Horizontally center */
+    min-height: 100vh;
+}
+
+/* Success Message */
+.messages.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Error Message */
+.messages.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+</style>
+
+<div class="application-container">
+    <h2>Apply for Internship</h2>
+
+    <!-- Display messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="messages {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" value="{{ user.name }}" required>
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" value="{{ user.phone }}" required>
+
+        <label for="department">Select Department</label>
+        <select id="department" name="department" required>
+            <option value="" disabled selected>-- Choose Department --</option>
+            <option value="web-development">Web Development</option>
+            <option value="data-science">Data Science</option>
+            <option value="cyber-security">Cyber Security</option>
+            <option value="ai-ml">AI & Machine Learning</option>
+        </select>
+
+        <label for="cover_letter">Cover Letter</label>
+        <textarea id="cover_letter" name="cover_letter" rows="5" style="resize: none;"></textarea>
+
+        <label for="resume">Upload Resume</label>
+        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+
+        <button type="submit">Submit Application</button>
+    </form>
+</div>
+{% endblock %}

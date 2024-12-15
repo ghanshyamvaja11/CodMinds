@@ -1,0 +1,98 @@
+{% extends 'entry_base.html' %}
+
+{% block content %}
+<!-- Services Section -->
+<section id="services" class="services">
+  <h2>Our Services</h2>
+  <div class="services-container">
+    <!-- Web Development Service -->
+    <div class="service">
+      <i class="fas fa-code"></i>
+      <h3>Web Development</h3>
+      <p>Building scalable, user-centric, and responsive websites tailored for your business.</p>
+    </div>
+    
+    <!-- AI Solutions Service -->
+    <div class="service">
+      <i class="fas fa-robot"></i>
+      <h3>AI Solutions</h3>
+      <p>Enhance productivity with intelligent solutions powered by cutting-edge AI technology.</p>
+    </div>
+    
+    <!-- Training Programs Service -->
+    <div class="service">
+      <i class="fas fa-chalkboard-teacher"></i>
+      <h3>Training Programs</h3>
+      <p>Upskill your team with professional courses led by industry experts.</p>
+    </div>
+    
+    <!-- Software Development Service -->
+    <div class="service">
+      <i class="fas fa-cogs"></i>
+      <h3>Software Development</h3>
+      <p>Custom software solutions that cater to your unique business needs and drive innovation.</p>
+    </div>
+    
+    <!-- Data Analytics Service -->
+    <div class="service">
+      <i class="fas fa-chart-line"></i>
+      <h3>Data Analytics</h3>
+      <p>Transform data into actionable insights to improve decision-making and business outcomes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Styles specific to services page -->
+<style>
+  /* Services Section */
+    .services {
+      padding: 80px 50px;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+
+    .services h2 {
+      font-size: 36px;
+      color: #1e90ff;
+      margin-bottom: 50px;
+    }
+
+    .services-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .service {
+      flex: 1 1 300px;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .service:hover {
+      transform: translateY(-10px);
+    }
+
+    .service i {
+      font-size: 40px;
+      color: #1e90ff;
+      margin-bottom: 15px;
+    }
+
+    .service h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .service p {
+      font-size: 16px;
+      color: #555;
+    }
+</style>
+{% endblock %}

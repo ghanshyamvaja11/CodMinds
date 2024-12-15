@@ -1,0 +1,122 @@
+{% extends 'user_base.html' %}
+
+{% block title %}Edit Profile | CodMinds{% endblock %}
+
+{% block content %}
+<style>
+    /* Edit Profile Container */
+    .edit-profile-container {
+        padding: 20px; /* Consistent padding */
+        background-color: #f4f7fa;
+        min-height: calc(100vh - 60px); /* Adjust based on your header/footer height */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .edit-profile-form {
+        background-color: white;
+        padding: 20px; /* Consistent padding */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* Spacing between elements */
+    }
+
+    .edit-profile-form h2 {
+        text-align: center;
+        color: #1e90ff;
+        margin-bottom: 20px;
+        font-size: 28px;
+    }
+
+    .edit-profile-form label {
+        font-size: 16px;
+        color: #444;
+        margin-bottom: 5px;
+    }
+
+    .edit-profile-form input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .edit-profile-form button {
+        width: 100%;
+        background-color: #1e90ff;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .edit-profile-form button:hover {
+        background-color: #4c9aff;
+    }
+
+    .edit-profile-form .form-footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .message {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+
+    .message.error {
+        color: red;
+    }
+
+    .message.success {
+        color: green;
+    }
+</style>
+
+<div class="edit-profile-container">
+    <form class="edit-profile-form" method="post">
+        {% csrf_token %}
+        <h2>Edit Profile</h2>
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="message">
+            {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="{{ user.name }}" required>
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+
+        <label for="phone">Mobile</label>
+        <input type="tel" id="phone" name="phone" value="{{ user.phone }}" pattern="[0-9]{10}" title="Enter a 10-digit phone number" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter a new password (optional)">
+
+        <button type="submit">Save Changes</button>
+
+        <div class="form-footer">
+            <a href="{% url 'user_dashboard' %}">Back to dashboard</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

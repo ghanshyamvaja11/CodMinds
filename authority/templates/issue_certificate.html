@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Certificate</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f7fc;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #1a73e8;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group button:hover {
+            background: #0b55c9;
+        }
+        .success {
+            text-align: center;
+            color: green;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Issue Certificate</h2>
+         {% if success %}
+            <p class="success">{{ success }}</p>
+        {% endif %}
+        <form method="POST" action="{% url 'issue_certificate' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="certificate_type">Certificate Type</label>
+                <select name="certificate_type" id="certificate_type" required>
+                    <option value="internship">Internship</option>
+                    <option value="training">Training</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="recipient_name">Recipient Name</label>
+                <input type="text" name="recipient_name" id="recipient_name" value="{{ user.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" value="{{ user.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="mobile_no">Mobile No</label>
+                <input type="text" name="mobile_no" id="mobile_no" value="{{ user.phone }}" required>
+            </div>
+            <div class="form-group">
+                <label for="field">Field</label>
+                <input type="text" name="field" id="field" value="{{ internship.department }}" required>
+            </div>
+            <div class="form-group">
+                <label for="project">Project</label>
+                <input type="text" name="project" id="project" value="{{ internship.project_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <input type="date" name="start_date" id="start_date" required>
+            </div>
+            <div class="form-group">
+                <label for="end_date">End Date</label>
+                <input type="date" name="end_date" id="end_date" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Issue Certificate</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

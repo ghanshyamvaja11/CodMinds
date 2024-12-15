@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>CodMinds Internship Certificate</title>
+    <style>
+      /* General Styles */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background-color: #eaf3fc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .certificate-container {
+        width: 1100px;
+        height: 700px;
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        border: 15px solid #1a73e8;
+      }
+
+      /* Background Design */
+      .certificate-container::before {
+        content: "";
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        width: 500px;
+        height: 500px;
+        background: rgba(26, 115, 232, 0.2);
+        border-radius: 50%;
+      }
+
+      .certificate-container::after {
+        content: "";
+        position: absolute;
+        bottom: -70px;
+        right: -70px;
+        width: 600px;
+        height: 600px;
+        background: rgba(26, 115, 232, 0.2);
+        border-radius: 50%;
+      }
+
+      /* Header Section */
+      .certificate-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1px 29px;
+        border-bottom: 3px solid #1a73e8;
+      }
+
+      .certificate-header img {
+        height: 121px;
+      }
+
+      .certificate-title {
+        font-size: 28px;
+        color: #1a73e8;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+        flex-grow: 1;
+      }
+
+      /* Certificate Body */
+      .certificate-body {
+        padding: 40px;
+        text-align: center;
+      }
+
+      .certificate-body p {
+        font-size: 18px;
+        color: #444;
+        margin: 10px 0;
+      }
+
+      .certificate-body .name {
+        font-size: 34px;
+        font-weight: bold;
+        color: #333;
+        margin: 15px 0;
+      }
+
+      .certificate-body .highlight {
+        font-size: 19px;
+        font-weight: bold;
+        color: #1a73e8;
+        margin: 10px 0;
+      }
+
+      .certificate-dates {
+        font-size: 18px;
+        margin: 20px 0;
+        color: #000;
+        font-weight: bold;
+      }
+
+      /* Highlighted Dates in Dark Black */
+      .highlight-dates {
+        color: #000;
+        font-weight: bold;
+      }
+
+      /* Project Name */
+      .project-name {
+        font-size: 20px;
+        color: #1a73e8;
+        font-weight: bold;
+        margin: 15px 0;
+      }
+
+      /* Verification Section */
+      .verification {
+        margin-top: 30px;
+        font-size: 14px;
+        color: #555;
+        text-align: center;
+      }
+
+      .verification a {
+        color: #1a73e8;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .verification a:hover {
+        text-decoration: underline;
+      }
+
+      /* Footer Section */
+      .certificate-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        border-top: 3px solid #1a73e8;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .footer-signature {
+        text-align: center;
+        width: 30%;
+      }
+
+      .footer-signature p {
+        font-size: 16px;
+        color: #333;
+      }
+
+      .signature-line {
+        width: 80%;
+        height: 1px;
+        background: #333;
+        margin: 10px auto;
+        border: 2px solid black;
+      }
+
+      /* Download Button */
+      .download-btn {
+        padding: 10px 20px;
+        background: #1a73e8;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .download-btn:hover {
+        background: #1557a4;
+      }
+
+      .download-btn.hidden {
+        display: none;
+      }
+
+      /* Upload Button */
+      .upload-btn {
+        padding: 10px 20px;
+        background: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 20px;
+        display: none;
+      }
+
+      .upload-btn:hover {
+        background: #218838;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="certificate-container" id="certificate">
+      <br />
+      <!-- Header Section -->
+      <div class="certificate-header">
+        <img src="/media/logo.png" alt="CodMinds Logo" />
+        <div class="certificate-title">Internship Certificate</div>
+        <img src="/media/logo.png" alt="CodMinds Logo" />
+      </div>
+
+      <!-- Body Section -->
+      <div class="certificate-body">
+        <p>This is to certify that</p>
+        <h2 class="name">{{ recipient_name }}</h2>
+        <p>has successfully completed their internship in</p>
+        <h2 class="highlight">{{ internship_field }}</h2>
+        <p class="project-name">
+          Project: <span class="highlight" style="color: black;">{{ project_name }}</span>
+        </p>
+        <p>
+          from <span class="highlight-dates">{{ start_date }}</span> to
+          <span class="highlight-dates">{{ end_date }}</span>
+        </p>
+        <p>Issued on: <span class="highlight-dates">{{ issued_at }}</span></p>
+        <p>
+          We sincerely appreciate their dedication and contributions during
+          their tenure at CodMinds.
+        </p>
+        <div class="verification">
+          <p>
+            Certificate Code:
+            <span><b style="color: black">{{ certificate_code }}</b></span>
+          </p>
+          <p>
+            Verify this certificate at:
+            <a
+              href="https://codminds.pythonanywhere.com/certificate/intern/verify/{{ certificate_code }}"
+              >https://codminds.com/certificate/intern/verify/<b
+                style="color: black"
+                >{{certificate_code}}</b
+              ></a
+            >
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer Section -->
+      <div class="certificate-footer">
+        <div class="footer-signature">
+          <img
+            src="/media/signature1.png"
+            alt="Signature"
+            style="height: 50px;"
+          />
+          <p style="color: black; font-weight: bolder;">Authorized Signatory</p>
+        </div>
+
+        <!-- Download Button in Footer -->
+        <button class="download-btn" id="download-btn">Download as PDF</button>
+
+        <div class="footer-signature">
+          <img
+            src="/media/signature2.png"
+            alt="Signature"
+            style="height: 50px;"
+          />
+          <p style="color: black; font-weight: bolder;">Director, CodMinds</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Certificate Button -->
+    <a href="{% url 'internship_certificate_upload' %}">
+      <button class="upload-btn" id="upload-btn">Upload Certificate</button>
+    </a>
+
+    <script>
+  document.getElementById("download-btn").addEventListener("click", () => {
+  const downloadBtn = document.getElementById("download-btn");
+  const uploadBtn = document.getElementById("upload-btn");
+
+  downloadBtn.classList.add("hidden");
+
+  const certificateCode = "{{ certificate_code }}";
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("landscape", "mm", "a4");
+
+  html2canvas(document.querySelector(".certificate-container"), {
+    scale: 2, // Adjusted scale for lower resolution
+  }).then((canvas) => {
+    const imgData = canvas.toDataURL("image/jpeg", 1.0); // Lower quality and use JPEG
+
+    const imgWidth = 297; // A4 width in mm for landscape
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
+
+    const marginX = 10; // Margin from left edge
+    const marginY = 10; // Margin from top edge
+
+    pdf.addImage(imgData, "JPEG", marginX, marginY, imgWidth - 2 * marginX, imgHeight - 2 * marginY);
+    pdf.save(`${certificateCode}.pdf`);
+
+    uploadBtn.style.display = "block";
+  });
+});
+</script>
+  </body>
+</html>

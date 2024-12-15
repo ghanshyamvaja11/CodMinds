@@ -1,0 +1,88 @@
+{% extends 'entry_base.html' %}
+
+{% block title %}Cancellation & Refund Policies | CodMinds{% endblock %}
+
+{% block content %}
+<style>
+    .policies-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .policies-container h2 {
+        text-align: center;
+        color: #1e90ff;
+        margin-bottom: 20px;
+    }
+
+    .policy-section {
+        margin-bottom: 20px;
+    }
+
+    .policy-section h3 {
+        color: #444;
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+
+    .policy-section p {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .policy-section ul {
+        list-style: disc inside;
+        padding-left: 20px;
+    }
+
+    .policy-section ul li {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: #555;
+    }
+</style>
+
+<div class="policies-container">
+    <h2>Cancellation & Refund Policies</h2>
+
+    <div class="policy-section">
+        <h3>1. Cancellation Policy</h3>
+        <p>At CodMinds, we understand that circumstances can change. Below are our cancellation policies:</p>
+        <ul>
+            <li>Cancellations made within 2-3 woeking days of enrollment are eligible for a full refund.</li>
+            <li>Cancellations made after 2-3 woeking days but before the course start date will incur a 10% administrative fee.</li>
+            <li>No cancellations or refunds will be processed once the course has started.</li>
+        </ul>
+    </div>
+
+    <div class="policy-section">
+        <h3>2. Refund Policy</h3>
+        <p>Our refund policy is designed to ensure fairness to both the learners and CodMinds:</p>
+        <ul>
+            <li>Refund requests must be submitted in writing to our support team.</li>
+            <li>Eligible refunds will be processed within 7-10 business days after approval.</li>
+            <li>Refunds are processed to the original mode of payment used during enrollment.</li>
+        </ul>
+    </div>
+
+    <div class="policy-section">
+        <h3>3. Exceptions</h3>
+        <p>Refunds or cancellations will not be provided under the following circumstances:</p>
+        <ul>
+            <li>Failure to attend live sessions or complete assignments.</li>
+            <li>Technical issues caused by the learner’s hardware, software, or internet connection.</li>
+            <li>Courses purchased during promotional sales or with a discount code.</li>
+        </ul>
+    </div>
+
+    <div class="policy-section">
+        <h3>4. Contact Us</h3>
+        <p>If you have any questions or concerns about our policies, please reach out to our support team at <a href="mailto:codmindsofficial@gmail.com">codmindsofficial@gmail.com</a>.</p>
+    </div>
+</div>
+{% endblock %}

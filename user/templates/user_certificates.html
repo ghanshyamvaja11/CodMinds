@@ -1,0 +1,87 @@
+{% extends 'user_base.html' %}
+
+{% block title %}Certificates | CodMinds{% endblock %}
+
+{% block content %}
+<style>
+    /* Certificates Container */
+    .certificates-container {
+        padding: 40px;
+        background-color: #f4f7fa;
+        min-height: 100vh;
+    }
+
+    /* Page Title */
+    .page-title {
+        font-size: 28px;
+        color: #1e90ff;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    /* Certificate Cards */
+    .certificate-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .card h3 {
+        font-size: 22px;
+        color: #444;
+        margin-bottom: 15px;
+    }
+
+    .card p {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .card a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #1e90ff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    .card a:hover {
+        background-color: #4c9aff;
+    }
+</style>
+
+<div class="certificates-container">
+    <h2 class="page-title">Your Certificates</h2>
+    <!-- Certificate Cards -->
+    <div class="certificate-cards">
+        {% for certificate in certificates %}
+        <div class="card">
+            <h3>{{ certificate.internship_field }}</h3>
+            <p>Certificate code : {{ certificate.certificate_code }}</p>
+            <p>Issued on: {{ certificate.issued_at }}</p>
+            <p>Issuer: CodMinds</p>
+            <a href="/media/certificates/{{ certificate.certificate_code }}.pdf" download>Download Certificate</a>
+        </div>
+        {% empty %}
+        <div class="card">
+            <h3>No Certificates Found</h3>
+            <p>You haven't received any certificates yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

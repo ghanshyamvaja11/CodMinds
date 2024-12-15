@@ -1,0 +1,179 @@
+{% extends 'user_base.html' %}
+
+{% block title %}View Application | CodMinds{% endblock %}
+
+{% block content %}
+<style>
+    .applications-container {
+        max-width: 800px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .applications-container h2 {
+        text-align: center;
+        color: #1e90ff;
+        margin-bottom: 20px;
+    }
+
+    .application-card {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .application-card div {
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .application-card .label {
+        font-weight: bold;
+        color: #444;
+    }
+
+    .view-resume {
+        background-color: #1e90ff;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .view-resume:hover {
+        background-color: #4c9aff;
+    }
+
+    .status {
+        font-weight: bold;
+    }
+
+    .status.submitted {
+        color: black;
+    }
+
+    .status.rejected {
+        color: red;
+    }
+
+    .status.selected {
+        color: green;
+    }
+
+    .description-textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        resize: none;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+
+    .description-textarea:focus {
+        outline: none;
+    }
+
+    .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #f5c6cb;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .payment-success {
+        display: inline-block;
+        background-color: #28a745;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .select-project {
+        display: block;
+        color: white;
+        background-color: orange;
+        font-size: 16px;
+        text-align: center;
+        padding: 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        margin-top: 15px;
+        transition: background-color 0.3s;
+    }
+
+    .select-project:hover {
+        background-color: #ff9933;
+    }
+</style>
+
+<div class="applications-container">
+    <h2>Internship Application</h2>
+
+    {% if err %}
+    <div class="error-message">{{ err }}</div>
+    {% endif %}
+
+    {% if application %}
+    <div class="application-card">
+        <div><span class="label">Name:</span> {{ application.name }}</div>
+        <div><span class="label">Email:</span> {{ application.email }}</div>
+        <div><span class="label">Phone:</span> {{ application.phone }}</div>
+        <div><span class="label">Department:</span> {{ application.department }}</div>
+        <div><span class="label">Cover Letter:</span> {{ application.cover_letter|default:"Not provided" }}</div>
+        <div>
+            <span class="label">Resume:</span>
+            {% if application.resume %}
+            <a href="{{ application.resume.url }}" class="view-resume" target="_blank">View Resume</a>
+            {% else %}
+            No Resume Uploaded
+            {% endif %}
+        </div>
+        <div>
+            <span class="label">Status:</span>
+            <span class="status 
+                {% if application.status == -1 %}submitted{% elif application.status == 0 %}rejected{% else %}selected{% endif %}">
+                {% if application.status == -1 %}Submitted
+                {% elif application.status == 0 %}Rejected
+                {% else %}Approved
+                {% endif %}
+            </span>
+        </div>
+
+        {% if application.status == 1 %}
+            {% if application.project_name == '' %}
+            <a href="{% url 'project_selection' %}" class="select-project">Select Project</a>
+            {% else %}
+            <div><span class="label">Project:</span> {{ application.project_name }}</div>
+            <div>
+                <span class="label">Description:</span>
+                <textarea readonly class="description-textarea">{{ application.project_description }}</textarea>
+            </div>
+            <div>
+                <span class="label">Payment of ₹99:</span> <span class="payment-success">Success</span>
+            </div>
+            {% endif %}
+        {% endif %}
+    </div>
+    {% else %}
+    <p style="text-align: center;">No application found.</p>
+    {% endif %}
+</div>
+{% endblock %}
