@@ -1,0 +1,2 @@
+# CodMinds
+ CodMinds is an emerging startup offering a range of services in Training, Web Development, AI & Machine Learning, Software Development, and Data Analytics. We aim to empower individuals and businesses by providing high-quality training programs and solutions tailored to modern technological needs. As an initial startup, CodMinds is committed to delivering innovative, industry-relevant services to help our clients stay ahead in the ever-evolving tech landscape.
