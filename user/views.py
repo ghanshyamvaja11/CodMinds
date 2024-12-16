@@ -18,6 +18,12 @@ import razorpay
 from django.conf import settings
 import logging
 
+# Razorpay Client Setup
+razorpay_client = razorpay.Client(
+    auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+logger = logging.getLogger(__name__)
+
 def user_signup(request):
     if request.method == 'POST':
         # Get the data from the form
@@ -199,11 +205,14 @@ def user_profile(request):
     user = User.objects.get(email=request.session.get('email'))
 
     if request.method == 'POST':
+        email_original = request.session.get('email')
         # Get the data from the form
         name = request.POST.get('name')
         email = request.POST.get('email')
         phone = str(request.POST.get('phone'))
         password = request.POST.get('password')
+
+        request.session['email_change'] = email
 
         # Validate email
         try:
@@ -230,23 +239,23 @@ def user_profile(request):
             user.phone = phone
             user.save()
             
-            # Update session email if it has changed
-            request.session['email'] = email
-
-            if InternshipApplication.objects.filter(email=request.session.get('email')).exists():
-                InternshipAppl = InternshipApplication.objects.get(email=request.session.get('email'))
+            if InternshipApplication.objects.filter(email=email_original).exists():
+                InternshipAppl = InternshipApplication.objects.get(email = email_original)
                 InternshipAppl.email = email
                 InternshipAppl.save()
 
-            if InternshipCertificate.objects.filter(email=request.session.get('email')).exists():
-                InternshipCert = InternshipCertificate.objects.get(email=request.session.get('email'))
+            if InternshipCertificate.objects.filter(email = email_original).exists():
+                InternshipCert = InternshipCertificate.objects.get(email = email_original)
                 InternshipCert.email = email
                 InternshipCert.save()
             
-            if Payment.objects.filter(email=request.session.get('email')).exists():
-                pay = Payment.objects.get(email=request.session.get('email'))
+            if Payment.objects.filter(email = email_original).exists():
+                pay = Payment.objects.get(email = email_original)
                 pay.email = email 
                 pay.save()
+
+            if email_original != request.session.get('email_change'):
+                request.session['email'] = request.session.get('email_change')
 
             messages.success(request, "Profile updated successfully.")
             return render(request, 'edit_profile.html', {'user': user})
@@ -269,7 +278,6 @@ def user_certificates(request):
 
 def apply_for_internship(request):
     user = User.objects.get(email=request.session.get('email'))
-
     if request.method == 'POST':
         name = user.name
         email = user.email
@@ -363,52 +371,42 @@ def project_selection(request):
     })
 
 
-# Razorpay Client Setup
-razorpay_client = razorpay.Client(
-    auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-
-logger = logging.getLogger(__name__)
-
-
 def create_order(request):
     if request.method == "POST":
         data = json.loads(request.body)
         project_id = data.get("project_id")
-        amount = int(9900)  # Amount in paise (9900 paise = 99 INR)
-        currency = str('INR')
+        amount = 9900  # Amount in paise (9900 paise = 99 INR)
+        currency = "INR"
         email = str(request.session.get('email'))  # Get email from session
+
+        print(f"Session email: {email}")
+        print(f"Request data: {data}")
+
 
         if not email:
             logger.error("User email not found in session")
             return JsonResponse({'error': 'User email not found in session'}, status=400)
 
         try:
+            order_info = {
+                    "amount": amount,
+                    "currency": currency,
+                    "payment_capture": 1  # Automatically capture payment
+            }
             # Create the Razorpay order
-            order = razorpay_client.order.create({
-                'amount': amount,
-                'currency': currency,
-                'payment_capture': True  # Automatically capture payment
-            })
+            order = razorpay_client.order.create(order_info)
             order_id = order.get('id')
-
             if not order_id:
                 logger.error(
                     "Failed to retrieve order_id from Razorpay response")
-                return JsonResponse({'error': 'Failed to create Razorpay order'}, status=500)
+                return JsonResponse({'error': 'Failed to create Razorpay order try again'}, status=500)
 
             # Save payment details to the database
             payment = Payment.objects.create(
                 order_id=order_id, amount=amount / 100, email=email, status='Pending', project_id = project_id
             )
 
-            proj = InternshipProjects.objects.get(id = project_id)
-            InternProjSelected = InternshipApplication.objects.get(email = email)
-            request.session['name'] = InternProjSelected.name
-            request.session['department'] = InternProjSelected.department
-            InternProjSelected.project_name = proj.title
-            request.session['project_name'] = InternProjSelected.project_name
-            InternProjSelected.project_description = proj.description
-            InternProjSelected.save()
+            request.session['project_id'] = project_id
 
             logger.info(f"Payment created successfully: {payment}")
 
@@ -453,6 +451,16 @@ def verify_payment(request):
                 payment.signature = razorpay_signature
                 payment.status = 'Completed'
                 payment.save()
+
+            #update internshipapplication data in database
+                proj = InternshipProjects.objects.get(id = request.session.get('project_id'))
+                InternProjSelected = InternshipApplication.objects.get(email = request.session.get('email'))
+                request.session['name'] = InternProjSelected.name
+                request.session['department'] = InternProjSelected.department
+                InternProjSelected.project_name = proj.title
+                request.session['project_name'] = InternProjSelected.project_name
+                InternProjSelected.project_description = proj.description
+                InternProjSelected.save()
 
                 name = request.session.get('name')
                 department = request.session.get('department')

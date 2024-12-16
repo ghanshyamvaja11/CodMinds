@@ -144,6 +144,7 @@
     {% endif %}
 </div>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     // Function to open a modal
     function openModal(modalId) {
@@ -178,7 +179,8 @@
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert('Error creating order: ' + data.error);
+                //alert('Error creating order: ' + data.error);
+                alert("Internal Server Error, Try again after few moments")
                 return;
             }
 
@@ -240,6 +242,5 @@
 
 <!-- CSRF Token -->
 <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 {% endblock %}
