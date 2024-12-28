@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Certificate | Admin Panel{% endblock %}
+
+{% block content %}
+<style>
+    /* General Container Styling */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Upload Section */
+    .upload-section {
+        background-color: #f9f9f9;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    .page-title {
+        margin-bottom: 20px;
+        text-align: center;
+        color: #1a73e8;
+    }
+
+    /* Form Styling */
+    .upload-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .form-control {
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #1e90ff;
+        outline: none;
+    }
+
+    /* Button Styling */
+    .btn-submit {
+        background-color: #1e90ff;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 6px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-submit:hover {
+        background-color: #4682b4;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .upload-section {
+            padding: 20px;
+        }
+
+        .upload-form {
+            max-width: 100%;
+        }
+
+        .page-title {
+            font-size: 26px;
+        }
+
+        .form-group label,
+        .form-control,
+        .btn-submit {
+            font-size: 14px;
+        }
+    }
+
+    /* Message Styling */
+    .message {
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+
+<div class="container">
+    <div class="upload-section">
+        <h2 class="page-title">Send Offer Letter</h2>
+
+        <!-- Display messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Upload Form -->
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="certificate_file">Send Offer Letter (PDF only)</label>
+                <input type="file" name="certificate_file" id="certificate_file" class="form-control" accept=".pdf" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Send Offer Letter</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

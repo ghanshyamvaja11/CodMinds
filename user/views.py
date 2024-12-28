@@ -18,7 +18,7 @@ import razorpay
 from django.conf import settings
 import logging
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Razorpay Client Setup
 razorpay_client = razorpay.Client(
@@ -96,7 +96,6 @@ def user_login(request):
             user = User.objects.get(email=email, password=hashed_password)
             # Set session variables on successful login
             request.session['email'] = user.email
-            messages.success(request, "Login successful!")
             # Redirect to dashboard after successful login
             return redirect('user_dashboard')
         except User.DoesNotExist:
@@ -471,7 +470,7 @@ def verify_payment(request):
                 InternProjSelected.save()
 
             # allocate project and do entry in AllottedProject
-                start_date = start_date = datetime.now().date()
+                start_date = (datetime.now() + timedelta(days=5)).date()
                 end_date = start_date + relativedelta(months=duration)
                 project_allocated = AllottedProject.objects.create(
                     project_id=request.session.get('project_id'), email=request.session.get('email'), start_date=start_date, end_date=end_date)
@@ -494,6 +493,7 @@ def verify_payment(request):
                     f"Order ID: {payment.order_id}\n"
                     f"Payment ID: {payment.payment_id}\n\n"
                     f"Your payment has been successfully verified. We appreciate your interest and wish you the best for your internship!\n\n"
+                    f"You will get your offer letter shortly."
                     f"Regards,\nCodMinds Team"
                 )
 

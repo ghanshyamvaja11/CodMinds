@@ -20,7 +20,7 @@ from certificate.models import *
 from random import *
 from django.views.decorators.csrf import csrf_exempt
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils.timezone import make_aware
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -239,6 +239,108 @@ def update_project_allocation(request, app_id):
 
     return redirect('view_internship_applications')
 
+#Provide Offer letter
+def eligible_for_offer_letter(request):
+    users = None
+    try:
+        # Assuming you want to fetch all applications where project_name is not empty
+        users = InternshipApplication.objects.filter(
+            project_name__isnull=False, offer_letter=False).exclude(project_name='')
+    except Exception as e:
+        # Handle exceptions if any, or log the error
+        print(f"Error fetching internship applications: {e}")
+
+    if users:
+        # If users exist, pass them to the template
+        return render(request, 'eligible_for_offer_letter.html', {'users': users})
+    else:
+        # If no users are found, render a different template or pass an empty list
+        return render(request, 'eligible_for_offer_letter.html', {'users': []})
+
+def download_offer_letter(request):
+    email = ''
+
+    # Check if email is provided in the GET request, else use session
+    if request.method == 'GET' and request.GET.get('email') != '':
+        email = request.GET.get('email')
+        request.session['email'] = email
+    # Fetch the created certificate for rendering
+    application = InternshipCertificate.objects.get(
+        email=email)
+
+    context = {
+        'name': application.recipient_name,
+        'department': application.internship_field,
+        'project_name': application.project,
+        'duration': (application.end_date.year - application.start_date.year) * 12 + application.end_date.month - application.start_date.month,
+        'start_date': application.start_date,
+        'end_date': application.end_date,
+        'confirmation_date': application.start_date + timedelta(days=3)
+    }
+    return render(request,  'offer_letter.html', context)
+
+
+def send_offer_letter(request):
+    # Check if POST request and handle file upload
+    if request.method == 'POST' and request.FILES['certificate_file']:
+        certificate_file = request.FILES['certificate_file']
+
+        # Define where to store the file
+        fs = FileSystemStorage()
+        filename = fs.save(certificate_file.name, certificate_file)
+        uploaded_file_url = fs.url(filename)
+
+        # Get email from session
+        email = request.session.get('email')
+
+        if email:
+            try:
+                # Email content without dates
+                subject = "Internship Offer Letter"
+                from_email = settings.DEFAULT_FROM_EMAIL
+                to_email = email
+
+                message = """
+Dear Applicant,
+
+We are pleased to offer you an internship position. Please find the offer letter attached.
+
+Best regards,
+CodMinds Team
+"""
+
+                # Create the email object and attach the file
+                email_message = EmailMessage(
+                    subject,
+                    message,
+                    from_email,
+                    [to_email],
+                )
+                # Attach the uploaded file
+                email_message.attach_file(fs.path(filename))
+
+                # Send the email
+                email_message.send(fail_silently=False)
+
+                # Success message
+                messages.success(request, "Offer letter sent successfully.")
+                offer_letter = InternshipApplication.objects.get(email=email)
+                offer_letter.offer_letter = True
+                offer_letter.save()
+
+                return redirect('send_offer_letter')
+
+            except Exception as e:
+                messages.error(request, f"An error occurred: {str(e)}")
+                return HttpResponse(f"Error: {str(e)}")
+        else:
+            messages.error(request, "Email not found in session.")
+            return HttpResponse("Email not found in session.")
+    else:
+        # GET request or no file uploaded
+        return render(request, 'send_offer_letter.html')
+    
+
 #Recieved Payments
 def received_payments(request):
     received_payments_list = Payment.objects.all()
@@ -305,7 +407,6 @@ def process_refund(request, payment_id):
 def eligible_users(request):
     users = InternshipApplication.objects.filter(status=1)
     return render(request, 'eligible_for_certificate.html', {'users': users})
-
 
 def issue_certificate(request):
     user = None

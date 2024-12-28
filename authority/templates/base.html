@@ -38,9 +38,18 @@
     }
 
     .navbar .logo {
+      display: flex;
+      align-items: center;
       font-size: 24px;
       font-weight: bold;
       color: #61dafb;
+    }
+
+    .navbar .logo img {
+      width: 40px;  /* Adjust size */
+      height: auto;
+      margin-right: 10px;  /* Space between logo and text */
+      background: transparent;
     }
 
     .navbar ul {
@@ -50,6 +59,10 @@
 
     .navbar ul li {
       font-size: 18px;
+    }
+
+    .navbar ul li a {
+      color: white;
     }
 
     .navbar ul li a:hover {
@@ -94,57 +107,57 @@
     }
 
     /* Hamburger menu styles */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-}
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
 
-.hamburger span {
-  width: 25px;
-  height: 4px;
-  background-color: white;
-  border-radius: 5px;
-}
+    .hamburger span {
+      width: 25px;
+      height: 4px;
+      background-color: white;
+      border-radius: 5px;
+    }
 
-/* Media Query for Mobile Responsiveness */
-@media (max-width: 768px) {
-  .navbar ul {
-    display: none;
-    width: 100%;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    background-color: #333;
-    text-align: center;
-  }
+    /* Media Query for Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .navbar ul {
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        background-color: #333;
+        text-align: center;
+      }
 
-  .navbar ul li {
-    margin-right: 0;
-    margin-top: 10px;
-  }
+      .navbar ul li {
+        margin-right: 0;
+        margin-top: 10px;
+      }
 
-  .navbar ul li a {
-    font-size: 18px;
-  }
+      .navbar ul li a {
+        font-size: 18px;
+      }
 
-  .hamburger {
-    display: flex;
-  }
+      .hamburger {
+        display: flex;
+      }
 
-  /* Show nav links when hamburger menu is clicked */
-  .navbar.active ul {
-    display: flex;
-    flex-direction: column;
-  }
+      /* Show nav links when hamburger menu is clicked */
+      .navbar.active ul {
+        display: flex;
+        flex-direction: column;
+      }
 
-  .auth-buttons {
-    display: none;
-  }
-}
+      .auth-buttons {
+        display: none;
+      }
+    }
 
     /* Footer Section */
     .footer {
@@ -187,69 +200,74 @@
 </head>
 <body>
   {% if not request.user.is_authenticated %}
-<script>
+  <script>
     window.location.href = "{% url 'admin_login' %}";
-</script>
-{% endif %}
+  </script>
+  {% endif %}
+
   <!-- Navbar -->
   <div class="navbar">
-  <div class="logo">CodMinds</div>
-  <ul class="nav-links">
-    <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-    <li><a href="{% url 'view_internship_applications' %}">Internship Applications</a></li>
-    <li><a href="{% url 'eligible_users' %}">Issue Certificate</a></li>
-    <li><a href="{% url 'issued_internship_certificates' %}">Issued Intern Certificates</a></li>
-    <li><a href="{% url 'contact_us_view' %}">Messages</a></li>
-    <li><a href="{% url 'received_payments' %}">Recieved Payments</a></li>
-  </ul>
-  <div class="auth-buttons">
-    <form method="POST" action="{% url 'admin_logout' %}">
-    {% csrf_token %}
-    <button class="logout" type="submit">Logout</button>
-    </form>
+    <div class="logo">
+      <img src="/media/logo.png" alt="CodMinds Logo"> CodMinds
+    </div>
+    <ul class="nav-links">
+      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'view_internship_applications' %}">Internship Applications</a></li>
+      <li><a href="{% url 'eligible_for_offer_letter' %}">Offer Letter</a></li>
+      <li><a href="{% url 'eligible_users' %}">Issue Certificate</a></li>
+      <li><a href="{% url 'issued_internship_certificates' %}">Issued Intern Certificates</a></li>
+      <li><a href="{% url 'contact_us_view' %}">Messages</a></li>
+      <li><a href="{% url 'received_payments' %}">Received Payments</a></li>
+    </ul>
+    <div class="auth-buttons">
+      <form method="POST" action="{% url 'admin_logout' %}">
+        {% csrf_token %}
+        <button class="logout" type="submit">Logout</button>
+      </form>
+    </div>
+    <!-- Hamburger menu for mobile screens -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </div>
-  <!-- Hamburger menu for mobile screens -->
-  <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
 
- <!-- Main Content Area -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+  <!-- Main Content Area -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
     <p>© 2024 CodMinds. All rights reserved.</p>
     <div class="footer-links">
-        <a href="/terms-and-conditions/">Terms & Conditions</a> | 
-        <a href="/privacy-policy/">Privacy Policy</a>
+      <a href="/terms-and-conditions/">Terms & Conditions</a> | 
+      <a href="/privacy-policy/">Privacy Policy</a>
     </div>
     <div class="social-icons">
-        {% comment %} <a href="#"><i class="fab fa-facebook"></i></a> {% endcomment %}
-        <a href="#"><i class="fab fa-x"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+      {% comment %} <a href="#"><i class="fab fa-facebook"></i></a> {% endcomment %}
+      <a href="#"><i class="fab fa-x"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
     </div>
-</footer>
+  </footer>
 </body>
+
 <script>
- const hamburger = document.getElementById("hamburger");
-const navbar = document.querySelector(".navbar");
-const navLinks = document.querySelectorAll(".navbar ul li a"); // Select all navbar links
+  const hamburger = document.getElementById("hamburger");
+  const navbar = document.querySelector(".navbar");
+  const navLinks = document.querySelectorAll(".navbar ul li a");
 
-hamburger.addEventListener("click", () => {
-  navbar.classList.toggle("active");
-});
-
-// Close hamburger menu when any link is clicked
-navLinks.forEach(link => {
-  link.addEventListener("click", () => {
-    navbar.classList.remove("active"); // Remove the 'active' class to close the menu
+  hamburger.addEventListener("click", () => {
+    navbar.classList.toggle("active");
   });
-});
+
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      navbar.classList.remove("active");
+    });
+  });
 </script>
+
 </html>

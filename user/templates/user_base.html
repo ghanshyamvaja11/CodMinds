@@ -38,9 +38,16 @@
     }
 
     .navbar .logo {
+      display: flex;
+      align-items: center;
       font-size: 24px;
       font-weight: bold;
       color: #61dafb;
+    }
+
+    .navbar .logo img {
+      height: 40px; /* Adjust the height of the logo */
+      margin-right: 10px; /* Space between image and text */
     }
 
     .navbar ul {
@@ -94,57 +101,57 @@
     }
 
     /* Hamburger menu styles */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-}
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
 
-.hamburger span {
-  width: 25px;
-  height: 4px;
-  background-color: white;
-  border-radius: 5px;
-}
+    .hamburger span {
+      width: 25px;
+      height: 4px;
+      background-color: white;
+      border-radius: 5px;
+    }
 
-/* Media Query for Mobile Responsiveness */
-@media (max-width: 768px) {
-  .navbar ul {
-    display: none;
-    width: 100%;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    background-color: #333;
-    text-align: center;
-  }
+    /* Media Query for Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .navbar ul {
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        background-color: #333;
+        text-align: center;
+      }
 
-  .navbar ul li {
-    margin-right: 0;
-    margin-top: 10px;
-  }
+      .navbar ul li {
+        margin-right: 0;
+        margin-top: 10px;
+      }
 
-  .navbar ul li a {
-    font-size: 18px;
-  }
+      .navbar ul li a {
+        font-size: 18px;
+      }
 
-  .hamburger {
-    display: flex;
-  }
+      .hamburger {
+        display: flex;
+      }
 
-  /* Show nav links when hamburger menu is clicked */
-  .navbar.active ul {
-    display: flex;
-    flex-direction: column;
-  }
+      /* Show nav links when hamburger menu is clicked */
+      .navbar.active ul {
+        display: flex;
+        flex-direction: column;
+      }
 
-  .auth-buttons {
-    display: none;
-  }
-}
+      .auth-buttons {
+        display: none;
+      }
+    }
 
     /* Footer Section */
     .footer {
@@ -194,59 +201,62 @@
 
   <!-- Navbar -->
   <div class="navbar">
-  <div class="logo">CodMinds</div>
-  <ul class="nav-links">
-    <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
-    <li><a href="{% url 'user_profile' %}">Profile</a></li>
-    <li><a href="{% url 'certificates' %}">Your Certificates</a></li>
-    <li><a href="{% url 'apply_for_internship' %}">Apply for Internship</a></li>
-    <li><a href="{% url 'view_internship_application_status' %}">View Internship Application Status</a></li>
-  </ul>
-  <div class="auth-buttons">
-    <a href="{% url 'user_logout' %}"><button class="logout">Logout</button></a>
+    <div class="logo">
+      <img src="/media/logo.png" alt="CodMinds Logo"> <!-- Update this path with your logo image -->
+      CodMinds
+    </div>
+    <ul class="nav-links">
+      <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'user_profile' %}">Profile</a></li>
+      <li><a href="{% url 'certificates' %}">Your Certificates</a></li>
+      <li><a href="{% url 'apply_for_internship' %}">Apply for Internship</a></li>
+      <li><a href="{% url 'view_internship_application_status' %}">View Internship Application Status</a></li>
+    </ul>
+    <div class="auth-buttons">
+      <a href="{% url 'user_logout' %}"><button class="logout">Logout</button></a>
+    </div>
+    <!-- Hamburger menu for mobile screens -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </div>
-  <!-- Hamburger menu for mobile screens -->
-  <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
 
  <!-- Main Content Area -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
     <p>© 2024 CodMinds. All rights reserved.</p>
     <div class="footer-links">
-        <a href="/terms-and-conditions/">Terms & Conditions</a> | 
-        <a href="/privacy-policy/">Privacy Policy</a>
+      <a href="/terms-and-conditions/">Terms & Conditions</a> | 
+      <a href="/privacy-policy/">Privacy Policy</a>
     </div>
     <div class="social-icons">
-        {% comment %} <a href="#"><i class="fab fa-facebook"></i></a> {% endcomment %}
-        <a href="#"><i class="fab fa-x"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+      {% comment %} <a href="#"><i class="fab fa-facebook"></i></a> {% endcomment %}
+      <a href="#"><i class="fab fa-x"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
     </div>
-</footer>
+  </footer>
 </body>
 <script>
- const hamburger = document.getElementById("hamburger");
-const navbar = document.querySelector(".navbar");
-const navLinks = document.querySelectorAll(".navbar ul li a"); // Select all navbar links
+  const hamburger = document.getElementById("hamburger");
+  const navbar = document.querySelector(".navbar");
+  const navLinks = document.querySelectorAll(".navbar ul li a"); // Select all navbar links
 
-hamburger.addEventListener("click", () => {
-  navbar.classList.toggle("active");
-});
-
-// Close hamburger menu when any link is clicked
-navLinks.forEach(link => {
-  link.addEventListener("click", () => {
-    navbar.classList.remove("active"); // Remove the 'active' class to close the menu
+  hamburger.addEventListener("click", () => {
+    navbar.classList.toggle("active");
   });
-});
+
+  // Close hamburger menu when any link is clicked
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      navbar.classList.remove("active"); // Remove the 'active' class to close the menu
+    });
+  });
 </script>
 </html>

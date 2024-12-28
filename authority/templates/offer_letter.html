@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>Internship Offer Letter</title>
+    <style>
+      /* General Styles */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background-color: #eaf3fc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .offer-letter-container {
+        width: 1100px;
+        height: 800px; /* Increased the height for more text */
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        border: 15px solid #1a73e8;
+      }
+
+      /* Header Section */
+      .offer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1px 29px;
+        border-bottom: 3px solid #1a73e8;
+      }
+
+      .offer-header img {
+        height: 121px;
+      }
+
+      .offer-title {
+        font-size: 28px;
+        color: #1a73e8;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+        flex-grow: 1;
+      }
+
+      /* Body Section */
+      .offer-body {
+        padding: 40px;
+        text-align: justify;
+      }
+
+      .offer-body p {
+        font-size: 18px;
+        color: #444;
+        margin: 10px 0;
+      }
+
+      .offer-body .name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin: 15px 0;
+        text-align: center;
+      }
+
+      .offer-details {
+        margin-top: 30px;
+      }
+
+      .offer-details p {
+        font-size: 18px;
+        color: #555;
+        margin: 10px 0;
+      }
+
+      .offer-details .highlight {
+        font-weight: bold;
+        color: #1a73e8;
+      }
+
+      /* Footer Section */
+      .offer-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        border-top: 3px solid #1a73e8;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .footer-signature {
+        text-align: center;
+        width: 30%;
+      }
+
+      .footer-signature p {
+        font-size: 16px;
+        color: #333;
+      }
+
+      .signature-line {
+        width: 80%;
+        height: 1px;
+        background: #333;
+        margin: 10px auto;
+        border: 2px solid black;
+      }
+
+      /* Buttons */
+      .download-btn {
+        padding: 10px 20px;
+        background: #1a73e8;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .download-btn:hover {
+        background: #1557a4;
+      }
+
+      .upload-btn {
+        padding: 10px 20px;
+        background: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 20px;
+      }
+
+      .upload-btn:hover {
+        background: #218838;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="offer-letter-container" id="offer-letter">
+      <!-- Header Section -->
+      <div class="offer-header">
+        <img src="/media/logo.png" alt="Logo" />
+        <div class="offer-title">Internship Offer Letter</div>
+        <img src="/media/logo.png" alt="Logo" />
+      </div>
+
+      <!-- Body Section -->
+      <div class="offer-body">
+        <p>Dear <span class="name">{{ name }}</span>,</p>
+        <p>
+          We are pleased to offer you an internship position in the
+          <span class="highlight">{{ department }}</span> department at our
+          organization. This opportunity will allow you to gain valuable experience and enhance your skills.
+        </p>
+        <p>
+          During your internship, we expect you to bring enthusiasm, dedication, and a willingness to learn. You will be working closely with the team to contribute to ongoing projects, and we encourage you to ask questions, learn from your experiences, and grow as a professional.
+        </p>
+        <div class="offer-details">
+          <p>
+            <strong>Department:</strong>
+            <span class="highlight">{{ department }}</span>
+          </p>
+          <p>
+            <strong>Project Name:</strong>
+            <span class="highlight">{{ project_name }}</span>
+          </p>
+          <p>
+            {% if duration == 1 %}
+            <strong>Duration:</strong> <span class="highlight">{{ duration }} month</span>
+            {% else %}
+            <strong>Duration:</strong> <span class="highlight">{{ duration }} months</span>
+            {% endif %}
+          </p>
+          <p>
+            <strong>Start Date:</strong> <span class="highlight">{{ start_date }}</span>
+          </p>
+          <p>
+            <strong>End Date:</strong> <span class="highlight">{{ end_date }}</span>
+          </p>
+        </div>
+        <p>
+          Please confirm your acceptance of this internship offer by replying to this email by <strong>{{ confirmation_date }}</strong>. Upon acceptance, we will provide additional details regarding onboarding and other requirements.
+        </p>
+        <p>
+          We look forward to your contributions and hope you find this internship both challenging and rewarding.
+        </p>
+        <p>Best Regards,</p>
+        <p><strong>Management Team</strong></p>
+      </div>
+
+      <!-- Footer Section -->
+      <div class="offer-footer">
+        <div class="footer-signature">
+          <img
+            src="/media/signature1.png"
+            alt="Signature"
+            style="height: 50px;"
+          />
+          <p style="color: black; font-weight: bolder;">Authorized Signatory</p>
+        </div>
+
+        <button class="download-btn" id="download-btn">Download as PDF</button>
+
+        <div class="footer-signature">
+          <img
+            src="/media/signature2.png"
+            alt="Signature"
+            style="height: 50px;"
+          />
+          <p style="color: black; font-weight: bolder;">Director</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Certificate Button -->
+    <a href="{% url 'send_offer_letter' %}">
+      <button class="upload-btn" id="upload-btn" style="display: none;">Send Offer Letter</button>
+    </a>
+
+    <script>
+      document.getElementById("download-btn").addEventListener("click", () => {
+        const downloadBtn = document.getElementById("download-btn");
+        const uploadBtn = document.getElementById("upload-btn");
+
+        // Hide the download button and show the upload button after download
+        downloadBtn.style.display = "none";
+        uploadBtn.style.display = "block";
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("landscape", "mm", "a4");
+
+        html2canvas(document.querySelector(".offer-letter-container"), {
+          scale: 2,
+        }).then((canvas) => {
+          const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+          const imgWidth = 297;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          pdf.addImage(imgData, "JPEG", 10, 10, imgWidth - 20, imgHeight - 20);
+          pdf.save("Internship_Offer_Letter.pdf");
+
+          // After PDF download, hide download button and show upload button
+          downloadBtn.style.display = "none";
+          uploadBtn.style.display = "block";
+        });
+      });
+    </script>
+  </body>
+</html>

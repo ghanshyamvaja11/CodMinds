@@ -28,6 +28,7 @@ class InternshipApplication(models.Model):
     project_name = models.CharField(max_length=240, null=True)
     project_description = models.CharField(max_length=1200, null=True)
     status=models.IntegerField(default=-1)
+    offer_letter = models.BooleanField(default=False)
     submitted_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
