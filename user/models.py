@@ -38,7 +38,9 @@ class Payment(models.Model):
     order_id = models.CharField(max_length=255)
     payment_id = models.CharField(max_length=50)
     signature = models.CharField(max_length=256, null=True, blank=True)
+    refund_payment_id = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    refund_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     email = models.EmailField()  # Added field to store the user's email
     project_id = models.IntegerField(null=True)
     status = models.CharField(max_length=100, choices=[(

@@ -17,6 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 import razorpay
 from django.conf import settings
 import logging
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 # Razorpay Client Setup
 razorpay_client = razorpay.Client(
@@ -338,7 +340,9 @@ def apply_for_internship(request):
             phone=phone,
             department=department,
             cover_letter=cover_letter,
-            resume=resume
+            resume=resume,
+            project_name = '', 
+            project_description = ''
         )
         application.save()
 
@@ -356,11 +360,17 @@ def view_internship_application_status(request):
 
 def project_selection(request):
     RAZORPAY_KEY_ID = settings.RAZORPAY_KEY_ID
-    internApplication = InternshipApplication.objects.get(email = request.session.get('email'))
-    user = User.objects.get(email = request.session.get('email'))
-
-    # Fetch all available projects
-    projects = InternshipProjects.objects.filter(field = internApplication.department)
+    internApplication = ''
+    user = ''
+    projects
+    try:
+        internApplication = InternshipApplication.objects.get(email = request.session.get('email'))
+        user = User.objects.get(email = request.session.get('email'))
+        # Fetch all available projects
+        projects = InternshipProjects.objects.filter(field = internApplication.department)
+    except:
+        return redirect('user_login')
+        
     for i in projects:
         if internApplication.project_name != '':
             return render(request, 'view_internship_application_status.html', {'err': f'you already selected Project : {i.title}', 'application': internApplication})
@@ -378,10 +388,6 @@ def create_order(request):
         amount = 9900  # Amount in paise (9900 paise = 99 INR)
         currency = "INR"
         email = str(request.session.get('email'))  # Get email from session
-
-        print(f"Session email: {email}")
-        print(f"Request data: {data}")
-
 
         if not email:
             logger.error("User email not found in session")
@@ -450,10 +456,12 @@ def verify_payment(request):
                 payment.payment_id = razorpay_payment_id
                 payment.signature = razorpay_signature
                 payment.status = 'Completed'
+                payment.refund_amount = 0
                 payment.save()
 
             #update internshipapplication data in database
                 proj = InternshipProjects.objects.get(id = request.session.get('project_id'))
+                duration = proj.duration
                 InternProjSelected = InternshipApplication.objects.get(email = request.session.get('email'))
                 request.session['name'] = InternProjSelected.name
                 request.session['department'] = InternProjSelected.department
@@ -461,6 +469,14 @@ def verify_payment(request):
                 request.session['project_name'] = InternProjSelected.project_name
                 InternProjSelected.project_description = proj.description
                 InternProjSelected.save()
+
+            # allocate project and do entry in AllottedProject
+                start_date = start_date = datetime.now().date()
+                end_date = start_date + relativedelta(months=duration)
+                project_allocated = AllottedProject.objects.create(
+                    project_id=request.session.get('project_id'), email=request.session.get('email'), start_date=start_date, end_date=end_date)
+                print(start_date, end_date)
+                # project_allocated.save()
 
                 name = request.session.get('name')
                 department = request.session.get('department')
@@ -470,7 +486,10 @@ def verify_payment(request):
                 message = (
                     f"Hello {name},\n\n"
                     f"Thank you for completing the payment of Rs. 99 for selecting your internship project in the {department} department.\n\n"
-                    f"Project Name: {project_name}\n\n"
+                    f"Project Name: {project_name}\n"
+                    f"Project Duration: {duration}\n"
+                    f"Internship Start Date: {start_date}\n"
+                    f"internship End Date: {end_date}\n\n"
                     f"Payment Details:\n"
                     f"Order ID: {payment.order_id}\n"
                     f"Payment ID: {payment.payment_id}\n\n"

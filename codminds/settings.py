@@ -19,6 +19,7 @@ load_dotenv()
 # Retrieve Razorpay credentials from environment variables
 RAZORPAY_KEY_ID = os.getenv('RAZOR_KEY_ID')
 RAZORPAY_KEY_SECRET = os.getenv('RAZOR_KEY_SECRET')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -100,7 +101,7 @@ EMAIL_PORT = 587  # SMTP port for Gmail (for TLS)
 EMAIL_USE_TLS = True  # Use TLS (recommended for Gmail)
 EMAIL_HOST_USER = 'codmindsofficial@gmail.com'  # Your email address
 # Your email password (use app-specific passwords if 2FA enabled)
-EMAIL_HOST_PASSWORD = 'olymfmdrohzjxtnv'
+EMAIL_HOST_PASSWORD = f'{EMAIL_PASSWORD}'
 DEFAULT_FROM_EMAIL = 'codmindsofficial@gmail.com'  # Default sender email
 
 # Password validation

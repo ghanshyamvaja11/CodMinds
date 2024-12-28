@@ -17,6 +17,8 @@ urlpatterns = [
     path('view-internship-applications/<int:app_id>/approve-reject/',
          approve_or_reject_application, name='approve_reject_application'),
     path('project-allocation/<int:app_id>', update_project_allocation, name='update_project_allocation'),
+    path('received-payments/', received_payments, name='received_payments'),
+    path('process_refund/<str:payment_id>/', process_refund, name='process_refund'),
      path('eligible-for-certificate/', eligible_users, name='eligible_users'),
     path('issue/', issue_certificate, name='issue_certificate'),
     path("certificate/intern/generate/<str:certificate_code>/",

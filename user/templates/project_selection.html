@@ -122,6 +122,15 @@
     {% for project in projects %}
     <div class="project-card">
         <div><span class="label">Project Name:</span> {{ project.title }}</div>
+        <div>duration : <span style="font-weight: bolder;">{{ project.duration }}
+            {% if project.duration == 1 %}
+            month
+            {% else %}
+            months
+            {% endif %}
+
+        </span></div>
+
 
         <!-- Button to view the description -->
         <a href="javascript:void(0);" class="view-description" onclick="openModal('desc-{{ project.id }}')">View Description</a>
@@ -135,6 +144,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('desc-{{ project.id }}')">&times;</span>
             <h3>{{ project.title }}</h3>
+            <span>duration : <span style="font-weight: bolder;">{{ project.duration }}</span>
             <p>{{ project.description }}</p>
         </div>
     </div>

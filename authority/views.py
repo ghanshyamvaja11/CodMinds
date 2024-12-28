@@ -1,3 +1,6 @@
+from user.models import *
+from django.http import JsonResponse, HttpResponseRedirect
+from django.shortcuts import redirect, reverse
 import random
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -28,6 +31,13 @@ from entry.models import *
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User as Admin
 import random
+from django.urls import reverse
+from django.conf import settings
+import razorpay
+
+# Razorpay Client Setup
+razorpay_client = razorpay.Client(
+    auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
 def admin_login(request):
     if request.method == "POST":
@@ -53,6 +63,7 @@ def admin_logout(request):
     if request.method in ['POST', 'GET']:
         logout(request)  # Log out the user
         # Ensure 'admin_login' is a valid URL name
+        request.session.flush()
         return redirect('admin_login')
     else:
         # If the method is neither GET nor POST, fallback to the login page
@@ -110,8 +121,6 @@ def verify_otp(request):
     return render(request, 'admin_verify_otp.html')
 
 # Password Reset View
-
-
 def reset_password(request):
     if request.method == "POST":
         password = request.POST.get('password')
@@ -139,19 +148,21 @@ def reset_password(request):
 
     return render(request, 'admin_reset_password.html')
 
-
+#Add Internship Projects
 def add_internship_project(request):
     if request.method == 'POST':
         # Extract form data from POST request
         field = request.POST.get('field')
         title = request.POST.get('title')
         description = request.POST.get('description')
+        duration = request.POST.get('duration')
 
         # Create and save new internship project
         project = InternshipProjects(
             field=field,
             title=title,
-            description=description
+            description=description,
+            duration=duration
         )
         project.save()
 
@@ -168,8 +179,6 @@ def view_internship_applications(request):
     return render(request, 'view_internship_applications.html', {'applications': applications})
 
 # Approve or Reject Internship Application
-
-
 def approve_or_reject_application(request, app_id):
     # Fetch the internship application by ID
     application = get_object_or_404(InternshipApplication, id=app_id)
@@ -182,7 +191,7 @@ def approve_or_reject_application(request, app_id):
             # Send email to the user if selected
             send_mail(
                 'Internship Application Status: Approved',
-                f'Congratulations! Your application for the internship has been approved. Please log in to your dashboard and select a project of your choice.',
+                f'Congratulations {application.name}! Your application for the internship has been approved. Please log in to your dashboard and select a project of your choice.',
                 settings.DEFAULT_FROM_EMAIL,
                 [application.email],
                 fail_silently=False,
@@ -207,8 +216,6 @@ def approve_or_reject_application(request, app_id):
     return redirect('view_internship_applications')
 
 # # Update Project Allocation for Approved Applicants
-
-
 def update_project_allocation(request, app_id):
     # Fetch the internship application by ID
     application = get_object_or_404(InternshipApplication, id=app_id)
@@ -232,9 +239,69 @@ def update_project_allocation(request, app_id):
 
     return redirect('view_internship_applications')
 
+#Recieved Payments
+def received_payments(request):
+    received_payments_list = Payment.objects.all()
+
+    return render(request, 'received_payments.html', {'received_payments_list': received_payments_list})
+
+
+# Refund
+def process_refund(request, payment_id):
+    """
+    Processes a refund for the given Razorpay payment ID.
+    Updates the database with refund details after successful processing.
+    Sends an email notification to the user after the refund.
+    """
+    if request.method == 'POST':
+        try:
+            # Get the refund amount from the form and convert to paise (Razorpay works in paise)
+            refund_amount = int(request.POST.get('refund_amount')) * 100
+            if refund_amount <= 0:
+                messages.error(
+                    request, "Refund amount must be greater than 0.")
+                return redirect(request.META.get('HTTP_REFERER', '/'))
+
+            # Fetch the payment from the database using the payment_id
+            payment = Payment.objects.get(payment_id=payment_id)
+
+            # Create refund through Razorpay
+            refund_response = razorpay_client.payment.refund(
+                payment_id, {"amount": refund_amount})
+
+            if refund_response['status'] == 'processed':
+                # Update the payment record with the refund details
+                payment.refund_payment_id = refund_response['id']
+                payment.refund_amount = refund_amount / 100  # Convert back to rupees
+                payment.status = 'Completed'  # Update status to 'Completed' after refund
+                payment.save()
+
+                user = User.objects.get(email = payment.email)
+
+                # Send email notification to user
+                send_mail(
+                    subject="Refund Processed Successfully",
+                    message=f"Dear {user.name},\n\nYour refund of Rs. {refund_amount / 100} has been successfully processed for Payment ID {payment_id}.\n\nBest Regards,\nCodMinds",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[payment.email],
+                )
+
+                messages.success(
+                    request, f"Refund successful for Payment ID {payment_id}.")
+            else:
+                messages.info(
+                    request, f"Refund initiated for Payment ID {payment_id}. Status: {refund_response['status']}")
+
+        except Payment.DoesNotExist:
+            messages.error(request, f"Payment with ID {payment_id} not found.")
+        except Exception as e:
+            messages.error(request, f"Error processing refund: {str(e)}")
+
+        return HttpResponseRedirect(reverse('received_payments'))
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
 # Issue Certificate
-
-
 def eligible_users(request):
     users = InternshipApplication.objects.filter(status=1)
     return render(request, 'eligible_for_certificate.html', {'users': users})
@@ -249,6 +316,7 @@ def issue_certificate(request):
     if request.method == "GET":
         user = User.objects.get(email=email)
         internship = InternshipApplication.objects.get(email=email)
+        project_allocated = AllottedProject.objects.get(email=email)
 
     # Handle POST request
     if request.method == "POST":
@@ -331,7 +399,7 @@ def issue_certificate(request):
 
         return render(request, 'print_intern_certificate.html', context)
 
-    return render(request, "issue_certificate.html", {'user': user, 'internship': internship})
+    return render(request, "issue_certificate.html", {'user': user, 'internship': internship, 'project_allocated': project_allocated})
 
 
 # upload Internship certificate
@@ -380,7 +448,7 @@ def upload_internship_certificate(request):
 
                     # Send the certificate via email
                     email_subject = 'Your Internship Certificate'
-                    email_body = f"Dear {internship_certificate.email},\n\nPlease find your internship certificate attached.\n\nBest regards,\nCodMinds"
+                    email_body = f"Dear {internship_certificate.recipient_name},\n\nPlease find your internship certificate attached.\n\nBest regards,\nCodMinds"
                     email_message = EmailMessage(
                         email_subject,
                         email_body,
@@ -480,92 +548,3 @@ def contact_us_reply(request, query_id):
         return redirect('contact_us_view')
 
     return render(request, 'contactus_reply.html', {'query': query})
-
-
-# def issue_certificate(request):
-#     if request.method == "POST":
-#         # Collect form data
-#         certificate_type = request.POST["certificate_type"]
-#         recipient_name = request.POST["recipient_name"]
-#         email = request.POST["email"]
-#         mobile_no = request.POST["mobile_no"]
-#         field = request.POST["field"]
-#         project = request.POST["project"]
-#         start_date = request.POST["start_date"]
-#         end_date = request.POST["end_date"]
-#         certificate_code = "INTERN-" + str(
-#             InternshipCertificate.objects.count() + randint(100000, 999999)
-#         )
-
-#         # Create certificate object
-#         if certificate_type == "internship":
-#             certificate = InternshipCertificate.objects.create(
-#                 recipient_name=recipient_name,
-#                 email=email,
-#                 mobile_no=mobile_no,
-#                 internship_field=field,
-#                 project=project,
-#                 start_date=start_date,
-#                 end_date=end_date,
-#                 certificate_code=certificate_code,
-#             )
-#         else:
-#             certificate = TrainingCertificate.objects.create(
-#                 recipient_name=recipient_name,
-#                 email=email,
-#                 mobile_no=mobile_no,
-#                 training_field=field,
-#                 start_date=start_date,
-#                 end_date=end_date,
-#                 certificate_code=certificate_code,
-#             )
-
-#         # Render HTML content
-#         html_content = render_to_string("print_intern_certificate.html", {
-#             "recipient_name": recipient_name,
-#             "internship_field": field,
-#             "project_name": project,
-#             "start_date": start_date,
-#             "end_date": end_date,
-#             "issued_at": make_aware(datetime.now()),
-#             "certificate_code": certificate_code,
-#         })
-
-#         # Save the PDF file
-#         pdf_file_name = f"{certificate_code}.pdf"
-#         pdf_file_path = os.path.join(settings.MEDIA_ROOT, pdf_file_name)
-#         with open(pdf_file_path, "wb") as pdf_file:
-#             pisa_status = pisa.CreatePDF(html_content, dest=pdf_file)
-
-#         if pisa_status.err:
-#             error_message = "Failed to generate PDF."
-#             return render(request, 'issue_certificate.html', {'error': error_message})
-
-#         # Email body with verification link
-#         email_body = f"""
-#         Dear {recipient_name},
-
-#         Congratulations on successfully completing your {certificate_type}!
-
-#         You can verify and download your certificate using the following link:
-#         http://127.0.0.1:8000/media/{pdf_file_name}
-
-#         Best regards,
-#         CodMinds Team
-#         """
-
-#         # Prepare and send the email
-#         email_message = EmailMessage(
-#             subject=f"Your {certificate_type.capitalize()} Certificate",
-#             body=email_body,
-#             from_email="codmindsofficial@gmail.com",
-#             to=[email],
-#         )
-#         email_message.attach_file(pdf_file_path)  # Attach the PDF file
-#         email_message.send()
-
-#         # Success message for the user
-#         success = "Certificate issued, emailed, and saved as PDF successfully!"
-#         return render(request, 'issue_certificate.html', {'success': success})
-
-#     return render(request, "issue_certificate.html")
