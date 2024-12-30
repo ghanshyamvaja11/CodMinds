@@ -361,7 +361,7 @@ def project_selection(request):
     RAZORPAY_KEY_ID = settings.RAZORPAY_KEY_ID
     internApplication = ''
     user = ''
-    projects
+    projects = ''
     try:
         internApplication = InternshipApplication.objects.get(email = request.session.get('email'))
         user = User.objects.get(email = request.session.get('email'))
