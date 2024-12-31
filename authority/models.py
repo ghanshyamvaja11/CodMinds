@@ -8,7 +8,7 @@ class InternshipProjects(models.Model):
     duration = models.IntegerField()
 
     def __str__(self):
-        return f"Certificate for {self.recipient_name}"
+        return f"Project for {self.recipient_name}"
 
 class AllottedProject(models.Model):
     project_id = models.IntegerField()

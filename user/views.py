@@ -470,12 +470,16 @@ def verify_payment(request):
                 InternProjSelected.save()
 
             # allocate project and do entry in AllottedProject
-                start_date = (datetime.now() + timedelta(days=5)).date()
+                current_date = datetime.now().date()
+
+
+                # Add 5 days to the current date
+                start_date = current_date + timedelta(days=5)
+
                 end_date = start_date + relativedelta(months=duration)
                 project_allocated = AllottedProject.objects.create(
                     project_id=request.session.get('project_id'), email=request.session.get('email'), start_date=start_date, end_date=end_date)
-                print(start_date, end_date)
-                # project_allocated.save()
+                project_allocated.save()
 
                 name = request.session.get('name')
                 department = request.session.get('department')
@@ -507,6 +511,16 @@ def verify_payment(request):
 
             except Payment.DoesNotExist:
                 return JsonResponse({'status': 'Failed', 'message': 'Payment record not found'}, status=404)
+            try:
+                payment = Payment.objects.get(order_id=razorpay_order_id)
+
+                # Check if the status is 'Completed'
+                if payment.status != 'Completed':
+                    payment.delete()  # Delete the payment if the status is not 'Completed'
+
+            except ObjectDoesNotExist:
+                # Handle the case where no matching Payment record is found
+                print("Payment record not found for the provided order_id.")
 
             return JsonResponse({'status': 'success', 'message': 'Payment Verified'}, status=200)
         except json.JSONDecodeError:

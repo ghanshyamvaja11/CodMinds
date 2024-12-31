@@ -11,7 +11,7 @@ def services(request):
     return render(request, 'services.html')
 
 def T_and_C(request):
-    return render(request, 'T&C.html')
+    return render(request, 'T&C.html')  
 
 def Privacy_policy(request):
     return  render(request, 'privacy_policy.html')

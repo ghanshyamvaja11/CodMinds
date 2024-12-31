@@ -1,3 +1,6 @@
+from datetime import timedelta
+from user.models import *
+from django.shortcuts import render
 from user.models import *
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, reverse
@@ -257,27 +260,63 @@ def eligible_for_offer_letter(request):
         # If no users are found, render a different template or pass an empty list
         return render(request, 'eligible_for_offer_letter.html', {'users': []})
 
+
 def download_offer_letter(request):
     email = ''
 
     # Check if email is provided in the GET request, else use session
-    if request.method == 'GET' and request.GET.get('email') != '':
-        email = request.GET.get('email')
-        request.session['email'] = email
-    # Fetch the created certificate for rendering
-    application = InternshipCertificate.objects.get(
-        email=email)
+    if request.method == 'GET':
+        email = request.GET.get(
+            'email', '') or request.session.get('email', '')
+        if email:
+            request.session['email'] = email  # Store email in session
 
+    # Fetch the internship application based on the email
+    try:
+        application = InternshipApplication.objects.get(email=email)
+    except InternshipApplication.DoesNotExist:
+        # Handle case where the email doesn't match an existing application
+        return render(request, 'error.html', {'message': 'Internship application not found for this email.'})
+
+    # Fetch the allotted project details using the email
+    try:
+        allotted_project = AllottedProject.objects.get(email=email)
+    except AllottedProject.DoesNotExist:
+        # If no project is allotted, you can either handle this scenario or leave the project fields as None
+        allotted_project = None
+
+    # Calculate the duration between the start and end date
+    if allotted_project:
+        duration = (allotted_project.end_date.year - allotted_project.start_date.year) * \
+            12 + allotted_project.end_date.month - allotted_project.start_date.month
+    else:
+        duration = 0  # Default duration in case no project is allotted
+
+    # Fetch the project details
+    project_details = None
+    if allotted_project:
+        try:
+            project_details = InternshipProjects.objects.get(
+                id=allotted_project.project_id)
+        except InternshipProjects.DoesNotExist:
+            project_details = None
+
+    # Prepare context data for rendering the offer letter
     context = {
-        'name': application.recipient_name,
-        'department': application.internship_field,
-        'project_name': application.project,
-        'duration': (application.end_date.year - application.start_date.year) * 12 + application.end_date.month - application.start_date.month,
-        'start_date': application.start_date,
-        'end_date': application.end_date,
-        'confirmation_date': application.start_date + timedelta(days=3)
+        'name': application.name,
+        # Display the department's readable name
+        'department': application.department,
+        'project_name': application.project_name,
+        'duration': duration,
+        'start_date': allotted_project.start_date if allotted_project else None,
+        'end_date': allotted_project.end_date if allotted_project else None,
+        'confirmation_date': allotted_project.start_date + timedelta(days=3) if allotted_project else None,
+        # Display project title if available
+        'project_title': project_details.title if project_details else 'Not assigned',
+        'project_description': project_details.description if project_details else 'No project assigned',
     }
-    return render(request,  'offer_letter.html', context)
+
+    return render(request, 'offer_letter.html', context)
 
 
 def send_offer_letter(request):

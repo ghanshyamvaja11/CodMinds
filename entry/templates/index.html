@@ -353,6 +353,45 @@
       background-color: #1e90ff;
     }
 
+    .physical-address {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .physical-address h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .address-box {
+            text-align: left;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        .address-box p {
+            color: #555;
+            margin: 8px 0;
+        }
+
+        .address-box a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .address-box a:hover {
+            text-decoration: underline;
+        }
+
     /* Footer Section */
     .footer {
       background-color: #24292e;
@@ -488,7 +527,6 @@
         View More
     </button>
 </a>
-
     </div>
   </section>
 
@@ -504,12 +542,25 @@
  </form>
   </section>
 
+      <div class="physical-address">
+        <h3>Our Address</h3>
+        <div class="address-box">
+            <p><strong>CodMinds</strong></p>
+            <p>Deda, Veraval</p>
+            <p>Gujarat, IN 362255</p>
+            <p>Email: <a href="mailto:codmindsofficial@gmail.com">codmindsofficial@gmail.com</a></p>
+            <p>Phone: <a href="tel:+918160075626">+91 81600 75626</a></p>
+        </div>
+    </div>
+
   <!-- Footer -->
   <footer class="footer">
     <p>© 2024 CodMinds. All rights reserved.</p>
     <div class="footer-links">
-        <a href="/terms-and-conditions/">Terms & Conditions</a> | 
-        <a href="/privacy-policy/">Privacy Policy</a>
+        <a href="/terms-and-conditions/">Terms & Conditions</a> |
+      <a href="/privacy-policy/">Privacy Policy</a> |
+      <a href="/cancellation-refund_policies/">Cancellation/Refund Policies</a> |
+      <a href="/contact/">Contact Us</a>
     </div>
     <div class="social-icons">
         {% comment %} <a href="#"><i class="fab fa-facebook"></i></a> {% endcomment %}

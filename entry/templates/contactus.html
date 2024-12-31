@@ -1,0 +1,131 @@
+{% extends "entry_base.html" %}
+
+{% block content %}
+    <div class="contact-us-container">
+        <h2>Contact Us</h2>
+        <form action="{% url 'contact' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="physical-address">
+        <h3>Our Address</h3>
+        <div class="address-box">
+            <p><strong>CodMinds</strong></p>
+            <p>Deda, Veraval</p>
+            <p>Gujarat, IN 362255</p>
+            <p>Email: <a href="mailto:codmindsofficial@gmail.com">codmindsofficial@gmail.com</a></p>
+            <p>Phone: <a href="tel:+918160075626">+91 81600 75626</a></p>
+        </div>
+    </div>
+
+    <style>
+        .contact-us-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .contact-us-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group textarea {
+            resize: none;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #61dafb;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #21a1f1;
+        }
+
+        .physical-address {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .physical-address h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .address-box {
+            text-align: left;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        .address-box p {
+            color: #555;
+            margin: 8px 0;
+        }
+
+        .address-box a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .address-box a:hover {
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}
