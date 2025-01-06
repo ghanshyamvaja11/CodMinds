@@ -11,4 +11,6 @@ urlpatterns = [
     path('privacy-policy/', Privacy_policy, name="privacy-policy"),
     path('cancellation-refund_policies/', cancellation_refund_policies,
          name='cancellation_refund_policies'),
+
+    path('page-not-found/', error_404_view, name='error_404_view'),
 ]

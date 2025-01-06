@@ -26,8 +26,8 @@ urlpatterns = [
     path('user/', include('user.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL,
-                          document_root=settings.STATICFILES_DIRS[0])
+handler404 = 'entry.views.error_404_view'
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL,
+                      document_root=settings.STATICFILES_DIRS[0])

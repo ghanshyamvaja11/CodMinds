@@ -38,3 +38,7 @@ def contact(request):
         success = "Thank you for your message. We will get back to you soon."
         return render(request, 'index.html', {'success': success})
     return render(request, 'contactus.html')
+
+
+def error_404_view(request, exception=None):
+    return render(request, '404.html', status=404)
