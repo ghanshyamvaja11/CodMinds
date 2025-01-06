@@ -75,6 +75,7 @@
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.3s;
+      will-change: background-color, transform;
     }
 
     .navbar .auth-buttons .login {
@@ -101,57 +102,57 @@
     }
 
     /* Hamburger menu styles */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-}
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
 
-.hamburger span {
-  width: 25px;
-  height: 4px;
-  background-color: white;
-  border-radius: 5px;
-}
+    .hamburger span {
+      width: 25px;
+      height: 4px;
+      background-color: white;
+      border-radius: 5px;
+    }
 
-/* Media Query for Mobile Responsiveness */
-@media (max-width: 768px) {
-  .navbar ul {
-    display: none;
-    width: 100%;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    background-color: #333;
-    text-align: center;
-  }
+    /* Media Query for Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .navbar ul {
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        background-color: #333;
+        text-align: center;
+      }
 
-  .navbar ul li {
-    margin-right: 0;
-    margin-top: 10px;
-  }
+      .navbar ul li {
+        margin-right: 0;
+        margin-top: 10px;
+      }
 
-  .navbar ul li a {
-    font-size: 18px;
-  }
+      .navbar ul li a {
+        font-size: 18px;
+      }
 
-  .hamburger {
-    display: flex;
-  }
+      .hamburger {
+        display: flex;
+      }
 
-  /* Show nav links when hamburger menu is clicked */
-  .navbar.active ul {
-    display: flex;
-    flex-direction: column;
-  }
+      /* Show nav links when hamburger menu is clicked */
+      .navbar.active ul {
+        display: flex;
+        flex-direction: column;
+      }
 
-  .auth-buttons {
-    display: none;
-  }
-}
+      .auth-buttons {
+        display: none;
+      }
+    }
 
     /* Hero Section */
     .hero {
@@ -170,12 +171,14 @@
       font-size: 60px;
       margin-bottom: 20px;
       animation: fadeIn 2s ease-in-out;
+      will-change: opacity;
     }
 
     .hero p {
       font-size: 22px;
       margin-bottom: 40px;
       animation: fadeIn 2.5s ease-in-out;
+      will-change: opacity;
     }
 
     .hero .cta-btn {
@@ -187,6 +190,7 @@
       border-radius: 30px;
       cursor: pointer;
       transition: transform 0.3s, background-color 0.3s;
+      will-change: transform, background-color;
     }
 
     .hero .cta-btn:hover {
@@ -237,25 +241,25 @@
       margin-bottom: 20px;
     }
 
-.about-img {
-  width: 100%; /* Ensures the image takes full width of its container */
-  height: auto; /* Maintains the aspect ratio */
-  object-fit: cover; /* Ensures the image covers the container */
-  display: block; /* Prevents any extra space below the image */
-  margin: 0 auto; /* Centers the image */
-}
+    .about-img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+    }
 
-@media (min-width: 768px) {
-  .about-img {
-    width: 80%; /* Adjusts the image width on tablet-sized screens */
-  }
-}
+    @media (min-width: 768px) {
+      .about-img {
+        width: 80%;
+      }
+    }
 
-@media (min-width: 1200px) {
-  .about-img {
-    width: 50%; /* Adjusts the image width on larger screens (desktop) */
-  }
-}
+    @media (min-width: 1200px) {
+      .about-img {
+        width: 50%;
+      }
+    }
 
     /* Services Section */
     .services {
@@ -285,6 +289,8 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
       transition: transform 0.3s;
+      animation: fadeInUp 1s ease-in-out;
+      will-change: transform, opacity;
     }
 
     .service:hover {
@@ -306,6 +312,17 @@
     .service p {
       font-size: 16px;
       color: #555;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Contact Section */
@@ -347,6 +364,7 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s;
+      will-change: background-color;
     }
 
     .contact button:hover {
@@ -354,43 +372,43 @@
     }
 
     .physical-address {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
 
-        .physical-address h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #333;
-            font-weight: 600;
-        }
+    .physical-address h3 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+      font-weight: 600;
+    }
 
-        .address-box {
-            text-align: left;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-top: 20px;
-        }
+    .address-box {
+      text-align: left;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-top: 20px;
+    }
 
-        .address-box p {
-            color: #555;
-            margin: 8px 0;
-        }
+    .address-box p {
+      color: #555;
+      margin: 8px 0;
+    }
 
-        .address-box a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: 500;
-        }
+    .address-box a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+    }
 
-        .address-box a:hover {
-            text-decoration: underline;
-        }
+    .address-box a:hover {
+      text-decoration: underline;
+    }
 
     /* Footer Section */
     .footer {
@@ -424,37 +442,37 @@
     }
     
     .success {
-        text-align: center;
-        color: green;
-        font-weight: bold;
-        margin-bottom: 20px;
+      text-align: center;
+      color: green;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
   <!-- Navbar -->
   <div class="navbar">
-  <div class="logo">CodMinds</div>
-  <ul class="nav-links">
-    <li><a href="#hero">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="{% url 'verify_certificate' %}">Verify Internship Certificate</a></li>
-  </ul>
-  <div class="auth-buttons">
-    <a href="{% url 'user_login' %}"><button class="login">Login</button><a>
-    <a href="{% url 'user_signup' %}"><button class="signup">Signup</button></a>
+    <div class="logo">CodMinds</div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="{% url 'verify_certificate' %}">Verify Internship Certificate</a></li>
+    </ul>
+    <div class="auth-buttons">
+      <a href="{% url 'user_login' %}"><button class="login">Login</button></a>
+      <a href="{% url 'user_signup' %}"><button class="signup">Signup</button></a>
+    </div>
+    <!-- Hamburger menu for mobile screens -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </div>
-  <!-- Hamburger menu for mobile screens -->
-  <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
   {% if success %}
-        <p class="success">{{ success }}</p>
+    <p class="success">{{ success }}</p>
   {% endif %}
   <!-- Hero Section -->
   <section id="hero" class="hero">
@@ -469,19 +487,7 @@
     <div class="about-text">
       <h2>About CodMinds</h2>
       <p>At CodMinds, we blend innovation with technology to create solutions that redefine possibilities. From AI-driven insights to web development and training, our goal is to empower your journey to success. We are dedicated to bridging the gap between cutting-edge technology and real-world applications, ensuring that businesses and individuals alike can thrive in the digital age.</p>
-      <p>Our team of expert developers, data scientists, and educators are passionate about building future-ready solutions tailored to your unique needs. Whether you're looking to develop a groundbreaking web platform, leverage the power of artificial intelligence, or gain hands-on technical skills, CodMinds is your trusted partner every step of the way.</p>
-      <p>Join hands with us to explore a world of technological wonders and unlock the true potential of your vision. Together, let’s innovate, transform, and create the future.</p>
-      <a href="{% url 'about' %}">
-    <button style="
-        background-color: deepskyblue; 
-        border: none; 
-        border-radius: 4px; 
-        color: white; 
-        font-size: 14px; 
-        padding: 8px 16px; 
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    " 
+      <p>Our team of expert developers, data scientists, and educators are passionate about building future-ready solutions tailored to your unique needs. Whether you're looking to develop
     onmouseover="this.style.backgroundColor='skyblue'" 
     onmouseout="this.style.backgroundColor='skyblue'">
         View More
@@ -563,7 +569,6 @@
       <a href="/contact/">Contact Us</a>
     </div>
     <div class="social-icons">
-        {% comment %} <a href="#"><i class="fab fa-facebook"></i></a> {% endcomment %}
         <a href="#"><i class="fab fa-x"></i></a>
         <a href="#"><i class="fab fa-linkedin"></i></a>
         <a href="#"><i class="fab fa-instagram"></i></a>
