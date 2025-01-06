@@ -487,11 +487,22 @@
     <div class="about-text">
       <h2>About CodMinds</h2>
       <p>At CodMinds, we blend innovation with technology to create solutions that redefine possibilities. From AI-driven insights to web development and training, our goal is to empower your journey to success. We are dedicated to bridging the gap between cutting-edge technology and real-world applications, ensuring that businesses and individuals alike can thrive in the digital age.</p>
-      <p>Our team of expert developers, data scientists, and educators are passionate about building future-ready solutions tailored to your unique needs. Whether you're looking to develop
+<p>Our team of expert developers, data scientists, and educators are passionate about building future-ready solutions tailored to your unique needs.</p>
+<a href="/about/">
+  <button style="
+        background-color: deepskyblue; 
+        border: none; 
+        border-radius: 4px; 
+        color: white; 
+        font-size: 14px; 
+        padding: 8px 16px; 
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    " 
     onmouseover="this.style.backgroundColor='skyblue'" 
-    onmouseout="this.style.backgroundColor='skyblue'">
-        View More
-    </button>
+    onmouseout="this.style.backgroundColor='deepskyblue'">
+    View More
+  </button>
 </a>
 
     </div>
@@ -502,19 +513,19 @@
     <h2>Our Services</h2>
     <div class="services-container">
       <div class="service">
+        <i class="fas fa-chalkboard-teacher"></i>
+        <h3 style="font-size: 20px;">Internships & Training Programs</h3>
+        <p style="font-size: 14px;">Upskill your team with Internship and professional courses led by industry experts.</p>
+      </div>
+      <div class="service">
         <i class="fas fa-code"></i>
-        <h3>Web Development</h3>
-        <p>Building scalable, user-centric, and responsive websites tailored for your business.</p>
+        <h3 style="font-size: 20px;">Web Development</h3>
+        <p style="font-size: 14px;">Building scalable, user-centric, and responsive websites tailored for your business.</p>
       </div>
       <div class="service">
         <i class="fas fa-robot"></i>
-        <h3>AI Solutions</h3>
-        <p>Enhance productivity with intelligent solutions powered by cutting-edge AI technology.</p>
-      </div>
-      <div class="service">
-        <i class="fas fa-chalkboard-teacher"></i>
-        <h3>Training Programs</h3>
-        <p>Upskill your team with professional courses led by industry experts.</p>
+        <h3 style="font-size: 20px;">AI Solutions</h3>
+        <p style="font-size: 14px;">Enhance productivity with intelligent solutions powered by cutting-edge AI technology.</p>
       </div>
       <br>
       <a href="{% url 'servicies' %}">
