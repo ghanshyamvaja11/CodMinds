@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-x8as(()%-2^6-$(kwo!cq!w$tww+0!6^#it_9e(==%tf)1_3q=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['52.64.212.7', 'localhost', '127.0.0.1', 'codminds.com', 'www.codminds.com']
 
 
 # Application definition
