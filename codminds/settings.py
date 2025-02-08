@@ -108,7 +108,7 @@ EMAIL_PORT = 587  # SMTP port for Gmail (for TLS)
 EMAIL_USE_TLS = True  # Use TLS (recommended for Gmail)
 EMAIL_HOST_USER = 'codmindsofficial@gmail.com'  # Your email address
 # Your email password (use app-specific passwords if 2FA enabled)
-EMAIL_HOST_PASSWORD = 'lqyloteejmmtwgfe'
+EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
 DEFAULT_FROM_EMAIL = 'codmindsofficial@gmail.com'  # Default sender email
 
 # Password validation
