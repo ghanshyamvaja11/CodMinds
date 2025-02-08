@@ -134,7 +134,7 @@ def forgot_password(request):
         send_mail(
             'Your OTP for Password Reset',
             f'Your OTP code is: {otp}',
-            'your_email@example.com',
+            'codmindsofficial@gmail.com',
             [email],
             fail_silently=False,
         )

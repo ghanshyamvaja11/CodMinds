@@ -99,6 +99,7 @@ DATABASES = {
     }
 }
 
+print(EMAIL_PASSWORD)
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # For sending via SMTP
 # Email service provider's SMTP server (example for Gmail)
