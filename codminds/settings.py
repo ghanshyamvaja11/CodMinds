@@ -13,11 +13,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environment variables from .env file
-load_dotenv(os.path.join(BASE_DIR, ".env"))
+# # Load environment variables from .env file
+# load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Load environment variables from .env file
 load_dotenv()
@@ -26,8 +26,8 @@ RAZORPAY_KEY_ID = os.getenv('RAZOR_KEY_ID')
 RAZORPAY_KEY_SECRET = os.getenv('RAZOR_KEY_SECRET')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
-# # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -99,7 +99,6 @@ DATABASES = {
     }
 }
 
-print(EMAIL_PASSWORD)
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # For sending via SMTP
 # Email service provider's SMTP server (example for Gmail)
@@ -108,7 +107,7 @@ EMAIL_PORT = 587  # SMTP port for Gmail (for TLS)
 EMAIL_USE_TLS = True  # Use TLS (recommended for Gmail)
 EMAIL_HOST_USER = 'codmindsofficial@gmail.com'  # Your email address
 # Your email password (use app-specific passwords if 2FA enabled)
-EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = 'codmindsofficial@gmail.com'  # Default sender email
 
 # Password validation
