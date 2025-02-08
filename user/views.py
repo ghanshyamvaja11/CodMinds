@@ -115,33 +115,6 @@ def user_logout(request):
 
 
 def forgot_password(request):
-    # if request.method == "POST":
-    #     email = request.POST.get('email')
-
-    #     # Check if email exists in the database
-    #     try:
-    #         user = User.objects.get(email=email)
-    #     except User.DoesNotExist:
-    #         messages.error(request, "Email not found.")
-    #         return redirect('forgot_password')
-
-    #     # Store email in session for later use
-    #     request.session['email'] = email
-
-    #     # Generate OTP and send it via email
-    #     otp = random.randint(100000, 999999)
-    #     request.session['otp'] = otp  # Store OTP in session for verification
-    #     send_mail(
-    #         'Your OTP for Password Reset',
-    #         f'Your OTP code is: {otp}',
-    #         'codmindsofficial@gmail.com',
-    #         [email],
-    #         fail_silently=False,
-    #     )
-
-    #     return redirect('verify_otp')  # Redirect to OTP verification page
-
-    # return render(request, 'forgot_password.html')
     try:
         send_mail(
             'Test Subject',
