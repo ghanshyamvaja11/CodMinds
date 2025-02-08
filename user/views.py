@@ -128,8 +128,6 @@ def forgot_password(request):
         return HttpResponse(f"Error sending email: {str(e)}")
     
 # OTP Verification View
-
-
 def verify_otp(request):
     if request.method == "POST":
         otp_entered = request.POST.get('otp')
