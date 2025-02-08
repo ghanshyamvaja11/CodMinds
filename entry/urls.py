@@ -8,7 +8,7 @@ urlpatterns = [
     path('servicies/', services, name='servicies'),
     path('contact/', contact, name='contact'),
     path('terms-and-conditions/', T_and_C, name='T&C'),
-    path('privacy-policy/', Privacy_policy, name="privacy-policy"),
+    path('privacy-policy/', privacy_policy, name="privacy-policy"),
     path('cancellation-refund_policies/', cancellation_refund_policies,
          name='cancellation_refund_policies'),
 

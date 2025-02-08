@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
 from .models import *
 from certificate.models import *
@@ -19,6 +19,7 @@ from django.conf import settings
 import logging
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
+import os
 
 # Razorpay Client Setup
 razorpay_client = razorpay.Client(
@@ -117,6 +118,8 @@ def user_logout(request):
 def forgot_password(request):
     if request.method == "POST":
         email = request.POST.get('email')
+        return HttpResponse(os.getenv('EMAIL_PASSWORD'))
+
 
         # Check if email exists in the database
         try:
