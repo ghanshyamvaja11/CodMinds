@@ -35,7 +35,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 6px;
+      padding: 10px 20px;
       background-color: #24292e;
       color: #fff;
       position: sticky;
@@ -52,7 +52,7 @@
 
     .navbar ul {
       display: flex;
-      gap: 25px;
+      gap: 20px;
     }
 
     .navbar ul li {
@@ -65,17 +65,16 @@
 
     .navbar .auth-buttons {
       display: flex;
-      gap: 15px;
+      gap: 10px;
     }
 
     .navbar .auth-buttons button {
-      padding: 8px 20px;
+      padding: 8px 15px;
       border: none;
       border-radius: 20px;
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.3s;
-      will-change: background-color, transform;
     }
 
     .navbar .auth-buttons .login {
@@ -122,31 +121,27 @@
     @media (max-width: 768px) {
       .navbar ul {
         display: none;
+        flex-direction: column;
         width: 100%;
         position: absolute;
         top: 70px;
         left: 0;
         background-color: #333;
         text-align: center;
+        padding: 10px 0;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .navbar ul.active {
+        display: flex;
       }
 
       .navbar ul li {
-        margin-right: 0;
-        margin-top: 10px;
-      }
-
-      .navbar ul li a {
-        font-size: 18px;
+        margin: 10px 0;
       }
 
       .hamburger {
         display: flex;
-      }
-
-      /* Show nav links when hamburger menu is clicked */
-      .navbar.active ul {
-        display: flex;
-        flex-direction: column;
       }
 
       .auth-buttons {
@@ -422,22 +417,24 @@
       margin: 10px 0;
     }
 
-    .footer .social-icons {
-      margin: 10px 0;
+    .footer .footer-links a {
+      color: #fff;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+
+    .footer .footer-links a:hover {
+      color: #1e90ff;
     }
 
     .footer .social-icons a {
       margin: 0 10px;
       font-size: 20px;
       color: #fff;
-      transition: 0.3s;
+      transition: color 0.3s;
     }
 
     .footer .social-icons a:hover {
-      color: #1e90ff;
-    }
-
-    .footer .footer-links a:hover {
       color: #1e90ff;
     }
     
@@ -573,19 +570,19 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <p>© 2024 CodMinds. All rights reserved.</p>
-    <div class="footer-links">
-        <a href="/terms-and-conditions/">Terms & Conditions</a> |
+    <div class="footer-links" style="margin-bottom: 10px;">
+      <a href="/terms-and-conditions/">Terms & Conditions</a> |
       <a href="/privacy-policy/">Privacy Policy</a> |
       <a href="/cancellation-refund_policies/">Cancellation/Refund Policies</a> |
       <a href="/contact/">Contact Us</a>
     </div>
-    <div class="social-icons">
-        <a href="#"><i class="fab fa-x"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+    <div class="social-icons" style="margin-bottom: 10px;">
+      <a href="#"><i class="fab fa-x"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
     </div>
-</footer>
+    <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
+  </footer>
 </body>
 <script>
  const hamburger = document.getElementById("hamburger");
@@ -602,5 +599,8 @@ navLinks.forEach(link => {
     navbar.classList.remove("active"); // Remove the 'active' class to close the menu
   });
 });
+
+ // Set current year
+    document.getElementById("current-year").textContent = new Date().getFullYear();
 </script>
 </html>
