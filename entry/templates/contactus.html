@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="contact-us-container">
-        <h2>Contact Us</h2>
+        <h1>Contact Us</h1>
         <form action="{% url 'contact' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
@@ -46,8 +46,9 @@
             background-color: #f9f9f9;
         }
 
-        .contact-us-container h2 {
+        .contact-us-container h1 {
             text-align: center;
+            color: #1e90ff;
             margin-bottom: 20px;
         }
 

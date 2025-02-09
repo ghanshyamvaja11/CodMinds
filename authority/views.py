@@ -251,7 +251,7 @@ def eligible_for_offer_letter(request):
             project_name__isnull=False, offer_letter=False).exclude(project_name='')
     except Exception as e:
         # Handle exceptions if any, or log the error
-        print(f"Error fetching internship applications: {e}")
+        pass
 
     if users:
         # If users exist, pass them to the template
@@ -688,3 +688,27 @@ def contact_us_reply(request, query_id):
         return redirect('contact_us_view')
 
     return render(request, 'contactus_reply.html', {'query': query})
+
+def added_projects(request):
+    projects = InternshipProjects.objects.all()
+    return render(request, 'added_projects.html', {'projects': projects})
+
+def edit_project(request, project_id):
+    project = get_object_or_404(InternshipProjects, id=project_id)
+
+    if request.method == 'POST':
+        project.field = request.POST.get('field')
+        project.title = request.POST.get('title')
+        project.description = request.POST.get('description')
+        project.duration = request.POST.get('duration')
+        project.save()
+        messages.success(request, "Project updated successfully.")
+        return redirect('added_projects')
+
+    return render(request, 'edit_project.html', {'project': project})
+
+def delete_project(request, project_id):
+    project = get_object_or_404(InternshipProjects, id=project_id)
+    project.delete()
+    messages.success(request, "Project deleted successfully.")
+    return redirect('added_projects')

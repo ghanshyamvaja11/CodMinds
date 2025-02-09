@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+import random
+import hashlib
 
 
 def verify_certificate(request):

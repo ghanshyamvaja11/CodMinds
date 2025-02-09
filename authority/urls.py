@@ -34,4 +34,7 @@ urlpatterns = [
          contact_us, name='contact_us_view'),
     path('contact-us-reply/<int:query_id>/',
          contact_us_reply, name='contact_us_reply'),
+    path('added-projects/', added_projects, name='added_projects'),
+    path('edit-project/<int:project_id>/', edit_project, name='edit_project'),
+    path('delete-project/<int:project_id>/', delete_project, name='delete_project'),
 ]

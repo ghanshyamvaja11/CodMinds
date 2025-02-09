@@ -24,21 +24,17 @@ def contact(request):
         # Get form data
         name = request.POST.get('name')
         email = request.POST.get('email')
+        subject = request.POST.get('subject')
         message = request.POST.get('message')
 
-        # Debugging line
-        print(f"Name: {name}, Email: {email}, Message: {message}")
-
         # Save data to database
-        contact_message = ContactForm(name=name, email=email, message=message)
+        contact_message = ContactForm(name=name, email=email, subject=subject, message=message)
         contact_message.save()
-        print(f"Saved ContactForm with ID: {contact_message.id}")  # Debugging line
 
         # Success message
         success = "Thank you for your message. We will get back to you soon."
         return render(request, 'index.html', {'success': success})
     return render(request, 'contactus.html')
-
 
 def error_404_view(request, exception=None):
     return render(request, '404.html', status=404)
