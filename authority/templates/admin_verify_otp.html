@@ -63,6 +63,24 @@
         background-color: #cce5ff;
         color: #004085;
     }
+
+    .resend-otp {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .resend-otp button {
+        background: none;
+        border: none;
+        color: #007bff;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .resend-otp button:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+    }
 </style>
 
 <!-- Display Success or Error Messages -->
@@ -95,5 +113,52 @@
         </div>
         <button type="submit" class="btn-primary">Verify OTP</button>
     </form>
+    <div class="resend-otp">
+        <button id="resendOtpBtn" onclick="resendOtp()" disabled>Resend OTP</button>
+        <p id="timer"></p>
+    </div>
 </div>
+
+<script>
+    let timer = 30;
+    const resendOtpBtn = document.getElementById('resendOtpBtn');
+    const timerDisplay = document.getElementById('timer');
+
+    function startCountdown() {
+        const countdown = setInterval(() => {
+            if (timer > 0) {
+                timer--;
+                timerDisplay.textContent = `You can request a new OTP in ${timer} seconds.`;
+            } else {
+                clearInterval(countdown);
+                resendOtpBtn.disabled = false;
+                timerDisplay.textContent = '';
+            }
+        }, 1000);
+    }
+
+    startCountdown();
+
+    function resendOtp() {
+        resendOtpBtn.disabled = true; // Disable the button immediately after click
+        fetch("{% url 'admin_resend_otp' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('OTP has been resent.');
+                timer = 30;
+                startCountdown();
+            } else {
+                alert('Failed to resend OTP. Please try again.');
+                resendOtpBtn.disabled = false; // Re-enable the button if resend fails
+            }
+        });
+    }
+</script>
 {% endblock %}

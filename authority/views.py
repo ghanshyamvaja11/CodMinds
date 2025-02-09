@@ -712,3 +712,20 @@ def delete_project(request, project_id):
     project.delete()
     messages.success(request, "Project deleted successfully.")
     return redirect('added_projects')
+
+def resend_otp(request):
+    if request.method == "POST":
+        email = request.session.get('email')
+        if email:
+            otp = random.randint(100000, 999999)
+            request.session['otp'] = otp
+            send_mail(
+                'Your OTP for Password Reset',
+                f'Your OTP code is: {otp}',
+                'codmindsofficial@gmail.com',
+                [email],
+                fail_silently=False,
+            )
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False, 'message': 'Email not found in session'})
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})

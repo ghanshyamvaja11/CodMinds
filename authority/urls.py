@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', admin_logout, name='admin_logout'),
     path('forgot-password/', forgot_password, name='admin_forgot_password'),
     path('admin_verify-otp/', verify_otp, name='admin_verify_otp'),
+    path('resend-otp/', resend_otp, name='admin_resend_otp'),
     path('reset-password/', reset_password, name='admin_reset_password'),
     path('dashboard/', admin_dashboard,
          name='admin_dashboard'),  # Redirect after login

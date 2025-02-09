@@ -23,12 +23,12 @@
       list-style: none;
     }
 
-    /* Navbar Styles */
+    /* Updated Navbar Styles */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 6px;
+      padding: 10px 20px;
       background-color: #24292e;
       color: #fff;
       position: sticky;
@@ -45,7 +45,7 @@
 
     .navbar ul {
       display: flex;
-      gap: 25px;
+      gap: 20px;
     }
 
     .navbar ul li {
@@ -58,11 +58,11 @@
 
     .navbar .auth-buttons {
       display: flex;
-      gap: 15px;
+      gap: 10px;
     }
 
     .navbar .auth-buttons button {
-      padding: 8px 20px;
+      padding: 8px 15px;
       border: none;
       border-radius: 20px;
       font-size: 16px;
@@ -142,7 +142,7 @@
       }
     }
 
-    /* Footer Section */
+    /* Updated Footer Section */
     .footer {
       background-color: #24292e;
       color: #fff;
@@ -154,22 +154,24 @@
       margin: 10px 0;
     }
 
-    .footer .social-icons {
-      margin: 10px 0;
+    .footer .footer-links a {
+      color: #fff;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+
+    .footer .footer-links a:hover {
+      color: #1e90ff;
     }
 
     .footer .social-icons a {
       margin: 0 10px;
       font-size: 20px;
       color: #fff;
-      transition: 0.3s;
+      transition: color 0.3s;
     }
 
     .footer .social-icons a:hover {
-      color: #1e90ff;
-    }
-
-    .footer .footer-links a:hover {
       color: #1e90ff;
     }
   </style>
@@ -203,18 +205,18 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <p>© 2024 CodMinds. All rights reserved.</p>
-    <div class="footer-links">
+    <div class="footer-links" style="margin-bottom: 10px;">
       <a href="/terms-and-conditions/">Terms & Conditions</a> |
       <a href="/privacy-policy/">Privacy Policy</a> |
       <a href="/cancellation-refund_policies/">Cancellation/Refund Policies</a> |
       <a href="/contact/">Contact Us</a>
     </div>
-    <div class="social-icons">
+    <div class="social-icons" style="margin-bottom: 10px;">
       <a href="#"><i class="fab fa-twitter"></i></a>
       <a href="#"><i class="fab fa-linkedin"></i></a>
       <a href="#"><i class="fab fa-instagram"></i></a>
     </div>
+    <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
   </footer>
 
   <script>
@@ -231,6 +233,9 @@
         navLinks.classList.remove("active");
       }
     });
+
+    // Set current year
+    document.getElementById("current-year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>

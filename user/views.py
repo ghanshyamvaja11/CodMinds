@@ -599,3 +599,20 @@ def select_project(request, project_id):
         logger.error(f"Unexpected error during project selection: {str(e)}")
         messages.error(request, "An unexpected error occurred. Please try again.")
         return redirect('project_selection')
+
+def resend_otp(request):
+    if request.method == "POST":
+        email = request.session.get('email')
+        if email:
+            otp = random.randint(100000, 999999)
+            request.session['otp'] = otp
+            send_mail(
+                'Your OTP for Password Reset',
+                f'Your OTP code is: {otp}',
+                'codmindsofficial@gmail.com',
+                [email],
+                fail_silently=False,
+            )
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False, 'message': 'Email not found in session'})
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})

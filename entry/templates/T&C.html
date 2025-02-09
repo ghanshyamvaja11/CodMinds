@@ -1,337 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms & Conditions</title>
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            background-color: #f9f9f9;
-        }
+{% extends "entry_base.html" %}
 
-         /* Navbar Styles */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 6px;
-  background-color: #24292e;
-  color: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+{% block title %}Terms & Conditions | CodMinds{% endblock %}
 
-.navbar .logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #61dafb;
-  text-decoration: none;
-}
+{% block content %}
+<style>
+    .terms-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-.navbar ul {
-  display: flex;
-  gap: 25px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+    .terms-container h1 {
+        text-align: center;
+        color: #1e90ff;
+        margin-bottom: 20px;
+    }
 
-.navbar ul li {
-  position: relative;
-}
+    .terms-section {
+        margin-bottom: 20px;
+    }
 
-.navbar ul li a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 18px;
-  transition: color 0.3s;
-}
+    .terms-section h3 {
+        color: #444;
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
 
-.navbar ul li a:hover {
-  color: #61dafb;
-}
+    .terms-section p {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+    }
 
-.navbar .auth-buttons {
-  display: flex;
-  gap: 15px;
-}
+    .terms-section ul {
+        list-style: disc inside;
+        padding-left: 20px;
+    }
 
-.navbar .auth-buttons button {
-  padding: 8px 20px;
-  border: none;
-  border-radius: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
+    .terms-section ul li {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: #555;
+    }
+</style>
 
-.navbar .auth-buttons .login {
-  background-color: transparent;
-  color: #fff;
-  border: 2px solid #61dafb;
-}
+<div class="terms-container">
+    <h1>Terms & Conditions</h1>
 
-.navbar .auth-buttons .login:hover {
-  background-color: #61dafb;
-  color: #24292e;
-  transform: scale(1.1);
-}
-
-.navbar .auth-buttons .signup {
-  background-color: #61dafb;
-  color: #24292e;
-}
-
-.navbar .auth-buttons .signup:hover {
-  background-color: #fff;
-  color: #61dafb;
-  transform: scale(1.1);
-}
-
-/* Hamburger Menu Styles */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-}
-
-.hamburger span {
-  width: 25px;
-  height: 4px;
-  background-color: white;
-  border-radius: 5px;
-  transition: transform 0.3s ease-in-out;
-}
-
-/* Media Query for Mobile Screens */
-@media (max-width: 768px) {
-  .navbar ul {
-    display: none;
-    width: 100%;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    background-color: #333;
-    flex-direction: column;
-    text-align: center;
-    padding: 10px 0;
-  }
-
-  .navbar ul li {
-    width: 100%;
-    padding: 10px 0;
-  }
-
-  .navbar ul li a {
-    font-size: 18px;
-    color: #fff;
-    text-decoration: none;
-  }
-
-  .navbar ul li a:hover {
-    color: #61dafb;
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .hamburger {
-    display: flex;
-  }
-
-  .navbar.active ul {
-    display: flex;
-  }
-
-  .auth-buttons {
-    display: none;
-  }
-}
-
-        .terms {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .terms h1 {
-          text-align: center;
-          color: #1e90ff;
-          margin-bottom: 20px;
-        }
-
-        .terms h2 {
-            font-size: 20px;
-            margin-top: 20px;
-            color: #555;
-        }
-
-        .terms p {
-            margin: 10px 0;
-        }
-
-        /* Footer Section */
-.footer {
-    background-color: #24292e;
-    color: #fff;
-    text-align: center;
-    padding: 20px 0;
-    font-size: 14px;
-}
-
-.footer p {
-    margin: 10px 0;
-    line-height: 1.5;
-}
-
-.footer .footer-links {
-    margin: 10px 0;
-}
-
-.footer .footer-links a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 10px;
-    transition: color 0.3s ease;
-}
-
-.footer .footer-links a:hover {
-    color: #1e90ff;
-    text-decoration: none;
-}
-
-.footer .social-icons {
-    margin: 10px 0;
-}
-
-.footer .social-icons a {
-    margin: 0 10px;
-    font-size: 18px;
-    color: #fff;
-    transition: color 0.3s ease;
-    text-decoration: none;
-}
-
-.footer .social-icons a:hover {
-    color: #1e90ff;
-    text-decoration: none;
-}
-
-        @media (max-width: 768px) {
-            .terms {
-                padding: 15px;
-                font-size: 14px;
-            }
-
-            .terms h2 {
-                font-size: 18px;
-            }
-
-            .navbar ul {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .navbar ul li {
-                margin: 5px 0;
-            }
-        }
-    </style>
-</head>
-<body>
-   <!-- Navbar -->
- <div class="navbar">
-    <div class="logo">CodMinds</div>
-    <ul class="nav-links">
-       <li><a href="{% url 'home' %}">Home</a></li>
-    <li><a href="{% url 'servicies' %}">Servicies</a></li>
-    <li><a href="{% url 'about' %}">About us</a></li>
-    <li><a href="{% url 'verify_certificate' %}">Verify Internship Certificate</a></li>
-  </ul>
-  <div class="auth-buttons">
-    <a href="{% url 'user_login' %}"><button class="login">Login</button>
-    <a href="{% url 'user_signup' %}"><button class="signup">Signup</button></a>
-  </div>
-    <!-- Hamburger menu for mobile screens -->
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
-
-    <main class="terms">
-        <h1>Terms & Conditions</h1>
-        <p>Welcome to CodMinds. By accessing or using our website, you agree to comply with and be bound by the following terms and conditions. Please review them carefully.</p>
-
-        <h2>1. Acceptance of Terms</h2>
+    <div class="terms-section">
+        <h3>1. Acceptance of Terms</h3>
         <p>By using this site, you agree to be legally bound by these terms. If you do not agree with these terms, please do not use the website.</p>
+    </div>
 
-        <h2>2. Changes to the Terms</h2>
+    <div class="terms-section">
+        <h3>2. Changes to the Terms</h3>
         <p>We reserve the right to update or modify these terms at any time without prior notice. Your continued use of the website after changes are made indicates your acceptance of the new terms.</p>
+    </div>
 
-        <h2>3. Use of the Website</h2>
+    <div class="terms-section">
+        <h3>3. Use of the Website</h3>
         <p>You agree to use the website only for lawful purposes and in a manner that does not infringe the rights of or restrict the use of this site by others.</p>
+    </div>
 
-        <h2>4. Intellectual Property</h2>
+    <div class="terms-section">
+        <h3>4. Intellectual Property</h3>
         <p>All content on this site, including text, graphics, logos, and images, is the property of CodMinds or its content suppliers and is protected by copyright laws.</p>
+    </div>
 
-        <h2>5. User Responsibilities</h2>
+    <div class="terms-section">
+        <h3>5. User Responsibilities</h3>
         <p>You are responsible for maintaining the confidentiality of any login credentials and for all activities under your account.</p>
+    </div>
 
-        <h2>6. Limitation of Liability</h2>
+    <div class="terms-section">
+        <h3>6. Limitation of Liability</h3>
         <p>CodMinds shall not be liable for any damages resulting from your use or inability to use the site, including but not limited to direct, indirect, or consequential damages.</p>
+    </div>
 
-        <h2>7. Governing Law</h2>
+    <div class="terms-section">
+        <h3>7. Governing Law</h3>
         <p>These terms are governed by and construed in accordance with the laws of Gir Somnath. Any disputes will be resolved in the courts of GirSomnath, Gujarat, India.</p>
-
-        <h2>8. Contact Us</h2>
-        <p>If you have any questions about these terms, please contact us at <a href="mailto:info@codminds.com">codmindsofficial@gmail.com</a>.</p>
-    </main>
-
-    <!-- Footer -->
-  <footer class="footer">
-    <p>© 2024 CodMinds. All rights reserved.</p>
-    <div class="footer-links">
-        <a href="/terms-and-conditions/">Terms & Conditions</a> |
-      <a href="/privacy-policy/">Privacy Policy</a> |
-      <a href="/cancellation-refund_policies/">Cancellation/Refund Policies</a> |
-      <a href="/contact/">Contact Us</a>
     </div>
-    <div class="social-icons">
-        {% comment %} <a href="#"><i class="fab fa-facebook"></i></a> {% endcomment %}
-        <a href="#"><i class="fab fa-x"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+
+    <div class="terms-section">
+        <h3>8. Contact Us</h3>
+        <p>If you have any questions about these terms, please contact us at <a href="mailto:codmindsofficial@gmail.com" style="color: blue;">codmindsofficial@gmail.com</a>.</p>
     </div>
-</footer>
-</body>
-<script>
-    const hamburger = document.getElementById("hamburger");
-const navbar = document.querySelector(".navbar");
-const navLinks = document.querySelectorAll(".navbar ul li a"); // Select all navbar links
-
-hamburger.addEventListener("click", () => {
-  navbar.classList.toggle("active");
-});
-
-// Close hamburger menu when any link is clicked
-navLinks.forEach(link => {
-  link.addEventListener("click", () => {
-    navbar.classList.remove("active"); // Remove the 'active' class to close the menu
-  });
-});
-</script>
-</html> 
+</div>
+{% endblock %}

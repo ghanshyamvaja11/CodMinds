@@ -24,12 +24,12 @@
       list-style: none;
     }
 
-    /* Navbar Styles */
+    /* Updated Navbar Styles */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 6px;
+      padding: 10px 20px;
       background-color: #24292e;
       color: #fff;
       position: sticky;
@@ -46,7 +46,7 @@
 
     .navbar ul {
       display: flex;
-      gap: 25px;
+      gap: 20px;
     }
 
     .navbar ul li {
@@ -59,11 +59,11 @@
 
     .navbar .auth-buttons {
       display: flex;
-      gap: 15px;
+      gap: 10px;
     }
 
     .navbar .auth-buttons button {
-      padding: 8px 20px;
+      padding: 8px 15px;
       border: none;
       border-radius: 20px;
       font-size: 16px;
@@ -115,31 +115,27 @@
     @media (max-width: 768px) {
       .navbar ul {
         display: none;
+        flex-direction: column;
         width: 100%;
         position: absolute;
         top: 70px;
         left: 0;
         background-color: #333;
         text-align: center;
+        padding: 10px 0;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .navbar ul.active {
+        display: flex;
       }
 
       .navbar ul li {
-        margin-right: 0;
-        margin-top: 10px;
-      }
-
-      .navbar ul li a {
-        font-size: 18px;
+        margin: 10px 0;
       }
 
       .hamburger {
         display: flex;
-      }
-
-      /* Show nav links when hamburger menu is clicked */
-      .navbar.active ul {
-        display: flex;
-        flex-direction: column;
       }
 
       .auth-buttons {
@@ -147,7 +143,7 @@
       }
     }
 
-    /* Footer Section */
+    /* Updated Footer Section */
     .footer {
       background-color: #24292e;
       color: #fff;
@@ -159,22 +155,24 @@
       margin: 10px 0;
     }
 
-    .footer .social-icons {
-      margin: 10px 0;
+    .footer .footer-links a {
+      color: #fff;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+
+    .footer .footer-links a:hover {
+      color: #1e90ff;
     }
 
     .footer .social-icons a {
       margin: 0 10px;
       font-size: 20px;
       color: #fff;
-      transition: 0.3s;
+      transition: color 0.3s;
     }
 
     .footer .social-icons a:hover {
-      color: #1e90ff;
-    }
-
-    .footer .footer-links a:hover {
       color: #1e90ff;
     }
   </style>
@@ -184,15 +182,15 @@
   <div class="navbar">
     <div class="logo">CodMinds</div>
     <ul class="nav-links">
-       <li><a href="{% url 'home' %}">Home</a></li>
-    <li><a href="{% url 'servicies' %}">Servicies</a></li>
-    <li><a href="{% url 'about' %}">About us</a></li>
-    <li><a href="{% url 'verify_certificate' %}">Verify Internship Certificate</a></li>
-  </ul>
-  <div class="auth-buttons">
-    <a href="{% url 'user_login' %}"><button class="login">Login</button></a>
-    <a href="{% url 'user_signup' %}"><button class="signup">Signup</button></a>
-  </div>
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'servicies' %}">Services</a></li>
+      <li><a href="{% url 'about' %}">About Us</a></li>
+      <li><a href="{% url 'verify_certificate' %}">Verify Internship Certificate</a></li>
+    </ul>
+    <div class="auth-buttons">
+      <a href="{% url 'user_login' %}"><button class="login">Login</button></a>
+      <a href="{% url 'user_signup' %}"><button class="signup">Signup</button></a>
+    </div>
     <!-- Hamburger menu for mobile screens -->
     <div class="hamburger" id="hamburger">
       <span></span>
@@ -208,33 +206,37 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <p>© 2024 CodMinds. All rights reserved.</p>
-    <div class="footer-links">
-        <a href="/terms-and-conditions/">Terms & Conditions</a> | 
-        <a href="/privacy-policy/">Privacy Policy</a>
+    <div class="footer-links" style="margin-bottom: 10px;">
+      <a href="/terms-and-conditions/">Terms & Conditions</a> |
+      <a href="/privacy-policy/">Privacy Policy</a> |
+      <a href="/cancellation-refund_policies/">Cancellation/Refund Policies</a> |
+      <a href="/contact/">Contact Us</a>
     </div>
-    <div class="social-icons">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+    <div class="social-icons" style="margin-bottom: 10px;">
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
     </div>
+    <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
   </footer>
 
   <script>
     const hamburger = document.getElementById("hamburger");
-    const navbar = document.querySelector(".navbar");
-    const navLinks = document.querySelectorAll(".navbar ul li a"); // Select all navbar links
+    const navLinks = document.querySelector(".nav-links");
 
     hamburger.addEventListener("click", () => {
-      navbar.classList.toggle("active");
+      navLinks.classList.toggle("active");
     });
 
-    // Close hamburger menu when any link is clicked
-    navLinks.forEach(link => {
-      link.addEventListener("click", () => {
-        navbar.classList.remove("active"); // Remove the 'active' class to close the menu
-      });
+    // Close menu when a link is clicked
+    navLinks.addEventListener("click", (event) => {
+      if (event.target.tagName === "A") {
+        navLinks.classList.remove("active");
+      }
     });
+
+    // Set current year
+    document.getElementById("current-year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>

@@ -8,6 +8,7 @@ urlpatterns = [
     path('login/', user_login, name='user_login'),
     path('logout/', user_logout, name='user_logout'),
     path('forgot-password/', forgot_password, name='forgot_password'),
+    path('resend-otp/', resend_otp, name='resend_otp'),
     path('verify-otp/', verify_otp, name='verify_otp'),
     path('reset-password/', reset_password, name='reset_password'),
     path('dashboard/', user_dashboard, name='user_dashboard'),
