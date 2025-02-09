@@ -14,7 +14,7 @@ def T_and_C(request):
     return render(request, 'T&C.html')  
 
 def privacy_policy(request):
-    return render(request, 'Privacy_Policy.html')
+    return render(request, 'privacy_policy.html')
 
 def cancellation_refund_policies(request):
     return render(request, 'cancellation_refund_policies.html')

@@ -39,7 +39,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['52.64.212.7', 'localhost', '127.0.0.1', 'codminds.com', 'www.codminds.com']
+ALLOWED_HOSTS = ['codminds.com','3.27.187.189','www. codminds.com']
 
 
 # Application definition

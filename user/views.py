@@ -162,8 +162,6 @@ def verify_otp(request):
     return render(request, 'verify_otp.html')
 
 # Password Reset View
-
-
 def reset_password(request):
     if request.method == "POST":
         password = request.POST.get('password')
