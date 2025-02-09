@@ -118,8 +118,6 @@ def user_logout(request):
 def forgot_password(request):
     if request.method == "POST":
         email = request.POST.get('email')
-        return HttpResponse(os.getenv('EMAIL_PASSWORD'))
-
 
         # Check if email exists in the database
         try:
