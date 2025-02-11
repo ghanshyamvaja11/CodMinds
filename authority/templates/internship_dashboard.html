@@ -40,7 +40,7 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            border-radius: 5px;
+            border-radius: 29px;
             transition: background 0.3s ease, color 0.3s ease;
         }
 
@@ -51,6 +51,7 @@
 
         .dashboard-content {
             padding: 40px 20px;
+            text-align: center;
         }
 
         .dashboard-content h2 {
@@ -113,41 +114,26 @@
 
         /* Responsive Design for Small Screens */
         @media (max-width: 768px) {
-            .dashboard-header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .logout-button {
-                margin-top: 10px;
-            }
-
-            .dashboard-content h2 {
-                font-size: 24px;
-            }
-
             .dashboard-grid {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
+                align-items: center; /* Centers cards horizontally */
             }
 
             .dashboard-card {
                 width: 90%; /* Adjust width for better appearance */
-                margin-bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="dashboard-header">
-        <span>Internship Corner</span>
+        <span>Admin Dashboard</span>
         <a href="{% url 'admin_logout' %}" class="logout-button">Logout</a>
     </div>
     <div class="dashboard-content">
         <h2>Welcome, Admin!</h2>
-        <p>Use the options below to manage certificates effectively.</p>
+        <p>Use the options below to manage Internship Data.</p>
         <div class="dashboard-grid">
             <div class="dashboard-card">
                 <h3>Internship Applications</h3>
