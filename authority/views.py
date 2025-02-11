@@ -384,7 +384,7 @@ CodMinds Team
                 offer_letter.offer_letter = True
                 offer_letter.save()
 
-                return redirect('send_offer_letter')
+                return redirect('issue_internship_offer_letter')
 
             except Exception as e:
                 messages.error(request, f"An error occurred: {str(e)}")
@@ -457,7 +457,7 @@ def process_refund(request, payment_id):
         except Exception as e:
             messages.error(request, f"Error processing refund: {str(e)}")
 
-        return HttpResponseRedirect(reverse('received_payments'))
+        return HttpResponseRedirect(reverse('received_internship_payments'))
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
@@ -732,7 +732,7 @@ def edit_internship_project(request, project_id):
         project.duration = request.POST.get('duration')
         project.save()
         messages.success(request, "Project updated successfully.")
-        return redirect('added_projects')
+        return redirect('added_internship_projects')
 
     return render(request, 'edit_project.html', {'project': project})
 
@@ -741,7 +741,7 @@ def delete_internship_project(request, project_id):
     project = get_object_or_404(InternshipProjects, id=project_id)
     project.delete()
     messages.success(request, "Project deleted successfully.")
-    return redirect('added_projects')
+    return redirect('added_internship_projects')
 
 def resend_otp(request):
     clear_messages(request)
