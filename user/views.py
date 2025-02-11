@@ -20,6 +20,7 @@ import logging
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
 import os
+from django.contrib.messages import get_messages
 
 # Razorpay Client Setup
 razorpay_client = razorpay.Client(
@@ -27,7 +28,13 @@ razorpay_client = razorpay.Client(
 
 logger = logging.getLogger(__name__)
 
+def clear_messages(request):
+    storage = get_messages(request)
+    for _ in storage:
+        pass
+
 def user_signup(request):
+    clear_messages(request)
     if request.method == 'POST':
         try:
             # Get the data from the form
@@ -86,6 +93,7 @@ def user_signup(request):
 
 
 def user_login(request):
+    clear_messages(request)
     if request.method == 'POST':
         try:
             email = request.POST.get('email').lower()  # Convert email to lowercase
@@ -112,6 +120,7 @@ def user_login(request):
         return render(request, 'login.html')
 
 def user_logout(request):
+    clear_messages(request)
     try:
         request.session.flush()
     except Exception as e:
@@ -120,6 +129,7 @@ def user_logout(request):
 
 # Forgot Password View
 def forgot_password(request):
+    clear_messages(request)
     if request.method == "POST":
         try:
             email = request.POST.get('email').lower()  # Convert email to lowercase
@@ -154,6 +164,7 @@ def forgot_password(request):
     
 # OTP Verification View
 def verify_otp(request):
+    clear_messages(request)
     if request.method == "POST":
         try:
             otp_entered = request.POST.get('otp')
@@ -174,6 +185,7 @@ def verify_otp(request):
 
 # Password Reset View
 def reset_password(request):
+    clear_messages(request)
     if request.method == "POST":
         try:
             password = request.POST.get('password')
@@ -205,6 +217,7 @@ def reset_password(request):
     return render(request, 'reset_password.html')
 
 def user_dashboard(request):
+    clear_messages(request)
     try:
         user = User.objects.get(email=request.session.get('email'))
         name = user.name
@@ -222,6 +235,7 @@ def user_dashboard(request):
         return redirect('user_login')
 
 def user_profile(request):
+    clear_messages(request)
     try:
         # Fetch the currently logged-in user
         user = User.objects.get(email=request.session.get('email'))
@@ -300,6 +314,7 @@ def user_profile(request):
         return redirect('user_login')
 
 def user_certificates(request):
+    clear_messages(request)
     try:
         certificates = InternshipCertificate.objects.filter(email=request.session.get('email'))
         return render(request, 'user_certificates.html', {'certificates': certificates})
@@ -309,6 +324,7 @@ def user_certificates(request):
         return render(request, 'user_certificates.html')
 
 def apply_for_internship(request):
+    clear_messages(request)
     try:
         user = User.objects.get(email=request.session.get('email'))
         if request.method == 'POST':
@@ -389,6 +405,7 @@ def apply_for_internship(request):
         return redirect('apply_for_internship')
 
 def view_internship_application_status(request):
+    clear_messages(request)
     try:
         application = InternshipApplication.objects.get(email=request.session.get('email'))
         return render(request, 'view_internship_application_status.html', {'application': application})
@@ -401,6 +418,7 @@ def view_internship_application_status(request):
         return redirect('apply_for_internship')
 
 def project_selection(request):
+    clear_messages(request)
     try:
         RAZORPAY_KEY_ID = settings.RAZORPAY_KEY_ID
         internApplication = InternshipApplication.objects.get(email=request.session.get('email'))
@@ -428,6 +446,7 @@ def project_selection(request):
         return redirect('user_dashboard')
 
 def create_order(request):
+    clear_messages(request)
     if request.method == "POST":
         try:
             data = json.loads(request.body)
@@ -470,6 +489,7 @@ def create_order(request):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 def verify_payment(request):
+    clear_messages(request)
     if request.method == "POST":
         try:
             # Parse JSON payload
@@ -576,6 +596,7 @@ def verify_payment(request):
     return JsonResponse({'status': 'Failed', 'message': 'Invalid request method'}, status=400)
 
 def select_project(request, project_id):
+    clear_messages(request)
     try:
         # Fetch the project by ID
         project = get_object_or_404(InternshipProjects, id=project_id)
@@ -601,6 +622,7 @@ def select_project(request, project_id):
         return redirect('project_selection')
 
 def resend_otp(request):
+    clear_messages(request)
     if request.method == "POST":
         email = request.session.get('email')
         if email:
@@ -618,6 +640,7 @@ def resend_otp(request):
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
 def login_with_otp(request):
+    clear_messages(request)
     if request.method == 'POST':
         email = request.POST.get('email').lower()
         try:
@@ -639,6 +662,7 @@ def login_with_otp(request):
     return render(request, 'login_with_otp.html')
 
 def verify_login_otp(request):
+    clear_messages(request)
     if request.method == 'POST':
         otp_entered = request.POST.get('otp')
         if str(request.session.get('otp')) == otp_entered:

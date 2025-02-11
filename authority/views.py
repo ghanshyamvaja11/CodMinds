@@ -37,12 +37,19 @@ import random
 from django.urls import reverse
 from django.conf import settings
 import razorpay
+from django.contrib.messages import get_messages
 
 # Razorpay Client Setup
 razorpay_client = razorpay.Client(
     auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
+def clear_messages(request):
+    storage = get_messages(request)
+    for _ in storage:
+        pass
+
 def admin_login(request):
+    clear_messages(request)
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -58,10 +65,12 @@ def admin_login(request):
 
 
 def admin_dashboard(request):
+    clear_messages(request)
     return render(request, 'admin_dashboard.html')
 
 
 def admin_logout(request):
+    clear_messages(request)
     # Handle both GET and POST methods
     if request.method in ['POST', 'GET']:
         logout(request)  # Log out the user
@@ -76,6 +85,7 @@ def admin_logout(request):
 
 
 def forgot_password(request):
+    clear_messages(request)
     if request.method == "POST":
         email = request.POST.get('email')
 
@@ -110,6 +120,7 @@ def forgot_password(request):
 
 
 def verify_otp(request):
+    clear_messages(request)
     if request.method == "POST":
         otp_entered = request.POST.get('otp')
 
@@ -123,6 +134,7 @@ def verify_otp(request):
 
 # Password Reset View
 def reset_password(request):
+    clear_messages(request)
     if request.method == "POST":
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
@@ -151,6 +163,7 @@ def reset_password(request):
 
 #Add Internship Projects
 def add_internship_project(request):
+    clear_messages(request)
     if request.method == 'POST':
         # Extract form data from POST request
         field = request.POST.get('field')
@@ -176,11 +189,13 @@ def add_internship_project(request):
 
 
 def view_internship_applications(request):
+    clear_messages(request)
     applications = InternshipApplication.objects.all()
     return render(request, 'view_internship_applications.html', {'applications': applications})
 
 # Approve or Reject Internship Application
 def approve_or_reject_application(request, app_id):
+    clear_messages(request)
     # Fetch the internship application by ID
     application = get_object_or_404(InternshipApplication, id=app_id)
 
@@ -218,6 +233,7 @@ def approve_or_reject_application(request, app_id):
 
 # # Update Project Allocation for Approved Applicants
 def update_project_allocation(request, app_id):
+    clear_messages(request)
     # Fetch the internship application by ID
     application = get_object_or_404(InternshipApplication, id=app_id)
 
@@ -242,6 +258,7 @@ def update_project_allocation(request, app_id):
 
 #Provide Offer letter
 def eligible_for_internship_offer_letter(request):
+    clear_messages(request)
     users = None
     try:
         # Assuming you want to fetch all applications where project_name is not empty
@@ -260,6 +277,7 @@ def eligible_for_internship_offer_letter(request):
 
 
 def download_internship_offer_letter(request):
+    clear_messages(request)
     email = ''
 
     # Check if email is provided in the GET request, else use session
@@ -318,6 +336,7 @@ def download_internship_offer_letter(request):
 
 
 def issue_internship_offer_letter(request):
+    clear_messages(request)
     # Check if POST request and handle file upload
     if request.method == 'POST' and request.FILES['certificate_file']:
         certificate_file = request.FILES['certificate_file']
@@ -380,6 +399,7 @@ CodMinds Team
 
 #Recieved Payments
 def received_internship_payments(request):
+    clear_messages(request)
     received_payments_list = Payment.objects.all()
 
     return render(request, 'recieved_internship_payments.html', {'received_payments_list': received_payments_list})
@@ -387,6 +407,7 @@ def received_internship_payments(request):
 
 # Refund
 def process_refund(request, payment_id):
+    clear_messages(request)
     """
     Processes a refund for the given Razorpay payment ID.
     Updates the database with refund details after successful processing.
@@ -442,10 +463,12 @@ def process_refund(request, payment_id):
 
 # Issue Certificate
 def eligible_for_internship_certificate(request):
+    clear_messages(request)
     users = InternshipApplication.objects.filter(status=1)
     return render(request, 'eligible_for_certificate.html', {'users': users})
 
 def issue_internship_certificate(request):
+    clear_messages(request)
     user = None
     internship = None
     email = request.GET.get('email')
@@ -542,11 +565,13 @@ def issue_internship_certificate(request):
 
 # upload Internship certificate
 def eligible_interns_for_certificate(request):
+    clear_messages(request)
     users = InternshipApplication.objects.filter(status=1)
     return render(request, 'eligible_for_internship_certificate.html', {'users': users})
 
 
 def upload_internship_certificate(request):
+    clear_messages(request)
     email = request.session.get('email')
 
     # Check if email is provided in the GET request, else use session
@@ -621,6 +646,7 @@ def upload_internship_certificate(request):
 
 
 def generate_internship_certificate(request, certificate_code):
+    clear_messages(request)
     certificate = InternshipCertificate.objects.get(
         certificate_code=certificate_code)
 
@@ -638,6 +664,7 @@ def generate_internship_certificate(request, certificate_code):
 
 
 def issued_internship_certificates(request):
+    clear_messages(request)
     # Fetch all issued certificates from the database
     issued_certificates = InternshipCertificate.objects.all()
 
@@ -648,12 +675,14 @@ def issued_internship_certificates(request):
     return render(request, 'issued_internship_certificates.html', context)
 
 def contact_us(request):
+    clear_messages(request)
     """View to display all contact queries."""
     queries = ContactForm.objects.all()
     return render(request, 'contactus_reply.html', {'queries': queries})
 
 
 def contact_us_reply(request, query_id):
+    clear_messages(request)
     """View to handle replying to a specific contact query."""
     query = get_object_or_404(ContactForm, id=query_id)
 
@@ -688,10 +717,12 @@ def contact_us_reply(request, query_id):
     return render(request, 'contactus_reply.html', {'query': query})
 
 def added_internship_projects(request):
+    clear_messages(request)
     projects = InternshipProjects.objects.all()
     return render(request, 'added_projects.html', {'projects': projects})
 
 def edit_internship_project(request, project_id):
+    clear_messages(request)
     project = get_object_or_404(InternshipProjects, id=project_id)
 
     if request.method == 'POST':
@@ -706,12 +737,14 @@ def edit_internship_project(request, project_id):
     return render(request, 'edit_project.html', {'project': project})
 
 def delete_internship_project(request, project_id):
+    clear_messages(request)
     project = get_object_or_404(InternshipProjects, id=project_id)
     project.delete()
     messages.success(request, "Project deleted successfully.")
     return redirect('added_projects')
 
 def resend_otp(request):
+    clear_messages(request)
     if request.method == "POST":
         email = request.session.get('email')
         if email:
@@ -729,9 +762,11 @@ def resend_otp(request):
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
 def internship_dashboard(request):
+    clear_messages(request)
     return render(request, 'internship_dashboard.html')
 
 def admin_login_with_otp(request):
+    clear_messages(request)
     if request.method == 'POST':
         email = request.POST.get('email').lower()
         try:
@@ -753,6 +788,7 @@ def admin_login_with_otp(request):
     return render(request, 'admin_login_with_otp.html')
 
 def admin_verify_login_otp(request):
+    clear_messages(request)
     if request.method == 'POST':
         otp_entered = request.POST.get('otp')
         if str(request.session.get('otp')) == otp_entered:
