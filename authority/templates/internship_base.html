@@ -46,8 +46,8 @@
     }
 
     .navbar .logo img {
-      height: 40px; /* Adjust the height of the logo */
-      margin-right: 10px; /* Space between image and text */
+      height: 40px;
+      margin-right: 10px;
     }
 
     .navbar ul {
@@ -57,6 +57,10 @@
 
     .navbar ul li {
       font-size: 18px;
+    }
+
+    .navbar ul li a {
+      color: white;
     }
 
     .navbar ul li a:hover {
@@ -184,27 +188,32 @@
   </style>
 </head>
 <body>
-  {% if not request.session.email %}
-<script>
-    window.location.href = "{% url 'user_login' %}";
-</script>
-{% endif %}
+  {% if not request.user.is_authenticated %}
+  <script>
+    window.location.href = "{% url 'admin_login' %}";
+  </script>
+  {% endif %}
 
   <!-- Navbar -->
   <div class="navbar">
     <div class="logo">
-      <img src="/media/logo.png" alt="CodMinds Logo"> <!-- Update this path with your logo image -->
       CodMinds
     </div>
     <ul class="nav-links">
-      <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
-      <li><a href="{% url 'user_profile' %}">Profile</a></li>
-      <li><a href="{% url 'certificates' %}">Your Certificates</a></li>
-      <li><a href="{% url 'apply_for_internship' %}">Apply for Internship</a></li>
-      <li><a href="{% url 'view_internship_application_status' %}">View Internship Application Status</a></li>
+      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'add_internship_project' %}">Add Internship Projects</a></li>
+      <li><a href="{% url 'view_internship_applications' %}">Internship Applications</a></li>
+      <li><a href="{% url 'eligible_for_internship_offer_letter' %}">Issue Offer Letter</a></li>
+      <li><a href="{% url 'eligible_for_internship_certificate' %}">Issue Internship Certificate</a></li>
+      <li><a href="{% url 'issued_internship_certificates' %}">Issued Internship Certificates</a></li>
+      <li><a href="{% url 'received_internship_payments' %}">Received Payments</a></li>
+      <li><a href="{% url 'added_internship_projects' %}">Added Internship Projects</a></li>
     </ul>
     <div class="auth-buttons">
-      <a href="{% url 'user_logout' %}"><button class="logout">Logout</button></a>
+      <form method="POST" action="{% url 'admin_logout' %}">
+        {% csrf_token %}
+        <button class="logout" type="submit">Logout</button>
+      </form>
     </div>
     <!-- Hamburger menu for mobile screens -->
     <div class="hamburger" id="hamburger">
@@ -214,7 +223,7 @@
     </div>
   </div>
 
- <!-- Main Content Area -->
+  <!-- Main Content Area -->
   <main>
     {% block content %}{% endblock %}
   </main>
@@ -223,24 +232,25 @@
   <footer class="footer">
     <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
   </footer>
-</body>
+
 <script>
   const hamburger = document.getElementById("hamburger");
   const navbar = document.querySelector(".navbar");
-  const navLinks = document.querySelectorAll(".navbar ul li a"); // Select all navbar links
+  const navLinks = document.querySelectorAll(".navbar ul li a");
 
   hamburger.addEventListener("click", () => {
     navbar.classList.toggle("active");
   });
 
-  // Close hamburger menu when any link is clicked
   navLinks.forEach(link => {
     link.addEventListener("click", () => {
-      navbar.classList.remove("active"); // Remove the 'active' class to close the menu
+      navbar.classList.remove("active");
     });
   });
 
   // Set current year
   document.getElementById("current-year").textContent = new Date().getFullYear();
 </script>
+
+</body>
 </html>

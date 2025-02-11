@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import *
+from django.contrib import messages
 
 def home(request):
     return render(request, 'index.html')
@@ -32,8 +33,8 @@ def contact(request):
         contact_message.save()
 
         # Success message
-        success = "Thank you for your message. We will get back to you soon."
-        return render(request, 'index.html', {'success': success})
+        messages.success(request, "Thank you for your message. We will get back to you soon.")
+        return render(request, 'index.html')
     return render(request, 'contactus.html')
 
 def error_404_view(request, exception=None):

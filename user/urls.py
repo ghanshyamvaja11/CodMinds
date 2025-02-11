@@ -23,5 +23,6 @@ urlpatterns = [
     path('verify-payment/', verify_payment, name='verify_payment'),
     path('select-project/<int:project_id>/',
          select_project, name='project_select'),
-     
+    path('login-with-otp/', login_with_otp, name='login_with_otp'),
+    path('verify-login-otp/', verify_login_otp, name='verify_login_otp'),
 ]

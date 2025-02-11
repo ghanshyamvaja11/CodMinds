@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'internship_base.html' %}
 
 {% block content %}
 <html lang="en">
@@ -77,7 +77,7 @@
             <p class="success">{{ success }}</p>
         {% endif %}
 
-        <form method="POST" action="{% url 'edit_project' project.id %}">
+        <form method="POST" action="{% url 'edit_internship_project' project.id %}">
             {% csrf_token %}
 
             <div class="form-group">

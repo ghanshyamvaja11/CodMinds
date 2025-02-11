@@ -197,17 +197,12 @@
   <!-- Navbar -->
   <div class="navbar">
     <div class="logo">
-      <img src="/media/logo.png" alt="CodMinds Logo"> CodMinds
+      CodMinds
     </div>
     <ul class="nav-links">
       <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-      <li><a href="{% url 'view_internship_applications' %}">Internship Applications</a></li>
-      <li><a href="{% url 'eligible_for_offer_letter' %}">Offer Letter</a></li>
-      <li><a href="{% url 'eligible_users' %}">Issue Certificate</a></li>
-      <li><a href="{% url 'issued_internship_certificates' %}">Issued Intern Certificates</a></li>
+      <li><a href="{% url 'internship_dashboard' %}">Internships</a></li>
       <li><a href="{% url 'contact_us_view' %}">Messages</a></li>
-      <li><a href="{% url 'received_payments' %}">Received Payments</a></li>
-      <li><a href="{% url 'added_projects' %}">Added Projects</a></li>
     </ul>
     <div class="auth-buttons">
       <form method="POST" action="{% url 'admin_logout' %}">
@@ -230,16 +225,6 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-links" style="margin-bottom: 10px;">
-      <a href="/terms-and-conditions/">Terms & Conditions</a> | 
-      <a href="/privacy-policy/">Privacy Policy</a>
-    </div>
-    <div class="social-icons" style="margin-bottom: 10px;">
-      {% comment %} <a href="#"><i class="fab fa-facebook"></i></a> {% endcomment %}
-      <a href="#"><i class="fab fa-x"></i></a>
-      <a href="#"><i class="fab fa-linkedin"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-    </div>
     <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
   </footer>
 

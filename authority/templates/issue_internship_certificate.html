@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'internship_base.html' %}
 
 <!DOCTYPE html>
 {% block content %}
@@ -74,7 +74,7 @@
          {% if success %}
             <p class="success">{{ success }}</p>
         {% endif %}
-        <form method="POST" action="{% url 'issue_certificate' %}">
+        <form method="POST" action="{% url 'issue_internship_certificate' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="certificate_type">Certificate Type</label>

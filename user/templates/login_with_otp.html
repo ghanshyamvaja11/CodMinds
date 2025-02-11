@@ -1,6 +1,6 @@
 {% extends 'entry_base.html' %}
 
-{% block title %}Login | CodMinds{% endblock %}
+{% block title %}Login with OTP | CodMinds{% endblock %}
 
 {% block content %}
 <style>
@@ -41,24 +41,6 @@
         background-color: #0056b3;
     }
 
-    .btn-secondary {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #007bff;
-        background-color: #fff;
-        border: 2px solid #007bff;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-
-    .btn-secondary:hover {
-        background-color: #007bff;
-        color: #fff;
-    }
-
     .alert {
         padding: 15px;
         margin-bottom: 15px;
@@ -81,22 +63,6 @@
         background-color: #cce5ff;
         color: #004085;
     }
-
-    .forgot-password-link {
-        display: block;
-        text-align: center;
-        margin-top: 10px;
-        font-size: 14px;
-    }
-
-    .forgot-password-link a {
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    .forgot-password-link a:hover {
-        text-decoration: underline;
-    }
 </style>
 
 <!-- Display Success or Error Messages -->
@@ -118,30 +84,16 @@
     </div>
 {% endif %}
 
-<!-- Login Form -->
+<!-- Login with OTP Form -->
 <div class="login-container">
-    <h2 style="text-align: center; color: #007bff;">Login</h2>
+    <h2 style="text-align: center; color: #007bff;">Login with OTP</h2>
     <form method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
-        </div>
-        <button type="submit" class="btn-primary">Login</button>
+        <button type="submit" class="btn-primary">Send OTP</button>
     </form>
-
-    <!-- Login with OTP Button -->
-    <a href="{% url 'login_with_otp' %}">
-        <button class="btn-secondary">Login with OTP</button>
-    </a>
-
-    <!-- Forgot Password Link -->
-    <div class="forgot-password-link">
-        <a href="{% url 'forgot_password' %}">Forgot your password?</a>
-    </div>
 </div>
 {% endblock %}

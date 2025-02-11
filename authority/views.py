@@ -114,11 +114,9 @@ def verify_otp(request):
         otp_entered = request.POST.get('otp')
 
         if str(request.session.get('otp')) == otp_entered:
-            # Redirect to password reset page
             return redirect('admin_reset_password')
         else:
             messages.error(request, "Invalid OTP. Please try again.")
-            # Stay on OTP verification page
             return render(request, 'admin_verify_otp.html')
 
     return render(request, 'admin_verify_otp.html')
@@ -243,7 +241,7 @@ def update_project_allocation(request, app_id):
     return redirect('view_internship_applications')
 
 #Provide Offer letter
-def eligible_for_offer_letter(request):
+def eligible_for_internship_offer_letter(request):
     users = None
     try:
         # Assuming you want to fetch all applications where project_name is not empty
@@ -261,7 +259,7 @@ def eligible_for_offer_letter(request):
         return render(request, 'eligible_for_offer_letter.html', {'users': []})
 
 
-def download_offer_letter(request):
+def download_internship_offer_letter(request):
     email = ''
 
     # Check if email is provided in the GET request, else use session
@@ -316,10 +314,10 @@ def download_offer_letter(request):
         'project_description': project_details.description if project_details else 'No project assigned',
     }
 
-    return render(request, 'offer_letter.html', context)
+    return render(request, 'issue_internship_offer_letter.html', context)
 
 
-def send_offer_letter(request):
+def issue_internship_offer_letter(request):
     # Check if POST request and handle file upload
     if request.method == 'POST' and request.FILES['certificate_file']:
         certificate_file = request.FILES['certificate_file']
@@ -377,14 +375,14 @@ CodMinds Team
             return HttpResponse("Email not found in session.")
     else:
         # GET request or no file uploaded
-        return render(request, 'send_offer_letter.html')
+        return render(request, 'issue_internship_offer_letter.html')
     
 
 #Recieved Payments
-def received_payments(request):
+def received_internship_payments(request):
     received_payments_list = Payment.objects.all()
 
-    return render(request, 'received_payments.html', {'received_payments_list': received_payments_list})
+    return render(request, 'recieved_internship_payments.html', {'received_payments_list': received_payments_list})
 
 
 # Refund
@@ -443,11 +441,11 @@ def process_refund(request, payment_id):
     return JsonResponse({"error": "Invalid request"}, status=400)
 
 # Issue Certificate
-def eligible_users(request):
+def eligible_for_internship_certificate(request):
     users = InternshipApplication.objects.filter(status=1)
     return render(request, 'eligible_for_certificate.html', {'users': users})
 
-def issue_certificate(request):
+def issue_internship_certificate(request):
     user = None
     internship = None
     email = request.GET.get('email')
@@ -689,11 +687,11 @@ def contact_us_reply(request, query_id):
 
     return render(request, 'contactus_reply.html', {'query': query})
 
-def added_projects(request):
+def added_internship_projects(request):
     projects = InternshipProjects.objects.all()
     return render(request, 'added_projects.html', {'projects': projects})
 
-def edit_project(request, project_id):
+def edit_internship_project(request, project_id):
     project = get_object_or_404(InternshipProjects, id=project_id)
 
     if request.method == 'POST':
@@ -707,7 +705,7 @@ def edit_project(request, project_id):
 
     return render(request, 'edit_project.html', {'project': project})
 
-def delete_project(request, project_id):
+def delete_internship_project(request, project_id):
     project = get_object_or_404(InternshipProjects, id=project_id)
     project.delete()
     messages.success(request, "Project deleted successfully.")
@@ -729,3 +727,40 @@ def resend_otp(request):
             return JsonResponse({'success': True})
         return JsonResponse({'success': False, 'message': 'Email not found in session'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def internship_dashboard(request):
+    return render(request, 'internship_dashboard.html')
+
+def admin_login_with_otp(request):
+    if request.method == 'POST':
+        email = request.POST.get('email').lower()
+        try:
+            user = Admin.objects.get(email=email, is_staff=True)
+            otp = random.randint(100000, 999999)
+            request.session['otp'] = otp
+            request.session['email'] = email
+            send_mail(
+                'Your OTP for Admin Login',
+                f'Your OTP code is: {otp}',
+                'codmindsofficial@gmail.com',
+                [email],
+                fail_silently=False,
+            )
+            return redirect('admin_verify_login_otp')
+        except Admin.DoesNotExist:
+            messages.error(request, "Email not found or not an admin account.")
+            return redirect('admin_login_with_otp')
+    return render(request, 'admin_login_with_otp.html')
+
+def admin_verify_login_otp(request):
+    if request.method == 'POST':
+        otp_entered = request.POST.get('otp')
+        if str(request.session.get('otp')) == otp_entered:
+            email = request.session.get('email')
+            user = Admin.objects.get(email=email, is_staff=True)
+            login(request, user)
+            return redirect('admin_dashboard')
+        else:
+            error_message = "Invalid OTP. Please try again."
+            return render(request, 'admin_verify_login_otp.html', {'error_message': error_message})
+    return render(request, 'admin_verify_login_otp.html')

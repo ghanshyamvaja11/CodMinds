@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Certificate Portal</title>
+    <title>Verify OTP - Certificate Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -81,68 +81,27 @@
             background: #0c47b6;
         }
 
-        .btn-secondary {
-            background: #fff;
-            color: #1a73e8;
-            border: 2px solid #1a73e8;
-            padding: 12px 20px;
-            width: 100%;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .btn-secondary:hover {
-            background: #1a73e8;
-            color: #fff;
-        }
-
         .error-message {
             color: red;
             font-size: 14px;
             margin-bottom: 10px;
         }
-
-        .forgot-password {
-            display: block;
-            margin-top: 15px;
-            font-size: 14px;
-            color: #1a73e8;
-            text-decoration: none;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h2>Admin Login</h2>
-        <form method="POST" action="{% url 'admin_login' %}">
+        <h2>Verify OTP</h2>
+        <form method="POST" action="{% url 'admin_verify_login_otp' %}">
             {% csrf_token %}
             {% if error_message %}
                 <p class="error-message">{{ error_message }}</p>
             {% endif %}
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                <label for="otp">OTP</label>
+                <input type="text" id="otp" name="otp" placeholder="Enter the OTP" required>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <button type="submit" class="login-btn">Login</button>
+            <button type="submit" class="login-btn">Verify OTP</button>
         </form>
-
-        <!-- Admin Login with OTP Button -->
-        <a href="{% url 'admin_login_with_otp' %}">
-            <button class="btn-secondary">Login with OTP</button>
-        </a>
-
-        <a href="{% url 'admin_forgot_password' %}" class="forgot-password">Forgot Password?</a>
     </div>
 </body>
 </html>

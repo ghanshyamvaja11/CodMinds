@@ -585,22 +585,22 @@
   </footer>
 </body>
 <script>
- const hamburger = document.getElementById("hamburger");
-const navbar = document.querySelector(".navbar");
-const navLinks = document.querySelectorAll(".navbar ul li a"); // Select all navbar links
+  const hamburger = document.getElementById("hamburger");
+  const navLinksContainer = document.querySelector(".navbar ul"); // Select the ul element
 
-hamburger.addEventListener("click", () => {
-  navbar.classList.toggle("active");
-});
-
-// Close hamburger menu when any link is clicked
-navLinks.forEach(link => {
-  link.addEventListener("click", () => {
-    navbar.classList.remove("active"); // Remove the 'active' class to close the menu
+  hamburger.addEventListener("click", () => {
+    navLinksContainer.classList.toggle("active"); // Toggle 'active' class on ul element
   });
-});
 
- // Set current year
-    document.getElementById("current-year").textContent = new Date().getFullYear();
+  // Close hamburger menu when any link is clicked
+  const navLinks = document.querySelectorAll(".navbar ul li a");
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      navLinksContainer.classList.remove("active"); // Remove the 'active' class to close the menu
+    });
+  });
+
+  // Set current year
+  document.getElementById("current-year").textContent = new Date().getFullYear();
 </script>
 </html>

@@ -32,7 +32,7 @@ def user_signup(request):
         try:
             # Get the data from the form
             name = request.POST.get('name')
-            email = request.POST.get('email')
+            email = request.POST.get('email').lower()  # Convert email to lowercase
             phone = request.POST.get('phone')
             password = request.POST.get('password')
             confirm_password = request.POST.get('confirm_password')
@@ -88,7 +88,7 @@ def user_signup(request):
 def user_login(request):
     if request.method == 'POST':
         try:
-            email = request.POST.get('email')
+            email = request.POST.get('email').lower()  # Convert email to lowercase
             password = request.POST.get('password')
             # Hash the entered password to compare it with the stored one
             hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
@@ -122,7 +122,7 @@ def user_logout(request):
 def forgot_password(request):
     if request.method == "POST":
         try:
-            email = request.POST.get('email')
+            email = request.POST.get('email').lower()  # Convert email to lowercase
 
             # Check if email exists in the database
             user = User.objects.get(email=email)
@@ -230,7 +230,7 @@ def user_profile(request):
             email_original = request.session.get('email')
             # Get the data from the form
             name = request.POST.get('name')
-            email = request.POST.get('email')
+            email = request.POST.get('email').lower()  # Convert email to lowercase
             phone = str(request.POST.get('phone'))
             password = request.POST.get('password')
 
@@ -616,3 +616,37 @@ def resend_otp(request):
             return JsonResponse({'success': True})
         return JsonResponse({'success': False, 'message': 'Email not found in session'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def login_with_otp(request):
+    if request.method == 'POST':
+        email = request.POST.get('email').lower()
+        try:
+            user = User.objects.get(email=email)
+            otp = random.randint(100000, 999999)
+            request.session['otp'] = otp
+            request.session['email'] = email
+            send_mail(
+                'Your OTP for Login',
+                f'Your OTP code is: {otp}',
+                'codmindsofficial@gmail.com',
+                [email],
+                fail_silently=False,
+            )
+            return redirect('verify_login_otp')
+        except User.DoesNotExist:
+            messages.error(request, "Email not found.")
+            return redirect('login_with_otp')
+    return render(request, 'login_with_otp.html')
+
+def verify_login_otp(request):
+    if request.method == 'POST':
+        otp_entered = request.POST.get('otp')
+        if str(request.session.get('otp')) == otp_entered:
+            email = request.session.get('email')
+            user = User.objects.get(email=email)
+            request.session['email'] = user.email
+            return redirect('user_dashboard')
+        else:
+            messages.error(request, "Invalid OTP. Please try again.")
+            return render(request, 'verify_login_otp.html')
+    return render(request, 'verify_login_otp.html')

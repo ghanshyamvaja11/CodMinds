@@ -246,7 +246,7 @@
           <p>
             Verify this certificate at:
             <a
-              href="https://codminds.com/certificate/intern/verify/{{ certificate_code }}"
+              href="{% url 'verify_certificate' certificate_code %}"
               >https://codminds.com/certificate/intern/verify/<b
                 style="color: black"
                 >{{certificate_code}}</b

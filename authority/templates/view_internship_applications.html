@@ -1,4 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'internship_base.html' %}
+
+{% if not request.user.is_authenticated %}
+<script>
+    window.location.href = "{% url 'admin_login' %}";
+</script>
+{% endif %}
 
 {% block title %}View Applications | CodMinds{% endblock %}
 
@@ -218,7 +224,7 @@
                             <center><span style="color: red; font-weight: bold;">Rejected</span></center>
                         {% else %}
                             <center><span style="color: green; font-weight: bold;">Approved</span></center>
-                            <form method="POST" action="{% url 'update_project_allocation' app.id %}">
+                            <form method="POST" action="{% url 'update_internship_project_allocation' app.id %}">
                                 {% csrf_token %}
                                 <input type="text" name="project_name" class="input-field" placeholder="Project Name" value="{{ app.project_name }}" required>
                                 <textarea name="project_description" class="input-field" placeholder="Project Description" required>{{ app.project_description }}</textarea>

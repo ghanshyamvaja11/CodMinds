@@ -1,117 +1,102 @@
-{% extends 'base.html' %}
+{% extends 'internship_base.html' %}
 
 {% block content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Added Projects</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f4f7fc;
-        }
+<style>
+    .admin-queries-container {
+        max-width: 1000px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    .admin-queries-container h2 {
+        text-align: center;
+        color: #1e90ff;
+        margin-bottom: 20px;
+    }
 
-        .container h2 {
-            margin-bottom: 20px;
-            text-align: center;
-            color: #1a73e8;
-        }
+    .project-list {
+        margin-bottom: 20px;
+    }
 
-        .project-list {
-            margin-bottom: 20px;
-        }
+    .project-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
 
-        .project-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
+    .project-item:last-child {
+        border-bottom: none;
+    }
 
-        .project-item:last-child {
-            border-bottom: none;
-        }
+    .project-item h3 {
+        margin: 0;
+        font-size: 18px;
+    }
 
-        .project-item h3 {
-            margin: 0;
-            font-size: 18px;
-        }
+    .project-item .actions {
+        display: flex;
+        gap: 10px;
+    }
 
-        .project-item .actions {
-            display: flex;
-            gap: 10px;
-        }
+    .project-item .actions button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
 
-        .project-item .actions button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+    .project-item .actions .edit-btn {
+        background: #1a73e8;
+        color: #fff;
+    }
 
-        .project-item .actions .edit-btn {
-            background: #1a73e8;
-            color: #fff;
-        }
+    .project-item .actions .edit-btn:hover {
+        background: #0b55c9;
+    }
 
-        .project-item .actions .edit-btn:hover {
-            background: #0b55c9;
-        }
+    .project-item .actions .delete-btn {
+        background: #e74c3c;
+        color: #fff;
+    }
 
-        .project-item .actions .delete-btn {
-            background: #e74c3c;
-            color: #fff;
-        }
+    .project-item .actions .delete-btn:hover {
+        background: #c0392b;
+    }
 
-        .project-item .actions .delete-btn:hover {
-            background: #c0392b;
-        }
+    .success {
+        text-align: center;
+        color: green;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+</style>
 
-        .success {
-            text-align: center;
-            color: green;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Added Projects</h2>
+<div class="admin-queries-container">
+    <h2>Added Projects</h2>
 
-        {% if success %}
-            <p class="success">{{ success }}</p>
-        {% endif %}
+    {% if success %}
+        <p class="success">{{ success }}</p>
+    {% endif %}
 
-        <div class="project-list">
-            {% for project in projects %}
-                <div class="project-item">
-                    <h3>{{ project.title }}</h3>
-                    <div class="actions">
-                        <a href="{% url 'edit_project' project.id %}"><button class="edit-btn">Edit</button></a>
-                        <form method="POST" action="{% url 'delete_project' project.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="delete-btn">Delete</button>
-                        </form>
-                    </div>
+    <div class="project-list">
+        {% for project in projects %}
+            <div class="project-item">
+                <h3>{{ project.title }}</h3>
+                <div class="actions">
+                    <a href="{% url 'edit_internship_project' project.id %}"><button class="edit-btn">Edit</button></a>
+                    <form method="POST" action="{% url 'delete_internship_project' project.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
-</body>
-</html>
+</div>
 {% endblock %}
