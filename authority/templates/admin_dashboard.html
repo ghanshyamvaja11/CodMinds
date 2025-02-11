@@ -51,6 +51,7 @@
 
         .dashboard-content {
             padding: 40px 20px;
+            text-align: center;
         }
 
         .dashboard-content h2 {
@@ -110,6 +111,19 @@
         .dashboard-card a:hover {
             background: #0c47b6;
         }
+
+        /* Responsive Design for Small Screens */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                display: flex;
+                flex-direction: column;
+                align-items: center; /* Centers cards horizontally */
+            }
+
+            .dashboard-card {
+                width: 90%; /* Adjust width for better appearance */
+            }
+        }
     </style>
 </head>
 <body>
@@ -132,11 +146,13 @@
                 <a href="{% url 'contact_us_view' %}">View</a>
             </div>
 
+            {% comment %} 
             <div class="dashboard-card">
                 <h3>Settings</h3>
                 <p>Configure and manage your admin account.</p>
-                {% comment %}<a href="{% url 'settings' %}">Go to Settings</a>{% endcomment %}
-            </div>
+                <a href="{% url 'settings' %}">Go to Settings</a>
+            </div> 
+            {% endcomment %}
         </div>
     </div>
 </body>

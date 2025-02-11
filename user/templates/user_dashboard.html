@@ -22,8 +22,9 @@
     /* Dashboard Cards */
     .dashboard-cards {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjusted for better mobile support */
         gap: 20px;
+        margin-bottom: 30px;
     }
 
     .card {
@@ -32,6 +33,7 @@
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         text-align: center;
+        transition: transform 0.2s ease;
     }
 
     .card h3 {
@@ -103,12 +105,55 @@
         background-color: #f1c40f;
         transform: scale(1.05);
     }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 24px;
+        }
+
+        .highlight-card h3 {
+            font-size: 22px;
+        }
+
+        .highlight-card p {
+            font-size: 14px;
+        }
+
+        .highlight-card a {
+            font-size: 16px;
+            padding: 12px 25px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+        }
+
+        .card p {
+            font-size: 14px;
+        }
+
+        .card a {
+            font-size: 14px;
+            padding: 8px 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-title {
+            font-size: 20px;
+        }
+
+        .dashboard-cards {
+            grid-template-columns: 1fr; /* Stack cards vertically on small screens */
+        }
+    }
 </style>
 
 <div class="dashboard-container">
     <h2 class="page-title">Welcome, {{ name }}!</h2>
 
-    {% if internApplication.project_name == '' %}
+    {% if internApplication.status == -1 %}
     <!-- Highlighted Card: Select Internship Project -->
     <div class="highlight-card">
         <h3>Select Internship Project</h3>
