@@ -4,30 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login with OTP - Certificate Portal</title>
+    
+    <!-- Google Font (Poppins) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/media/favicon.ico">
+    
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to bottom right, #1a73e8, #0c47b6);
+        /* Global Styling */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Background Design */
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background: linear-gradient(to bottom right, #1a73e8, #0c47b6);
             color: #fff;
+            padding: 20px;
         }
 
+        /* Login Container */
         .login-container {
             background: #fff;
-            border-radius: 8px;
-            padding: 30px 40px;
+            border-radius: 10px;
+            padding: 35px 40px;
             width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             text-align: center;
             color: #333;
         }
 
+        /* Title Styling */
         .login-container h2 {
             font-size: 24px;
             font-weight: 600;
@@ -35,36 +48,41 @@
             color: #1a73e8;
         }
 
+        /* Form Styling */
         .login-container form {
             margin-top: 20px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             text-align: left;
         }
 
         .form-group label {
             font-weight: 500;
             font-size: 14px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: block;
             color: #555;
         }
 
+        /* Input Fields */
         .form-group input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 14px;
+            transition: 0.3s ease-in-out;
         }
 
         .form-group input:focus {
             border-color: #1a73e8;
             outline: none;
+            box-shadow: 0px 0px 5px rgba(26, 115, 232, 0.5);
         }
 
+        /* Button Styling */
         .login-btn {
             background: #1a73e8;
             color: #fff;
@@ -72,36 +90,49 @@
             padding: 12px 20px;
             width: 100%;
             font-size: 16px;
-            border-radius: 5px;
+            font-weight: 600;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: 0.3s ease;
         }
 
         .login-btn:hover {
             background: #0c47b6;
         }
 
+        /* Error Message */
         .error-message {
             color: red;
             font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
+
     <div class="login-container">
         <h2>Admin Login with OTP</h2>
+        
+        <!-- Admin Login Form -->
         <form method="POST" action="{% url 'admin_login_with_otp' %}">
             {% csrf_token %}
+            
+            <!-- Error Message Display -->
             {% if error_message %}
                 <p class="error-message">{{ error_message }}</p>
             {% endif %}
+            
+            <!-- Email Input Field -->
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
+
+            <!-- Submit Button -->
             <button type="submit" class="login-btn">Send OTP</button>
         </form>
     </div>
+
 </body>
 </html>

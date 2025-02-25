@@ -4,37 +4,64 @@
 
 {% block content %}
 <style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(to bottom right, #1a73e8, #0c47b6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
     .verify-otp-container {
         max-width: 400px;
-        margin: 50px auto;
+        width: 100%;
+        background: #fff;
         padding: 30px;
-        background-color: #f8f9fa;
         border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    .verify-otp-container h2 {
+        font-size: 22px;
+        font-weight: 600;
+        color: #007bff;
+        margin-bottom: 20px;
     }
 
     .form-group {
         margin-bottom: 20px;
+        text-align: left;
     }
 
     .form-control {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         font-size: 16px;
         border: 1px solid #ccc;
-        border-radius: 4px;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    .form-control:focus {
+        border-color: #1a73e8;
+        outline: none;
+        box-shadow: 0 0 5px rgba(26, 115, 232, 0.5);
     }
 
     .btn-primary {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         font-size: 16px;
         font-weight: bold;
         color: #fff;
         background-color: #007bff;
         border: none;
-        border-radius: 4px;
+        border-radius: 6px;
         cursor: pointer;
+        transition: background 0.3s ease;
     }
 
     .btn-primary:hover {
@@ -42,9 +69,9 @@
     }
 
     .alert {
-        padding: 15px;
+        padding: 12px;
         margin-bottom: 15px;
-        border-radius: 4px;
+        border-radius: 6px;
         text-align: center;
         font-size: 14px;
     }
@@ -67,6 +94,7 @@
     .resend-otp {
         text-align: center;
         margin-top: 20px;
+        font-size: 14px;
     }
 
     .resend-otp button {
@@ -74,12 +102,20 @@
         border: none;
         color: #007bff;
         cursor: pointer;
+        font-weight: bold;
         font-size: 14px;
     }
 
     .resend-otp button:disabled {
         color: #ccc;
         cursor: not-allowed;
+    }
+
+    @media (max-width: 480px) {
+        .verify-otp-container {
+            width: 90%;
+            padding: 20px;
+        }
     }
 </style>
 
@@ -104,12 +140,12 @@
 
 <!-- Verify OTP Form -->
 <div class="verify-otp-container">
-    <h2 style="text-align: center; color: #007bff;">Verify OTP</h2>
+    <h2>Verify OTP</h2>
     <form method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="otp">Enter OTP</label>
-            <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter OTP" required>
+            <input type="text" id="otp" name="otp" class="form-control" placeholder="123456" required>
         </div>
         <button type="submit" class="btn-primary">Verify OTP</button>
     </form>
@@ -128,7 +164,7 @@
         const countdown = setInterval(() => {
             if (timer > 0) {
                 timer--;
-                timerDisplay.textContent = `You can request a new OTP in ${timer} seconds.`;
+                timerDisplay.textContent = `Resend OTP in ${timer} seconds`;
             } else {
                 clearInterval(countdown);
                 resendOtpBtn.disabled = false;
@@ -140,7 +176,7 @@
     startCountdown();
 
     function resendOtp() {
-        resendOtpBtn.disabled = true; // Disable the button immediately after click
+        resendOtpBtn.disabled = true;
         fetch("{% url 'admin_resend_otp' %}", {
             method: 'POST',
             headers: {
@@ -156,7 +192,7 @@
                 startCountdown();
             } else {
                 alert('Failed to resend OTP. Please try again.');
-                resendOtpBtn.disabled = false; // Re-enable the button if resend fails
+                resendOtpBtn.disabled = false;
             }
         });
     }

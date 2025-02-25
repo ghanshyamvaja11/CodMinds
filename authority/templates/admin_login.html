@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Certificate Portal</title>
+    <title>Admin Login - CodMinds</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/media/favicon.ico">
+    
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to bottom right, #1a73e8, #0c47b6);
-            margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,12 +26,15 @@
 
         .login-container {
             background: #fff;
-            border-radius: 8px;
-            padding: 30px 40px;
-            width: 400px;
+            border-radius: 10px;
+            padding: 40px;
+            width: 380px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             text-align: center;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .login-container h2 {
@@ -35,11 +44,15 @@
             color: #1a73e8;
         }
 
-        .login-container form {
-            margin-top: 20px;
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .form-group {
+            width: 100%;
             margin-bottom: 20px;
             text-align: left;
         }

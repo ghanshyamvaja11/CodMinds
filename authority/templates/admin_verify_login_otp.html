@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify OTP - Certificate Portal</title>
+    <title>Verify OTP - CodMinds</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/media/favicon.ico">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -18,24 +19,25 @@
             color: #fff;
         }
 
-        .login-container {
+        .otp-container {
             background: #fff;
             border-radius: 8px;
             padding: 30px 40px;
-            width: 400px;
+            width: 100%;
+            max-width: 400px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             text-align: center;
             color: #333;
         }
 
-        .login-container h2 {
+        .otp-container h2 {
             font-size: 24px;
             font-weight: 600;
             margin-bottom: 20px;
             color: #1a73e8;
         }
 
-        .login-container form {
+        .otp-container form {
             margin-top: 20px;
         }
 
@@ -54,10 +56,11 @@
 
         .form-group input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 16px;
+            text-align: center;
         }
 
         .form-group input:focus {
@@ -65,19 +68,20 @@
             outline: none;
         }
 
-        .login-btn {
+        .otp-btn {
             background: #1a73e8;
             color: #fff;
             border: none;
             padding: 12px 20px;
             width: 100%;
             font-size: 16px;
+            font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s ease;
         }
 
-        .login-btn:hover {
+        .otp-btn:hover {
             background: #0c47b6;
         }
 
@@ -86,10 +90,23 @@
             font-size: 14px;
             margin-bottom: 10px;
         }
+
+        .info-message {
+            color: #1a73e8;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .otp-container {
+                padding: 20px;
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="otp-container">
         <h2>Verify OTP</h2>
         <form method="POST" action="{% url 'admin_verify_login_otp' %}">
             {% csrf_token %}
@@ -97,10 +114,10 @@
                 <p class="error-message">{{ error_message }}</p>
             {% endif %}
             <div class="form-group">
-                <label for="otp">OTP</label>
-                <input type="text" id="otp" name="otp" placeholder="Enter the OTP" required>
+                <label for="otp">Enter OTP</label>
+                <input type="text" id="otp" name="otp" placeholder="123456" required>
             </div>
-            <button type="submit" class="login-btn">Verify OTP</button>
+            <button type="submit" class="otp-btn">Verify OTP</button>
         </form>
     </div>
 </body>
