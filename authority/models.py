@@ -10,6 +10,11 @@ class InternshipProjects(models.Model):
     def __str__(self):
         return f"Project for {self.recipient_name}"
 
+    @staticmethod
+    def get_unique_fields():
+        return InternshipProjects.objects.values_list('field', flat=True).distinct()
+
+
 class AllottedProject(models.Model):
     project_id = models.IntegerField()
     email = models.EmailField()

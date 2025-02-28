@@ -1,0 +1,481 @@
+{% extends 'entry_base.html' %} {% block content %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+/>
+
+<!-- Web Development Service Section -->
+<section id="web-development" class="web-development">
+  <h1>Industry-Leading Web Development Services</h1>
+  <p>
+    At CodMinds, we offer a comprehensive range of web development services
+    using the latest technologies to ensure your business stays ahead of the
+    curve.
+  </p>
+  <div class="web-development-container">
+    <div class="service-details">
+      <i class="fas fa-laptop-code"></i>
+      <h3>Responsive Design</h3>
+      <p>Responsive websites for all devices.</p>
+      <div class="description">
+        We create responsive websites that look great on all devices.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-code"></i>
+      <h3>Custom Development</h3>
+      <p>Custom web solutions tailored to your needs.</p>
+      <div class="description">
+        Our team builds custom web solutions tailored to your specific business
+        needs.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-database"></i>
+      <h3>Database Management</h3>
+      <p>Secure and efficient database management.</p>
+      <div class="description">
+        Efficient and secure database management for your web applications.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-cloud"></i>
+      <h3>Cloud Integration</h3>
+      <p>Seamless cloud service integration.</p>
+      <div class="description">
+        Seamless integration with cloud services for scalability and
+        performance.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-shield-alt"></i>
+      <h3>Security</h3>
+      <p>Best security practices for your web applications.</p>
+      <div class="description">
+        Implementing the best security practices to protect your web
+        applications from threats and vulnerabilities.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-search"></i>
+      <h3>SEO Optimization</h3>
+      <p>Improve visibility and drive organic traffic.</p>
+      <div class="description">
+        Optimizing your website for search engines to improve visibility and
+        drive organic traffic.
+      </div>
+    </div>
+  </div>
+  <button class="hire-us-btn" onclick="openForm()">Hire Us</button>
+  <div id="hireUsForm" class="form-popup">
+    <form action="{% url 'hire_us' %}" method="POST" class="form-container">
+      {% csrf_token %}
+      <h2>Hire Us</h2>
+      <label for="name"><b>Name</b></label>
+      <input type="text" placeholder="Your Name" name="name" required />
+      <label for="email"><b>Email</b></label>
+      <input type="email" placeholder="Your Email" name="email" required />
+      <label for="details"><b>About Requirements</b></label>
+      <textarea
+        placeholder="Describe your requirements"
+        name="details"
+        required
+      ></textarea>
+      <button type="submit" class="btn">Submit</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">
+        Close
+      </button>
+    </form>
+  </div>
+  <div class="technologies-section">
+    <h2>Technologies We Use</h2>
+    <h3>Frontend Technologies</h3>
+    <div class="technologies-container">
+      <div class="technology">
+        <i class="fab fa-html5"></i>
+        <h4>HTML5</h4>
+        <div class="description">Latest version of HTML.</div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-css3-alt"></i>
+        <h4>CSS3</h4>
+        <div class="description">Latest evolution of CSS.</div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-js"></i>
+        <h4>JavaScript</h4>
+        <div class="description">Programming language for web.</div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-react"></i>
+        <h4>React</h4>
+        <div class="description">JavaScript library for UIs.</div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-angular"></i>
+        <h4>Angular</h4>
+        <div class="description">Platform for web apps.</div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-vuejs"></i>
+        <h4>Vue.js</h4>
+        <div class="description">Progressive JavaScript framework.</div>
+      </div>
+    </div>
+    <br />
+    <h3>Backend Technologies</h3>
+    <div class="technologies-container">
+      <div class="technology">
+        <i class="fab fa-python"></i>
+        <h4>Python</h4>
+        <div class="description">Programming language for quick work.</div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-node-js"></i>
+        <h4>Node.js</h4>
+        <div class="description">JavaScript runtime.</div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-php"></i>
+        <h4>PHP</h4>
+        <div class="description">Scripting language for web.</div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-laravel"></i>
+        <h4>Laravel</h4>
+        <div class="description">
+          Laravel is a PHP framework for building web applications.
+        </div>
+      </div>
+      <div class="technology">
+        <i class="devicon-django-plain"></i>
+        <h4>Django</h4>
+        <div class="description">
+          Django is a high-level Python web framework.
+        </div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-aws"></i>
+        <h4>AWS</h4>
+        <div class="description">Cloud computing platforms.</div>
+      </div>
+      <div class="technology">
+        <i class="fab fa-docker"></i>
+        <h4>Docker</h4>
+        <div class="description">OS-level virtualization.</div>
+      </div>
+      <div class="technology">
+        <i class="fas fa-database"></i>
+        <h4>SQL/NoSQL Databases</h4>
+        <div class="description">Databases for data storage.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Styles specific to web development page -->
+<style>
+  /* Web Development Service Section */
+  .web-development {
+    padding: 80px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+
+  .web-development h1 {
+    font-size: 36px;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .web-development p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 50px;
+  }
+
+  .web-development-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .service-details {
+    flex: 1 1 300px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-details:hover {
+    transform: translateY(-10px);
+  }
+
+  .service-details i {
+    font-size: 40px;
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .service-details h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .service-details p {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .service-details .description {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30, 144, 255, 0.9);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .service-details:hover .description {
+    opacity: 1;
+  }
+
+  .technologies-section {
+    margin-top: 50px;
+  }
+
+  .technologies-section h2 {
+    font-size: 28px;
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  .technologies-section h3 {
+    font-size: 24px;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .technologies-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .technology {
+    flex: 1 1 150px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .technology:hover {
+    transform: translateY(-10px);
+  }
+
+  .technology i {
+    font-size: 40px;
+    color: #1e90ff;
+    margin-bottom: 10px;
+  }
+
+  /* Custom Django Logo */
+  .django-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/75/Django_logo.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .technology h4 {
+    font-size: 18px;
+    color: #333;
+  }
+
+  .technology .description {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30, 144, 255, 0.9);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .technology:hover .description {
+    opacity: 1;
+  }
+
+  .hire-us-btn {
+    display: block;
+    margin: 30px auto;
+    background-color: deepskyblue;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .hire-us-btn:hover {
+    background-color: skyblue;
+    transform: scale(1.1);
+  }
+
+  .form-popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+  }
+
+  .form-container input[type="text"],
+  .form-container input[type="email"],
+  .form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+
+  .form-container input[type="text"]:focus,
+  .form-container input[type="email"]:focus,
+  .form-container textarea:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+
+  .form-container .btn {
+    background-color: deepskyblue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+
+  .form-container .btn:hover {
+    opacity: 1;
+  }
+
+  .form-container .cancel {
+    background-color: red;
+  }
+
+  @media (max-width: 768px) {
+    .service-details,
+    .technology {
+      flex: 1 1 calc(50% - 20px);
+    }
+
+    .web-development h1 {
+      font-size: 28px;
+    }
+
+    .web-development p {
+      font-size: 16px;
+    }
+
+    .technologies-section h2 {
+      font-size: 24px;
+    }
+
+    .technologies-section h3 {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .service-details,
+    .technology {
+      flex: 1 1 calc(100% - 20px);
+    }
+
+    .web-development h1 {
+      font-size: 24px;
+    }
+
+    .web-development p {
+      font-size: 14px;
+    }
+
+    .service-details h3 {
+      font-size: 20px;
+    }
+
+    .service-details p {
+      font-size: 14px;
+    }
+
+    .technologies-section h2 {
+      font-size: 20px;
+    }
+
+    .technologies-section h3 {
+      font-size: 18px;
+    }
+
+    .technology h4 {
+      font-size: 16px;
+    }
+  }
+</style>
+<script>
+  function openForm() {
+    document.getElementById("hireUsForm").style.display = "block";
+  }
+
+  function closeForm() {
+    document.getElementById("hireUsForm").style.display = "none";
+  }
+</script>
+
+{% endblock %}

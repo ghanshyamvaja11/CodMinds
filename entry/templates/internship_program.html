@@ -1,0 +1,226 @@
+{% extends 'entry_base.html' %} {% block content %}
+
+<!-- Internship Program Section -->
+<section id="internship-program" class="internship-program">
+  <h1>Internship Programs</h1>
+  <form
+    method="GET"
+    action="{% url 'internship_program' %}"
+    class="search-form"
+  >
+    <input
+      type="text"
+      name="search"
+      placeholder="Search by title..."
+      value="{{ query }}"
+    />
+    <select name="field">
+        <option value="">Search by field...</option>
+        {% for field in fields %}
+        <option value="{{ field }}" {% if field == selected_field %}selected{% endif %}>{{ field }}</option>
+        {% endfor %}
+    </select>
+    <input
+      type="number"
+      name="duration"
+      placeholder="Search by duration (months)..."
+      value="{{ duration }}"
+    />
+    <button type="submit">Search</button>
+  </form>
+  <div class="internship-program-container">
+    {% for internship in internships %}
+    <div class="program-details">
+      <i class="fas fa-chalkboard-teacher"></i>
+      <h3><strong>Project Name:</strong> {{ internship.title }}</h3>
+      <p><strong>Field:</strong> {{ internship.field }}</p>
+      <p><strong>Duration:</strong> {{ internship.duration }} months</p>
+      <button
+        class="view-button"
+        onclick="showPopup('{{ internship.title }}', '{{ internship.description }}', '{{ internship.field }}', '{{ internship.duration }}')"
+      >
+        View
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Popup Modal -->
+<div id="popup-modal" class="popup-modal">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <strong>Project Name:</strong>
+    <h3 id="popup-title" style="display: inline"></h3>
+    <br />
+    <strong>Description:</strong>
+    <p id="popup-description" style="display: inline"></p>
+    <p><strong>Field:</strong> <span id="popup-field"></span></p>
+    <p><strong>Duration:</strong> <span id="popup-duration"></span> months</p>
+  </div>
+</div>
+
+<!-- Styles specific to internship program page -->
+<style>
+  /* Internship Program Section */
+  .internship-program {
+    padding: 80px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+
+  .internship-program h1 {
+    font-size: 36px;
+    color: #1e90ff;
+    margin-bottom: 50px;
+  }
+
+  .search-form {
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .search-form input {
+    padding: 10px;
+    font-size: 16px;
+    width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .search-form select {
+    padding: 10px;
+    font-size: 16px;
+    width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .search-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #1e90ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .internship-program-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .program-details {
+    flex: 1 1 300px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+
+  .program-details:hover {
+    transform: translateY(-10px);
+  }
+
+  .program-details i {
+    font-size: 40px;
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .program-details h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .program-details p {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .view-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #1e90ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  /* Popup Modal */
+  .popup-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .popup-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    text-align: left;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .program-details {
+      flex: 1 1 100%;
+    }
+
+    .search-form input {
+      width: 100%;
+    }
+  }
+</style>
+
+<!-- JavaScript for Popup Modal -->
+<script>
+  function showPopup(title, description, field, duration) {
+    document.getElementById("popup-title").innerText = title;
+    document.getElementById("popup-description").innerText = description;
+    document.getElementById("popup-field").innerText = field;
+    document.getElementById("popup-duration").innerText = duration;
+    document.getElementById("popup-modal").style.display = "block";
+  }
+
+  function closePopup() {
+    document.getElementById("popup-modal").style.display = "none";
+  }
+</script>
+
+{% endblock %}

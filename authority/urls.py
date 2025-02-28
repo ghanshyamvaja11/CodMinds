@@ -56,4 +56,8 @@ urlpatterns = [
          name='admin_login_with_otp'),
     path('admin-verify-login-otp', admin_verify_login_otp,
          name='admin_verify_login_otp'),
+    path('hire-us-applications', hire_us_applications,
+         name='hire_us_applications'),
+    path('hire-us-reply/<int:application_id>',
+         hire_us_reply, name='hire_us_reply'),
 ]

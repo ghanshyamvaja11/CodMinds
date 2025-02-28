@@ -1,6 +1,4 @@
-{% extends 'entry_base.html' %}
-
-{% block content %}
+{% extends 'entry_base.html' %} {% block content %}
 
 <!-- Services Section -->
 <section id="services" class="services">
@@ -8,92 +6,221 @@
   <div class="services-container">
     <!-- Training Programs Service -->
     <div class="service">
+      <a href="{% url 'internship_program' %}">
         <i class="fas fa-chalkboard-teacher"></i>
         <h3>Internships Programs</h3>
-        <p>Upskill yourself with Internship and professional courses led by industry experts.</p>
-      </div>
+        <p>Upskill yourself with Internship and professional courses.</p>
+      </a>
+    </div>
 
     <!-- Web Development Service -->
     <div class="service">
-      <i class="fas fa-code"></i>
-      <h3>Web Development</h3>
-      <p>Building scalable, user-centric, and responsive websites tailored for your business.</p>
+      <a href="{% url 'web_development' %}">
+        <i class="fas fa-code"></i>
+        <h3>Web Development</h3>
+        <p>
+          Building scalable, user-centric, and responsive websites tailored for
+          your business.
+        </p>
+      </a>
     </div>
-    
+
     <!-- AI Solutions Service -->
+    {% comment %}
     <div class="service">
-      <i class="fas fa-robot"></i>
-      <h3>AI Solutions</h3>
-      <p>Enhance productivity with intelligent solutions powered by cutting-edge AI technology.</p>
+      <a href="{% url 'internship_program' %}">
+        <i class="fas fa-robot"></i>
+        <h3>AI Solutions</h3>
+        <p>
+          Enhance productivity with intelligent solutions powered by
+          cutting-edge AI technology.
+        </p>
+      </a>
     </div>
-    
+    {% endcomment %}
+
     <!-- Software Development Service -->
     <div class="service">
-      <i class="fas fa-cogs"></i>
-      <h3>Software Development</h3>
-      <p>Custom software solutions that cater to your unique business needs and drive innovation.</p>
+      <a href="{% url 'software_development' %}">
+        <i class="fas fa-cogs"></i>
+        <h3>Software Development</h3>
+        <p>
+          Custom software solutions that cater to your unique business needs and
+          drive innovation.
+        </p>
+      </a>
     </div>
-    
+
     <!-- Data Analytics Service -->
     <div class="service">
-      <i class="fas fa-chart-line"></i>
-      <h3>Data Analytics</h3>
-      <p>Transform data into actionable insights to improve decision-making and business outcomes.</p>
+      <a href="{% url 'data_analytics' %}">
+        <i class="fas fa-chart-line"></i>
+        <h3>Data Analytics</h3>
+        <p>
+          Transform data into actionable insights to improve decision-making and
+          business outcomes.
+        </p>
+      </a>
     </div>
   </div>
+  <button class="hire-us-btn" onclick="openForm()">Hire Us</button>
 </section>
+
+<!-- Popup Form -->
+<div id="hireUsForm" class="form-popup">
+  <form action="{% url 'hire_us' %}" method="POST" class="form-container">
+    {% csrf_token %}
+    <h2>Hire Us</h2>
+    <label for="name"><b>Name</b></label>
+    <input type="text" placeholder="Your Name" name="name" required />
+    <label for="email"><b>Email</b></label>
+    <input type="email" placeholder="Your Email" name="email" required />
+    <label for="details"><b>About Requirements</b></label>
+    <textarea
+      placeholder="Describe your requirements"
+      name="details"
+      required
+    ></textarea>
+    <button type="submit" class="btn">Submit</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">
+      Close
+    </button>
+  </form>
+</div>
 
 <!-- Styles specific to services page -->
 <style>
   /* Services Section */
-    .services {
-      padding: 80px 50px;
-      background-color: #f9f9f9;
-      text-align: center;
-    }
+  .services {
+    padding: 80px 50px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
 
-    .services h1 {
-      font-size: 36px;
-      color: #1e90ff;
-      margin-bottom: 50px;
-    }
+  .services h1 {
+    font-size: 36px;
+    color: #1e90ff;
+    margin-bottom: 50px;
+  }
 
-    .services-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      justify-content: center;
-    }
+  .services-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
 
-    .service {
-      flex: 1 1 300px;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transition: transform 0.3s;
-    }
+  .service {
+    flex: 1 1 300px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+  }
 
-    .service:hover {
-      transform: translateY(-10px);
-    }
+  .service:hover {
+    transform: translateY(-10px);
+  }
 
-    .service i {
-      font-size: 40px;
-      color: #1e90ff;
-      margin-bottom: 15px;
-    }
+  .service i {
+    font-size: 40px;
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
 
-    .service h3 {
-      font-size: 24px;
-      margin-bottom: 15px;
-      color: #333;
-    }
+  .service h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+  }
 
-    .service p {
-      font-size: 16px;
-      color: #555;
-    }
+  .service p {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .hire-us-btn {
+    display: block;
+    margin: 30px auto;
+    background-color: deepskyblue;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .hire-us-btn:hover {
+    background-color: skyblue;
+    transform: scale(1.1);
+  }
+
+  .form-popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+  }
+
+  .form-container input[type="text"],
+  .form-container input[type="email"],
+  .form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+
+  .form-container input[type="text"]:focus,
+  .form-container input[type="email"]:focus,
+  .form-container textarea:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+
+  .form-container .btn {
+    background-color: deepskyblue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+
+  .form-container .btn:hover {
+    opacity: 1;
+  }
+
+  .form-container .cancel {
+    background-color: red;
+  }
 </style>
+<script>
+  function openForm() {
+    document.getElementById("hireUsForm").style.display = "block";
+  }
+
+  function closeForm() {
+    document.getElementById("hireUsForm").style.display = "none";
+  }
+</script>
 {% endblock %}

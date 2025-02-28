@@ -43,10 +43,12 @@ from django.contrib.messages import get_messages
 razorpay_client = razorpay.Client(
     auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
+
 def clear_messages(request):
     storage = get_messages(request)
     for _ in storage:
         pass
+
 
 def admin_login(request):
     clear_messages(request)
@@ -133,6 +135,8 @@ def verify_otp(request):
     return render(request, 'admin_verify_otp.html')
 
 # Password Reset View
+
+
 def reset_password(request):
     clear_messages(request)
     if request.method == "POST":
@@ -161,7 +165,9 @@ def reset_password(request):
 
     return render(request, 'admin_reset_password.html')
 
-#Add Internship Projects
+# Add Internship Projects
+
+
 def add_internship_project(request):
     clear_messages(request)
     if request.method == 'POST':
@@ -194,6 +200,8 @@ def view_internship_applications(request):
     return render(request, 'view_internship_applications.html', {'applications': applications})
 
 # Approve or Reject Internship Application
+
+
 def approve_or_reject_application(request, app_id):
     clear_messages(request)
     # Fetch the internship application by ID
@@ -232,6 +240,8 @@ def approve_or_reject_application(request, app_id):
     return redirect('view_internship_applications')
 
 # # Update Project Allocation for Approved Applicants
+
+
 def update_project_allocation(request, app_id):
     clear_messages(request)
     # Fetch the internship application by ID
@@ -256,7 +266,9 @@ def update_project_allocation(request, app_id):
 
     return redirect('view_internship_applications')
 
-#Provide Offer letter
+# Provide Offer letter
+
+
 def eligible_for_internship_offer_letter(request):
     clear_messages(request)
     users = None
@@ -395,9 +407,9 @@ CodMinds Team
     else:
         # GET request or no file uploaded
         return render(request, 'issue_internship_offer_letter.html')
-    
 
-#Recieved Payments
+
+# Recieved Payments
 def received_internship_payments(request):
     clear_messages(request)
     received_payments_list = Payment.objects.all()
@@ -436,7 +448,7 @@ def process_refund(request, payment_id):
                 payment.status = 'Completed'  # Update status to 'Completed' after refund
                 payment.save()
 
-                user = User.objects.get(email = payment.email)
+                user = User.objects.get(email=payment.email)
 
                 # Send email notification to user
                 send_mail(
@@ -462,10 +474,13 @@ def process_refund(request, payment_id):
     return JsonResponse({"error": "Invalid request"}, status=400)
 
 # Issue Certificate
+
+
 def eligible_for_internship_certificate(request):
     clear_messages(request)
     users = InternshipApplication.objects.filter(status=1)
     return render(request, 'eligible_for_certificate.html', {'users': users})
+
 
 def issue_internship_certificate(request):
     clear_messages(request)
@@ -560,7 +575,7 @@ def issue_internship_certificate(request):
 
         return render(request, 'print_intern_certificate.html', context)
 
-    return render(request, "issue_certificate.html", {'user': user, 'internship': internship, 'project_allocated': project_allocated})
+    return render(request, "issue_internship_certificate.html", {'user': user, 'internship': internship, 'project_allocated': project_allocated})
 
 
 # upload Internship certificate
@@ -674,6 +689,7 @@ def issued_internship_certificates(request):
     }
     return render(request, 'issued_internship_certificates.html', context)
 
+
 def contact_us(request):
     clear_messages(request)
     """View to display all contact queries."""
@@ -716,10 +732,12 @@ def contact_us_reply(request, query_id):
 
     return render(request, 'contactus_reply.html', {'query': query})
 
+
 def added_internship_projects(request):
     clear_messages(request)
     projects = InternshipProjects.objects.all()
     return render(request, 'added_projects.html', {'projects': projects})
+
 
 def edit_internship_project(request, project_id):
     clear_messages(request)
@@ -736,12 +754,14 @@ def edit_internship_project(request, project_id):
 
     return render(request, 'edit_project.html', {'project': project})
 
+
 def delete_internship_project(request, project_id):
     clear_messages(request)
     project = get_object_or_404(InternshipProjects, id=project_id)
     project.delete()
     messages.success(request, "Project deleted successfully.")
     return redirect('added_internship_projects')
+
 
 def resend_otp(request):
     clear_messages(request)
@@ -761,9 +781,11 @@ def resend_otp(request):
         return JsonResponse({'success': False, 'message': 'Email not found in session'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
+
 def internship_dashboard(request):
     clear_messages(request)
     return render(request, 'internship_dashboard.html')
+
 
 def admin_login_with_otp(request):
     clear_messages(request)
@@ -787,6 +809,7 @@ def admin_login_with_otp(request):
             return redirect('admin_login_with_otp')
     return render(request, 'admin_login_with_otp.html')
 
+
 def admin_verify_login_otp(request):
     clear_messages(request)
     if request.method == 'POST':
@@ -800,3 +823,46 @@ def admin_verify_login_otp(request):
             error_message = "Invalid OTP. Please try again."
             return render(request, 'admin_verify_login_otp.html', {'error_message': error_message})
     return render(request, 'admin_verify_login_otp.html')
+
+
+def hire_us_applications(request):
+    clear_messages(request)
+    """View to display all HireUs applications."""
+    applications = HireUs.objects.all()
+    return render(request, 'hireus_reply.html', {'applications': applications})
+
+
+def hire_us_reply(request, application_id):
+    clear_messages(request)
+    """View to handle replying to a specific HireUs application."""
+    application = get_object_or_404(HireUs, id=application_id)
+
+    if request.method == 'POST':
+        reply_message = request.POST.get('reply_message')
+
+        if not reply_message:
+            messages.error(request, "Reply message cannot be empty.")
+            return redirect('hire_us_applications')
+
+        # Save the reply and mark the application as replied
+        application.reply_message = reply_message
+        application.reply_sent = True
+        application.save()
+
+        # Sending an email with the reply
+        try:
+            send_mail(
+                subject=f"Reply to your hiring request on CodMinds",
+                message=f"Dear {application.name},\n\nThank you for reaching out to us. Here is our reply to your hiring request:\n\n{reply_message}\n\nBest regards,\nCodMinds Team",
+                from_email='support@codminds.com',
+                recipient_list=[application.email],
+                fail_silently=False,
+            )
+            messages.success(
+                request, f"Reply sent successfully to {application.name}.")
+        except Exception as e:
+            messages.error(request, f"Failed to send email. Error: {str(e)}")
+
+        return redirect('hire_us_applications')
+
+    return render(request, 'hireus_reply.html', {'application': application})

@@ -1,0 +1,138 @@
+{% extends 'base.html' %} {% block title %}Admin Hire Us Reply{% endblock %} {%
+block content %}
+<style>
+  .admin-applications-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .admin-applications-container h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .application-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .application-details {
+    max-width: 70%;
+  }
+
+  .application-details p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+
+  .application-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .application-actions button {
+    background-color: #1e90ff;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .application-actions button:hover {
+    background-color: #4c9aff;
+  }
+
+  .reply-window {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: none;
+  }
+
+  .reply-window textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: none;
+    margin-bottom: 15px;
+  }
+
+  .reply-window button {
+    background-color: #1e90ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .reply-window button:hover {
+    background-color: #4c9aff;
+  }
+</style>
+
+<div class="admin-applications-container">
+  <h2>Admin Hire Us Replies</h2>
+
+  {% for application in applications %}
+  <div class="application-item">
+    <div class="application-details">
+      <p><strong>From:</strong> {{ application.name }}</p>
+      <p><strong>Email:</strong> {{ application.email }}</p>
+      <p><strong>Hiring Details:</strong> {{ application.hiring_details }}</p>
+      {% if application.reply_sent %}
+      <p><strong>Reply:</strong> {{ application.reply_message }}</p>
+      {% endif %}
+    </div>
+    <div class="application-actions">
+      {% if not application.reply_sent %}
+      <button onclick="showReplyWindow({{ application.id }})">Reply</button>
+      {% else %}
+      <button disabled style="background-color: #cccccc; cursor: not-allowed">
+        Replied
+      </button>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if not application.reply_sent %}
+  <div class="reply-window" id="reply-window-{{ application.id }}">
+    <form method="POST" action="{% url 'hire_us_reply' application.id %}">
+      {% csrf_token %}
+      <textarea
+        name="reply_message"
+        rows="5"
+        placeholder="Write your reply here..."
+        required
+      ></textarea>
+      <button type="submit">Send Reply</button>
+    </form>
+  </div>
+  {% endif %} {% endfor %}
+</div>
+
+<script>
+  function showReplyWindow(applicationId) {
+    document.getElementById(`reply-window-${applicationId}`).style.display =
+      "block";
+  }
+</script>
+{% endblock %}

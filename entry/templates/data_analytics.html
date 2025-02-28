@@ -1,0 +1,448 @@
+{% extends 'entry_base.html' %} {% block content %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+/>
+
+<!-- Data Analytics Service Section -->
+<section id="data-analytics" class="data-analytics">
+  <h1>Comprehensive Data Analytics Services</h1>
+  <p>
+    At CodMinds, we provide a wide range of data analytics services to help you
+    make informed business decisions.
+  </p>
+  <div class="data-analytics-container">
+    <div class="service-details">
+      <i class="fas fa-chart-line"></i>
+      <h3>Data Visualization</h3>
+      <p>Transforming data into actionable insights.</p>
+      <div class="description">
+        We create interactive and insightful data visualizations to help you
+        understand your data better.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-database"></i>
+      <h3>Data Warehousing</h3>
+      <p>Efficient data storage and management.</p>
+      <div class="description">
+        We design and implement data warehousing solutions to store and manage
+        your data efficiently.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-brain"></i>
+      <h3>Machine Learning</h3>
+      <p>Advanced machine learning models.</p>
+      <div class="description">
+        We develop machine learning models to predict outcomes and automate
+        decision-making processes.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-chart-pie"></i>
+      <h3>Business Intelligence</h3>
+      <p>Data-driven business strategies.</p>
+      <div class="description">
+        We provide business intelligence solutions to help you make data-driven
+        business decisions.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-shield-alt"></i>
+      <h3>Data Security</h3>
+      <p>Ensuring data privacy and security.</p>
+      <div class="description">
+        We implement data security measures to protect your data from
+        unauthorized access and breaches.
+      </div>
+    </div>
+  </div>
+  <button class="hire-us-btn" onclick="openForm()">Hire Us</button>
+</section>
+
+<!-- Popup Form -->
+<div id="hireUsForm" class="form-popup">
+  <form action="{% url 'hire_us' %}" method="POST" class="form-container">
+    {% csrf_token %}
+    <h2>Hire Us</h2>
+    <label for="name"><b>Name</b></label>
+    <input type="text" placeholder="Your Name" name="name" required />
+    <label for="email"><b>Email</b></label>
+    <input type="email" placeholder="Your Email" name="email" required />
+    <label for="details"><b>About Requirements</b></label>
+    <textarea
+      placeholder="Describe your requirements"
+      name="details"
+      required
+    ></textarea>
+    <button type="submit" class="btn">Submit</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">
+      Close
+    </button>
+  </form>
+</div>
+
+<div class="technologies-section">
+  <h2>Technologies We Use</h2>
+  <h3>Data Analytics Tools</h3>
+  <div class="technologies-container">
+    <div class="technology">
+      <i class="fab fa-python"></i>
+      <h4>Python</h4>
+      <div class="description">
+        Utilizing Python for data analysis and machine learning.
+      </div>
+    </div>
+    <div class="technology">
+      <i class="fab fa-r-project"></i>
+      <h4>R</h4>
+      <div class="description">
+        Using R for statistical computing and graphics.
+      </div>
+    </div>
+    <div class="technology">
+      <i class="fas fa-powerbi"></i>
+      <h4>Power BI</h4>
+      <div class="description">
+        Creating interactive data visualizations with Power BI.
+      </div>
+    </div>
+    <div class="technology">
+      <i class="fas fa-tableau"></i>
+      <h4>Tableau</h4>
+      <div class="description">
+        Creating interactive data visualizations with Tableau.
+      </div>
+    </div>
+    <div class="technology">
+      <i class="fas fa-database"></i>
+      <h4>SQL</h4>
+      <div class="description">Managing and querying databases using SQL.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Styles specific to data analytics page -->
+<style>
+  /* Data Analytics Service Section */
+  .data-analytics {
+    padding: 80px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+
+  .data-analytics h1 {
+    font-size: 36px;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .data-analytics p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 50px;
+  }
+
+  .data-analytics-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .service-details {
+    flex: 1 1 300px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-details:hover {
+    transform: translateY(-10px);
+  }
+
+  .service-details i {
+    font-size: 40px;
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .service-details h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .service-details p {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .service-details .description {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30, 144, 255, 0.9);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .service-details:hover .description {
+    opacity: 1;
+  }
+
+  .technologies-section {
+    margin-top: 50px;
+  }
+
+  .technologies-section h2 {
+    font-size: 28px;
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  .technologies-section h3 {
+    font-size: 24px;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .technologies-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .technology {
+    flex: 1 1 150px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .technology:hover {
+    transform: translateY(-10px);
+  }
+
+  .technology i {
+    font-size: 40px;
+    color: #1e90ff;
+    margin-bottom: 10px;
+  }
+
+  .fas.fa-tableau {
+    display: inline-block;
+    width: 150px;
+    height: 40px;
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/4/4b/Tableau_Logo.png"); /* Tableau Logo */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 10px;
+    filter: brightness(0) saturate(100%) invert(32%) sepia(83%) saturate(1526%)
+      hue-rotate(195deg) brightness(98%) contrast(98%); /* Apply #1e90ff Color */
+  }
+
+  .fas.fa-powerbi {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-image: url("https://www.vectorlogo.zone/logos/microsoft_powerbi/microsoft_powerbi-icon.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 10px;
+    filter: brightness(0) saturate(100%) invert(32%) sepia(83%) saturate(1526%)
+      hue-rotate(195deg) brightness(98%) contrast(98%);
+  }
+
+  .technology h4 {
+    font-size: 18px;
+    color: #333;
+  }
+
+  .technology .description {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30, 144, 255, 0.9);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .technology:hover .description {
+    opacity: 1;
+  }
+
+  .hire-us-btn {
+    display: block;
+    margin: 30px auto;
+    background-color: deepskyblue;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .hire-us-btn:hover {
+    background-color: skyblue;
+    transform: scale(1.1);
+  }
+
+  .form-popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+  }
+
+  .form-container input[type="text"],
+  .form-container input[type="email"],
+  .form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+
+  .form-container input[type="text"]:focus,
+  .form-container input[type="email"]:focus,
+  .form-container textarea:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+
+  .form-container .btn {
+    background-color: deepskyblue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+
+  .form-container .btn:hover {
+    opacity: 1;
+  }
+
+  .form-container .cancel {
+    background-color: red;
+  }
+
+  @media (max-width: 768px) {
+    .service-details,
+    .technology {
+      flex: 1 1 calc(50% - 20px);
+    }
+
+    .data-analytics h1 {
+      font-size: 28px;
+    }
+
+    .data-analytics p {
+      font-size: 16px;
+    }
+
+    .technologies-section h2 {
+      font-size: 24px;
+    }
+
+    .technologies-section h3 {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .service-details,
+    .technology {
+      flex: 1 1 calc(100% - 20px);
+    }
+
+    .data-analytics h1 {
+      font-size: 24px;
+    }
+
+    .data-analytics p {
+      font-size: 14px;
+    }
+
+    .service-details h3 {
+      font-size: 20px;
+    }
+
+    .service-details p {
+      font-size: 14px;
+    }
+
+    .technologies-section h2 {
+      font-size: 20px;
+    }
+
+    .technologies-section h3 {
+      font-size: 18px;
+    }
+
+    .technology h4 {
+      font-size: 16px;
+    }
+  }
+</style>
+
+<script>
+  function openForm() {
+    document.getElementById("hireUsForm").style.display = "block";
+  }
+
+  function closeForm() {
+    document.getElementById("hireUsForm").style.display = "none";
+  }
+</script>
+
+{% endblock %}

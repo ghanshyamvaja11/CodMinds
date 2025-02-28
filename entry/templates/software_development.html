@@ -1,0 +1,458 @@
+{% extends 'entry_base.html' %} {% block content %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+/>
+
+<!-- Software Development Service Section -->
+<section id="software-development" class="software-development">
+  <h1>Industry-Leading Software Development Services</h1>
+  <p>
+    At CodMinds, we offer a comprehensive range of software development services
+    using the latest technologies to ensure your business stays ahead of the
+    curve.
+  </p>
+  <div class="software-development-container">
+    <div class="service-details">
+      <i class="fas fa-cogs"></i>
+      <h3>Custom Software Solutions</h3>
+      <p>Custom software solutions tailored to your needs.</p>
+      <div class="description">
+        We build custom software solutions tailored to your specific business
+        needs.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-mobile-alt"></i>
+      <h3>Mobile App Development</h3>
+      <p>High-quality mobile applications for iOS and Android.</p>
+      <div class="description">
+        We develop high-quality mobile applications for both iOS and Android
+        platforms.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-cloud"></i>
+      <h3>Cloud-Based Solutions</h3>
+      <p>Scalable and reliable cloud-based solutions.</p>
+      <div class="description">
+        We provide scalable and reliable cloud-based solutions to meet your
+        business needs.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-shield-alt"></i>
+      <h3>Software Security</h3>
+      <p>Implementing best practices for software security.</p>
+      <div class="description">
+        We implement the best practices for software security to protect your
+        applications.
+      </div>
+    </div>
+    <div class="service-details">
+      <i class="fas fa-sync-alt"></i>
+      <h3>Software Maintenance</h3>
+      <p>Ongoing maintenance and support for your software.</p>
+      <div class="description">
+        We provide ongoing maintenance and support to ensure your software
+        remains up-to-date and secure.
+      </div>
+    </div>
+  </div>
+  <button class="hire-us-btn" onclick="openForm()">Hire Us</button>
+</section>
+
+<!-- Popup Form -->
+<div id="hireUsForm" class="form-popup">
+  <form action="{% url 'hire_us' %}" method="POST" class="form-container">
+    {% csrf_token %}
+    <h2>Hire Us</h2>
+    <label for="name"><b>Name</b></label>
+    <input type="text" placeholder="Your Name" name="name" required />
+    <label for="email"><b>Email</b></label>
+    <input type="email" placeholder="Your Email" name="email" required />
+    <label for="details"><b>About Requirements</b></label>
+    <textarea
+      placeholder="Describe your requirements"
+      name="details"
+      required
+    ></textarea>
+    <button type="submit" class="btn">Submit</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">
+      Close
+    </button>
+  </form>
+</div>
+
+<div class="technologies-section">
+  <h2>Technologies We Use</h2>
+  <h3>Mobile Development</h3>
+  <div class="technologies-container">
+    {% comment %}
+    <div class="technology">
+      <i class="fab fa-apple"></i>
+      <h4>iOS</h4>
+      <div class="description">
+        Development of high-quality iOS applications using Swift and
+        Objective-C.
+      </div>
+    </div>
+    {% endcomment %}
+    <div class="technology">
+      <i class="fab fa-android"></i>
+      <h4>Android</h4>
+      <div class="description">
+        Development of robust Android applications using Kotlin and Java.
+      </div>
+    </div>
+    <div class="technology">
+      <i class="fab fa-react"></i>
+      <h4>React Native</h4>
+      <div class="description">
+        Cross-platform mobile app development using React Native.
+      </div>
+    </div>
+    <div class="technology">
+      <i class="devicon-flutter-plain"></i>
+      <h4>Flutter</h4>
+      <div class="description">
+        Building natively compiled applications for mobile using Flutter.
+      </div>
+    </div>
+  </div>
+  <br />
+  <h3>Desktop Development</h3>
+  <div class="technologies-container">
+    <div class="technology">
+      <i class="fab fa-windows"></i>
+      <h4>Windows</h4>
+      <div class="description">
+        Development of desktop applications for Windows using .NET and C# or
+        react native.
+      </div>
+    </div>
+    {% comment %}
+    <div class="technology">
+      <i class="fab fa-apple"></i>
+      <h4>macOS</h4>
+      <div class="description">
+        Development of desktop applications for macOS using Swift and
+        Objective-C.
+      </div>
+    </div>
+    <div class="technology">
+      <i class="fab fa-linux"></i>
+      <h4>Linux</h4>
+      <div class="description">
+        Development of desktop applications for Linux using various programming
+        languages.
+      </div>
+    </div>
+    <div class="technology">
+      <i class="fab fa-electron"></i>
+      <h4>Electron</h4>
+      <div class="description">
+        Cross-platform desktop app development using Electron.
+      </div>
+    </div>
+    {% endcomment %}
+  </div>
+</div>
+
+<!-- Styles specific to software development page -->
+<style>
+  /* Software Development Service Section */
+  .software-development {
+    padding: 80px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+
+  .software-development h1 {
+    font-size: 36px;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .software-development p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 50px;
+  }
+
+  .software-development-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .service-details {
+    flex: 1 1 300px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-details:hover {
+    transform: translateY(-10px);
+  }
+
+  .service-details i {
+    font-size: 40px;
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .service-details h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .service-details p {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .service-details .description {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30, 144, 255, 0.9);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .service-details:hover .description {
+    opacity: 1;
+  }
+
+  .hire-us-btn {
+    display: block;
+    margin: 30px auto;
+    background-color: deepskyblue;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .hire-us-btn:hover {
+    background-color: skyblue;
+    transform: scale(1.1);
+  }
+
+  .form-popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+  }
+
+  .form-container input[type="text"],
+  .form-container input[type="email"],
+  .form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+
+  .form-container input[type="text"]:focus,
+  .form-container input[type="email"]:focus,
+  .form-container textarea:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+
+  .form-container .btn {
+    background-color: deepskyblue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+
+  .form-container .btn:hover {
+    opacity: 1;
+  }
+
+  .form-container .cancel {
+    background-color: red;
+  }
+
+  .technologies-section {
+    margin-top: 50px;
+  }
+
+  .technologies-section h2 {
+    font-size: 28px;
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  .technologies-section h3 {
+    font-size: 24px;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .technologies-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .technology {
+    flex: 1 1 150px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .technology:hover {
+    transform: translateY(-10px);
+  }
+
+  .technology i {
+    font-size: 40px;
+    color: #1e90ff;
+    margin-bottom: 10px;
+  }
+
+  .technology h4 {
+    font-size: 18px;
+    color: #333;
+  }
+
+  .technology .description {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30, 144, 255, 0.9);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .technology:hover .description {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .service-details,
+    .technology {
+      flex: 1 1 calc(50% - 20px);
+    }
+
+    .software-development h1 {
+      font-size: 28px;
+    }
+
+    .software-development p {
+      font-size: 16px;
+    }
+
+    .technologies-section h2 {
+      font-size: 24px;
+    }
+
+    .technologies-section h3 {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .service-details,
+    .technology {
+      flex: 1 1 calc(100% - 20px);
+    }
+
+    .software-development h1 {
+      font-size: 24px;
+    }
+
+    .software-development p {
+      font-size: 14px;
+    }
+
+    .service-details h3 {
+      font-size: 20px;
+    }
+
+    .service-details p {
+      font-size: 14px;
+    }
+
+    .technologies-section h2 {
+      font-size: 20px;
+    }
+
+    .technologies-section h3 {
+      font-size: 18px;
+    }
+
+    .technology h4 {
+      font-size: 16px;
+    }
+  }
+</style>
+
+<script>
+  function openForm() {
+    document.getElementById("hireUsForm").style.display = "block";
+  }
+
+  function closeForm() {
+    document.getElementById("hireUsForm").style.display = "none";
+  }
+</script>
+
+{% endblock %}

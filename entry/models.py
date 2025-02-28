@@ -11,3 +11,12 @@ class ContactForm(models.Model):
 
     def __str__(self):
         return f"Message from {self.name}"
+
+
+class HireUs(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    hiring_details = models.TextField()
+
+    def __str__(self):
+        return f"Message from {self.name}"
