@@ -510,14 +510,18 @@
     <h2>Our Services</h2>
     <div class="services-container">
       <div class="service">
+        <a href="{% url 'internship_program' %}">
         <i class="fas fa-chalkboard-teacher"></i>
         <h3 style="font-size: 20px;">Internships Programs</h3>
         <p style="font-size: 14px;">Upskill yourself with Internship.</p>
+        </a>
       </div>
       <div class="service">
+        <a href="{% url 'web_development' %}">
         <i class="fas fa-code"></i>
         <h3 style="font-size: 20px;">Web Development</h3>
         <p style="font-size: 14px;">Building scalable, user-centric, and responsive websites tailored for your business.</p>
+        </a>
       </div>
       <p>
     <a href="{% url 'servicies' %}">
@@ -541,7 +545,7 @@
   <!-- Contact Section -->
   <section id="contact" class="contact">
     <h2>Contact Us</h2>
-    <form action="/contact/" method="POST">
+    <form action="{% url 'contact' %}" method="POST">
    {% csrf_token %}
    <input type="text" placeholder="Your Name" name="name" required>
    <input type="email" placeholder="Your Email" name="email" required>

@@ -1,146 +1,173 @@
-{% extends 'entry_base.html' %}
-
-{% block title %}Login | CodMinds{% endblock %}
-
+{% extends 'entry_base.html' %} {% block title %}Login | CodMinds{% endblock %}
 {% block content %}
 <style>
-    .login-container {
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 30px;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
+  .login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
-    .form-group {
-        margin-bottom: 20px;
-    }
+  .form-group {
+    margin-bottom: 20px;
+  }
 
-    .form-control {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
 
-    .btn-primary {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #fff;
-        background-color: #007bff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
+  .btn-primary {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
 
-    .btn-secondary {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        color: #007bff;
-        background-color: #fff;
-        border: 2px solid #007bff;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
+  .btn-secondary {
+    background: #fff;
+    color: #007bff;
+    border: 2px solid #007bff;
+    padding: 12px 20px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+  }
 
-    .btn-secondary:hover {
-        background-color: #007bff;
-        color: #fff;
-    }
+  .btn-secondary:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
 
-    .alert {
-        padding: 15px;
-        margin-bottom: 15px;
-        border-radius: 4px;
-        text-align: center;
-        font-size: 14px;
-    }
+  .alert {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+  }
 
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
 
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-    }
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
 
-    .alert-info {
-        background-color: #cce5ff;
-        color: #004085;
-    }
+  .alert-info {
+    background-color: #cce5ff;
+    color: #004085;
+  }
 
-    .forgot-password-link {
-        display: block;
-        text-align: center;
-        margin-top: 10px;
-        font-size: 14px;
-    }
+  .forgot-password-link {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+  }
 
-    .forgot-password-link a {
-        color: #007bff;
-        text-decoration: none;
-    }
+  .forgot-password-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
 
-    .forgot-password-link a:hover {
-        text-decoration: underline;
-    }
+  .forgot-password-link a:hover {
+    text-decoration: underline;
+  }
+
+  .home-icon {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .home-icon a {
+    color: #007bff;
+    font-size: 24px;
+    text-decoration: none;
+  }
+
+  .home-icon a:hover {
+    color: #0056b3;
+  }
 </style>
 
 <!-- Display Success or Error Messages -->
 {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            <div class="alert 
-                {% if message.tags == 'error' %}
-                    alert-danger
-                {% elif message.tags == 'success' %}
-                    alert-success
-                {% else %}
-                    alert-info
-                {% endif %}
-            ">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
+<div class="messages">
+  {% for message in messages %}
+  <div
+    class="alert {% if message.tags == 'error' %} alert-danger {% elif message.tags == 'success' %} alert-success {% else %} alert-info {% endif %}"
+  >
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
 {% endif %}
 
 <!-- Login Form -->
 <div class="login-container">
-    <h2 style="text-align: center; color: #007bff;">Login</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
-        </div>
-        <button type="submit" class="btn-primary">Login</button>
-    </form>
-
-    <!-- Login with OTP Button -->
-    <a href="{% url 'login_with_otp' %}">
-        <button class="btn-secondary">Login with OTP</button>
-    </a>
-
-    <!-- Forgot Password Link -->
-    <div class="forgot-password-link">
-        <a href="{% url 'forgot_password' %}">Forgot your password?</a>
+  <h2 style="text-align: center; color: #007bff">Login</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
+        placeholder="Enter your email"
+        required
+      />
     </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="form-control"
+        placeholder="Enter your password"
+        required
+      />
+    </div>
+    <button type="submit" class="btn-primary">Login</button>
+  </form>
+
+  <!-- Login with OTP Button -->
+  <a href="{% url 'login_with_otp' %}">
+    <button class="btn-secondary">Login with OTP</button>
+  </a>
+
+  <!-- Forgot Password Link -->
+  <div class="forgot-password-link">
+    <a href="{% url 'forgot_password' %}">Forgot your password?</a>
+  </div>
 </div>
+
+<script>
+  if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+  }
+</script>
 {% endblock %}

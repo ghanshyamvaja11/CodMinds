@@ -366,10 +366,12 @@
     background-color: white;
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
   }
 
   .form-container {
-    max-width: 300px;
+    max-width: 100%;
     padding: 10px;
     background-color: white;
   }
@@ -408,6 +410,18 @@
 
   .form-container .cancel {
     background-color: red;
+  }
+
+  @media (max-width: 768px) {
+    .form-popup {
+      width: 90%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .form-popup {
+      width: 95%;
+    }
   }
 
   @media (max-width: 768px) {

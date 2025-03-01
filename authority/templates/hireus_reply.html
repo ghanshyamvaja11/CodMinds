@@ -1,5 +1,46 @@
 {% extends 'base.html' %} {% block title %}Admin Hire Us Reply{% endblock %} {%
 block content %}
+
+<div class="admin-applications-container">
+  <h2>Hire Us Queries</h2>
+
+  {% for application in applications %}
+  <div class="application-item">
+    <div class="application-details">
+      <p><strong>From:</strong> {{ application.name }}</p>
+      <p><strong>Email:</strong> {{ application.email }}</p>
+      <p><strong>Hiring Details:</strong> {{ application.hiring_details }}</p>
+      {% if application.reply_sent %}
+      <p><strong>Reply:</strong> {{ application.reply_message }}</p>
+      {% endif %}
+    </div>
+    <div class="application-actions">
+      {% if not application.reply_sent %}
+      <button onclick="showReplyWindow({{ application.id }})">Reply</button>
+      {% else %}
+      <button disabled style="background-color: #cccccc; cursor: not-allowed">
+        Replied
+      </button>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if not application.reply_sent %}
+  <div class="reply-window" id="reply-window-{{ application.id }}">
+    <form method="POST" action="{% url 'hire_us_reply' application.id %}">
+      {% csrf_token %}
+      <textarea
+        name="reply_message"
+        rows="5"
+        placeholder="Write your reply here..."
+        required
+      ></textarea>
+      <button type="submit">Send Reply</button>
+    </form>
+  </div>
+  {% endif %} {% endfor %}
+</div>
+
 <style>
   .admin-applications-container {
     max-width: 1000px;
@@ -23,7 +64,7 @@ block content %}
     margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center.;
   }
 
   .application-details {
@@ -88,46 +129,6 @@ block content %}
     background-color: #4c9aff;
   }
 </style>
-
-<div class="admin-applications-container">
-  <h2>Admin Hire Us Replies</h2>
-
-  {% for application in applications %}
-  <div class="application-item">
-    <div class="application-details">
-      <p><strong>From:</strong> {{ application.name }}</p>
-      <p><strong>Email:</strong> {{ application.email }}</p>
-      <p><strong>Hiring Details:</strong> {{ application.hiring_details }}</p>
-      {% if application.reply_sent %}
-      <p><strong>Reply:</strong> {{ application.reply_message }}</p>
-      {% endif %}
-    </div>
-    <div class="application-actions">
-      {% if not application.reply_sent %}
-      <button onclick="showReplyWindow({{ application.id }})">Reply</button>
-      {% else %}
-      <button disabled style="background-color: #cccccc; cursor: not-allowed">
-        Replied
-      </button>
-      {% endif %}
-    </div>
-  </div>
-
-  {% if not application.reply_sent %}
-  <div class="reply-window" id="reply-window-{{ application.id }}">
-    <form method="POST" action="{% url 'hire_us_reply' application.id %}">
-      {% csrf_token %}
-      <textarea
-        name="reply_message"
-        rows="5"
-        placeholder="Write your reply here..."
-        required
-      ></textarea>
-      <button type="submit">Send Reply</button>
-    </form>
-  </div>
-  {% endif %} {% endfor %}
-</div>
 
 <script>
   function showReplyWindow(applicationId) {

@@ -59,69 +59,68 @@
     </div>
   </div>
   <button class="hire-us-btn" onclick="openForm()">Hire Us</button>
-</section>
-
-<!-- Popup Form -->
-<div id="hireUsForm" class="form-popup">
-  <form action="{% url 'hire_us' %}" method="POST" class="form-container">
-    {% csrf_token %}
-    <h2>Hire Us</h2>
-    <label for="name"><b>Name</b></label>
-    <input type="text" placeholder="Your Name" name="name" required />
-    <label for="email"><b>Email</b></label>
-    <input type="email" placeholder="Your Email" name="email" required />
-    <label for="details"><b>About Requirements</b></label>
-    <textarea
-      placeholder="Describe your requirements"
-      name="details"
-      required
-    ></textarea>
-    <button type="submit" class="btn">Submit</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">
-      Close
-    </button>
-  </form>
-</div>
-
-<div class="technologies-section">
-  <h2>Technologies We Use</h2>
-  <h3>Data Analytics Tools</h3>
-  <div class="technologies-container">
-    <div class="technology">
-      <i class="fab fa-python"></i>
-      <h4>Python</h4>
-      <div class="description">
-        Utilizing Python for data analysis and machine learning.
+  <div id="hireUsForm" class="form-popup">
+    <form action="{% url 'hire_us' %}" method="POST" class="form-container">
+      {% csrf_token %}
+      <h2>Hire Us</h2>
+      <label for="name"><b>Name</b></label>
+      <input type="text" placeholder="Your Name" name="name" required />
+      <label for="email"><b>Email</b></label>
+      <input type="email" placeholder="Your Email" name="email" required />
+      <label for="details"><b>About Requirements</b></label>
+      <textarea
+        placeholder="Describe your requirements"
+        name="details"
+        required
+      ></textarea>
+      <button type="submit" class="btn">Submit</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">
+        Close
+      </button>
+    </form>
+  </div>
+  <div class="technologies-section">
+    <h2>Technologies We Use</h2>
+    <h3>Data Analytics Tools</h3>
+    <div class="technologies-container">
+      <div class="technology">
+        <i class="fab fa-python"></i>
+        <h4>Python</h4>
+        <div class="description">
+          Utilizing Python for data analysis and machine learning.
+        </div>
       </div>
-    </div>
-    <div class="technology">
-      <i class="fab fa-r-project"></i>
-      <h4>R</h4>
-      <div class="description">
-        Using R for statistical computing and graphics.
+      <div class="technology">
+        <i class="fab fa-r-project"></i>
+        <h4>R</h4>
+        <div class="description">
+          Using R for statistical computing and graphics.
+        </div>
       </div>
-    </div>
-    <div class="technology">
-      <i class="fas fa-powerbi"></i>
-      <h4>Power BI</h4>
-      <div class="description">
-        Creating interactive data visualizations with Power BI.
+      <div class="technology">
+        <i class="fas fa-powerbi"></i>
+        <h4>Power BI</h4>
+        <div class="description">
+          Creating interactive data visualizations with Power BI.
+        </div>
       </div>
-    </div>
-    <div class="technology">
-      <i class="fas fa-tableau"></i>
-      <h4>Tableau</h4>
-      <div class="description">
-        Creating interactive data visualizations with Tableau.
+      <div class="technology">
+        <i class="fas fa-tableau"></i>
+        <h4>Tableau</h4>
+        <div class="description">
+          Creating interactive data visualizations with Tableau.
+        </div>
       </div>
-    </div>
-    <div class="technology">
-      <i class="fas fa-database"></i>
-      <h4>SQL</h4>
-      <div class="description">Managing and querying databases using SQL.</div>
+      <div class="technology">
+        <i class="fas fa-database"></i>
+        <h4>SQL</h4>
+        <div class="description">
+          Managing and querying databases using SQL.
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- Styles specific to data analytics page -->
 <style>
@@ -332,10 +331,12 @@
     background-color: white;
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
   }
 
   .form-container {
-    max-width: 300px;
+    max-width: 100%;
     padding: 10px;
     background-color: white;
   }
@@ -374,6 +375,18 @@
 
   .form-container .cancel {
     background-color: red;
+  }
+
+  @media (max-width: 768px) {
+    .form-popup {
+      width: 90%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .form-popup {
+      width: 95%;
+    }
   }
 
   @media (max-width: 768px) {
