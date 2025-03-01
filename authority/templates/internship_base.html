@@ -202,13 +202,13 @@
     </div>
     <ul class="nav-links">
       <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-      <li><a href="{% url 'add_internship_project' %}">Add Internship Projects</a></li>
+      <li><a href="{% url 'add_internship_project' %}">Add Projects</a></li>
+      <li><a href="{% url 'added_internship_project' %}">Added Projects</a></li>
       <li><a href="{% url 'view_internship_applications' %}">Internship Applications</a></li>
       <li><a href="{% url 'eligible_for_internship_offer_letter' %}">Issue Offer Letter</a></li>
-      <li><a href="{% url 'eligible_for_internship_certificate' %}">Issue Internship Certificate</a></li>
-      <li><a href="{% url 'issued_internship_certificates' %}">Issued Internship Certificates</a></li>
+      <li><a href="{% url 'eligible_for_internship_certificate' %}">Issue Certificate</a></li>
+      <li><a href="{% url 'issued_internship_certificates' %}">Issued Certificates</a></li>
       <li><a href="{% url 'received_internship_payments' %}">Received Payments</a></li>
-      <li><a href="{% url 'added_internship_projects' %}">Added Internship Projects</a></li>
     </ul>
     <div class="auth-buttons">
       <form method="POST" action="{% url 'admin_logout' %}">
