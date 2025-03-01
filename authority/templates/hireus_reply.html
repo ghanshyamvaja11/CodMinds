@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block title %}Admin Hire Us Reply{% endblock %} {%
-block content %}
+{% extends 'base.html' %} {% block title %}Admin Hire Us Reply{% endblock %} {% block content %}
 
 <div class="admin-applications-container">
   <h2>Hire Us Queries</h2>
@@ -38,7 +37,8 @@ block content %}
       <button type="submit">Send Reply</button>
     </form>
   </div>
-  {% endif %} {% endfor %}
+  {% endif %} 
+  {% endfor %}
 </div>
 
 <style>
@@ -64,7 +64,7 @@ block content %}
     margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
-    align-items: center.;
+    align-items: center;
   }
 
   .application-details {
