@@ -10,6 +10,7 @@
       <p><strong>From:</strong> {{ application.name }}</p>
       <p><strong>Email:</strong> {{ application.email }}</p>
       <p><strong>Hiring Details:</strong> {{ application.hiring_details }}</p>
+      {% if application.reply_sent %}
       <p><strong>Reply:</strong> {{ application.message }}</p>
       {% endif %}
     </div>
@@ -29,7 +30,7 @@
     <form method="POST" action="{% url 'hire_us_reply' application.id %}">
       {% csrf_token %}
       <textarea
-        name="message"
+        n"
         rows="5"
         placeholder="Write your reply here..."
         required
