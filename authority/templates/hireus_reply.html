@@ -1,5 +1,5 @@
-{% extends 'base.html' %} {% block title %}Admin Hire Us Reply{% endblock %} {%
-block content %}
+{% extends 'base.html' %} 
+{% block content %}
 
 <div class="admin-applications-container">
   <h2>Hire Us Queries</h2>
@@ -10,8 +10,7 @@ block content %}
       <p><strong>From:</strong> {{ application.name }}</p>
       <p><strong>Email:</strong> {{ application.email }}</p>
       <p><strong>Hiring Details:</strong> {{ application.hiring_details }}</p>
-      {% if application.reply_sent %}
-      <p><strong>Reply:</strong> {{ application.reply_message }}</p>
+      <p><strong>Reply:</strong> {{ application.message }}</p>
       {% endif %}
     </div>
     <div class="application-actions">
@@ -25,12 +24,12 @@ block content %}
     </div>
   </div>
 
-  {% if application.reply_sent not true %}
+  {% if application.reply_sent is false %}
   <div class="reply-window" id="reply-window-{{ application.id }}">
     <form method="POST" action="{% url 'hire_us_reply' application.id %}">
       {% csrf_token %}
       <textarea
-        name="reply_message"
+        name="message"
         rows="5"
         placeholder="Write your reply here..."
         required

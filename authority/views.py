@@ -845,7 +845,7 @@ def hire_us_reply(request, application_id):
             return redirect('hire_us_applications')
 
         # Save the reply and mark the application as replied
-        application.reply_message = reply_message
+        application.message = reply_message
         application.reply_sent = True
         application.save()
 

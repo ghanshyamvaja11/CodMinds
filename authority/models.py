@@ -14,7 +14,6 @@ class InternshipProjects(models.Model):
     def get_unique_fields():
         return InternshipProjects.objects.values_list('field', flat=True).distinct()
 
-
 class AllottedProject(models.Model):
     project_id = models.IntegerField()
     email = models.EmailField()
