@@ -17,7 +17,7 @@ class HireUs(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     hiring_details = models.TextField()
-    message = models.TextField(default=None)
+    message = models.TextField(null=True, blank=True)
     reply_sent = models.BooleanField(default=False)
 
     def __str__(self):
