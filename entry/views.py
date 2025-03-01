@@ -124,10 +124,10 @@ def hire_us(request):
 
         # Send email
         send_mail(
-            subject=f"Hire Us Request from {name}",
+            subject=f"Hire Us Request sent",
             message=f"Name: {name}\nEmail: {email}\n\nHiring Details:\n{hiring_details} \nThank you for your request. We will get back to you soon.",
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.DEFAULT_FROM_EMAIL],
+            recipient_list=[email],
         )
 
         messages.success(
