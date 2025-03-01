@@ -1,5 +1,5 @@
-{% extends 'base.html' %} 
-{% block content %}
+{% extends 'base.html' %} {% block title %}Admin Hire Us Reply{% endblock %} {%
+block content %}
 
 <div class="admin-applications-container">
   <h2>Hire Us Queries</h2>
@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  {% if not application.reply_sent %}
+  {% if application.reply_sent not true %}
   <div class="reply-window" id="reply-window-{{ application.id }}">
     <form method="POST" action="{% url 'hire_us_reply' application.id %}">
       {% csrf_token %}
