@@ -839,6 +839,7 @@ def hire_us_reply(request, application_id):
 
     if request.method == 'POST':
         reply_message = request.POST.get('reply_message')
+        print(reply_message)
 
         if not reply_message:
             messages.error(request, "Reply message cannot be empty.")

@@ -23,36 +23,36 @@
   }
 
   .btn-primary {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
+    background: #1a73e8;
     color: #fff;
-    background-color: #007bff;
     border: none;
-    border-radius: 4px;
+    padding: 12px 20px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s ease;
   }
 
   .btn-primary:hover {
-    background-color: #0056b3;
+    background: #0c47b6;
   }
 
   .btn-secondary {
-        background: #fff;
-        color: #1a73e8;
-        border: 2px solid #1a73e8;
-        padding: 12px 20px;
-        width: 100%;
-        font-size: 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-        margin-top: 10px;
-      }
+    background: #fff;
+    color: #1a73e8;
+    border: 2px solid #1a73e8;
+    padding: 12px 20px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+  }
 
   .btn-secondary:hover {
-    background-color: #007bff;
+    background: #1a73e8;
     color: #fff;
   }
 
@@ -156,7 +156,7 @@
 
   <!-- Login with OTP Button -->
   <a href="{% url 'login_with_otp' %}">
-    <button class="btn-secondary">Login with OTP</button>
+    <button class="btn-secondary" style="width: 100%;">Login with OTP</button>
   </a>
 
   <!-- Forgot Password Link -->

@@ -1,6 +1,4 @@
-{% extends 'base.html' %} 
-{% block content %}
-
+{% extends 'base.html' %} {% block content %}
 <div class="admin-applications-container">
   <h2>Hire Us Queries</h2>
 
@@ -25,12 +23,16 @@
     </div>
   </div>
 
-  {% if application.reply_sent is false %}
-  <div class="reply-window" id="reply-window-{{ application.id }}">
+  {% if not application.reply_sent %}
+  <div
+    class="reply-window"
+    id="reply-window-{{ application.id }}"
+    style="display: none"
+  >
     <form method="POST" action="{% url 'hire_us_reply' application.id %}">
       {% csrf_token %}
       <textarea
-        n"
+        name="reply_message"
         rows="5"
         placeholder="Write your reply here..."
         required
