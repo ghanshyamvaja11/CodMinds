@@ -1,9 +1,13 @@
-{% extends 'internship_base.html' %} {% if not request.user.is_authenticated %}
+{% extends 'internship_base.html' %} 
+
+{% block content %}
+<title>CodMinds Admin - View Internship Applications</title>
+
+{% if not request.user.is_authenticated %}
 <script>
   window.location.href = "{% url 'admin_login' %}";
 </script>
-{% endif %} {% block title %}View Applications | CodMinds{% endblock %} {% block
-content %}
+{% endif %} 
 <style>
   .applications-container {
     max-width: 1000px;

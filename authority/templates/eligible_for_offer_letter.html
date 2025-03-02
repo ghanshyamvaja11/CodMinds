@@ -1,12 +1,8 @@
 {% extends 'internship_base.html' %}
 
-{% if not request.user.is_authenticated %}
-<script>
-    window.location.href = "{% url 'admin_login' %}";
-</script>
-{% endif %}
 
 {% block content %}
+<title>CodMinds Admin - Eligible for Internship Offer letter</title>
 <style>
     .admin-queries-container {
         max-width: 1000px;
