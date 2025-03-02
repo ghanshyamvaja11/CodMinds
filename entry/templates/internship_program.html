@@ -6,31 +6,21 @@
 <!-- Internship Program Section -->
 <section id="internship-program" class="internship-program">
   <h1>Internship Programs</h1>
-  <form
-    method="GET"
-    action="{% url 'internship_program' %}"
-    class="search-form"
-  >
-    <input
-      type="text"
-      name="search"
-      placeholder="Search by title..."
-      value="{{ query }}"
-    />
+
+  <!-- Search Form -->
+  <form method="GET" action="{% url 'internship_program' %}" class="search-form">
+    <input type="text" name="search" placeholder="Search by title..." value="{{ query }}" />
     <select name="field">
         <option value="">Search by field...</option>
-        {% for field in fields %}
+        {% for field in fields %} 
         <option value="{{ field }}" {% if field == selected_field %}selected{% endif %}>{{ field }}</option>
         {% endfor %}
     </select>
-    <input
-      type="number"
-      name="duration"
-      placeholder="Search by duration (months)..."
-      value="{{ duration }}"
-    />
+    <input type="number" name="duration" placeholder="Search by duration (months)..." value="{{ duration }}" />
     <button type="submit">Search</button>
   </form>
+
+  <!-- Internship Listings -->
   <div class="internship-program-container">
     {% for internship in internships %}
     <div class="program-details">
@@ -38,10 +28,7 @@
       <h3><strong>Project Name:</strong> {{ internship.title }}</h3>
       <p><strong>Field:</strong> {{ internship.field }}</p>
       <p><strong>Duration:</strong> {{ internship.duration }} months</p>
-      <button
-        class="view-button"
-        onclick="showPopup('{{ internship.title }}', '{{ internship.description }}', '{{ internship.field }}', '{{ internship.duration }}')"
-      >
+      <button class="view-button" onclick="showPopup('{{ internship.title }}', '{{ internship.description }}', '{{ internship.field }}', '{{ internship.duration }}')">
         View
       </button>
     </div>
@@ -49,7 +36,13 @@
   </div>
 </section>
 
-<!-- Popup Modal -->
+<!-- Internship Certificate Example -->
+<div class="certificate-container">
+  <p class="certificate-text">Demo Internship Certificate (Click to Zoom)</p><br>
+  <img src="/media/certificates/example_internship.png" alt="Demo Internship Certificate" class="responsive-img" onclick="openCertificatePopup()" />
+</div>
+
+<!-- Popup Modal for Internship Details -->
 <div id="popup-modal" class="popup-modal">
   <div class="popup-content">
     <span class="close" onclick="closePopup()">&times;</span>
@@ -63,7 +56,15 @@
   </div>
 </div>
 
-<!-- Styles specific to internship program page -->
+<!-- Certificate Popup Modal -->
+<div id="certificate-modal" class="popup-modal">
+  <div class="popup-content">
+    <span class="close" onclick="closeCertificatePopup()">&times;</span>
+    <img src="/media/certificates/example_internship.png" alt="Enlarged Certificate" class="enlarged-certificate" />
+  </div>
+</div>
+
+<!-- Styles -->
 <style>
   /* Internship Program Section */
   .internship-program {
@@ -86,18 +87,10 @@
     gap: 10px;
   }
 
-  .search-form input {
+  .search-form input, .search-form select {
     padding: 10px;
     font-size: 16px;
-    width: 200px; /* Adjusted width */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-
-  .search-form select {
-    padding: 10px;
-    font-size: 16px;
-    width: 200px; /* Set the same width as input boxes */
+    width: 200px;
     border: 1px solid #ddd;
     border-radius: 5px;
   }
@@ -134,23 +127,6 @@
     transform: translateY(-10px);
   }
 
-  .program-details i {
-    font-size: 40px;
-    color: #1e90ff;
-    margin-bottom: 15px;
-  }
-
-  .program-details h3 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #333;
-  }
-
-  .program-details p {
-    font-size: 16px;
-    color: #555;
-  }
-
   .view-button {
     padding: 10px 20px;
     font-size: 16px;
@@ -162,7 +138,29 @@
     margin-top: 10px;
   }
 
-  /* Popup Modal */
+  /* Certificate Section */
+  .certificate-container {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .responsive-img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-bottom: 3px solid #1e90ff;
+    cursor: pointer;
+  }
+
+  .certificate-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1e90ff;
+    margin-top: 10px;
+    transition: color 0.3s;
+  }
+
+  /* Popup Modals */
   .popup-modal {
     display: none;
     position: fixed;
@@ -193,11 +191,17 @@
     font-weight: bold;
   }
 
-  .close:hover,
-  .close:focus {
+  .close:hover {
     color: black;
-    text-decoration: none;
     cursor: pointer;
+  }
+
+  /* Enlarged Certificate */
+  .enlarged-certificate {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border: 3px solid #1e90ff;
   }
 
   @media (max-width: 768px) {
@@ -205,13 +209,21 @@
       flex: 1 1 100%;
     }
 
-    .search-form input {
+    .search-form input, .search-form select {
       width: 100%;
+    }
+
+    .responsive-img {
+      max-width: 100%;
+    }
+    
+    .certificate-text {
+      font-size: 16px;
     }
   }
 </style>
 
-<!-- JavaScript for Popup Modal -->
+<!-- JavaScript -->
 <script>
   function showPopup(title, description, field, duration) {
     document.getElementById("popup-title").innerText = title;
@@ -223,6 +235,14 @@
 
   function closePopup() {
     document.getElementById("popup-modal").style.display = "none";
+  }
+
+  function openCertificatePopup() {
+    document.getElementById("certificate-modal").style.display = "block";
+  }
+
+  function closeCertificatePopup() {
+    document.getElementById("certificate-modal").style.display = "none";
   }
 </script>
 
