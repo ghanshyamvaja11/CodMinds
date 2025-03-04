@@ -1,607 +1,668 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodMinds - Innovating the Future</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="/media/favicon.ico">
-    
-  <style>
-    /* Reset and Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodMinds - Innovating the Future</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="/media/favicon.ico" />
 
-    body {
-      background-color: #f4f4f4;
-      color: #333;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    ul {
-      list-style: none;
-    }
-
-    /* Navbar Styles */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: #24292e;
-      color: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .navbar .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #61dafb;
-    }
-
-    .navbar ul {
-      display: flex;
-      gap: 20px;
-    }
-
-    .navbar ul li {
-      font-size: 18px;
-    }
-
-    .navbar ul li a:hover {
-      color: #61dafb;
-    }
-
-    .navbar .auth-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .navbar .auth-buttons button {
-      padding: 8px 15px;
-      border: none;
-      border-radius: 20px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .navbar .auth-buttons .login {
-      background-color: transparent;
-      color: #fff;
-      border: 2px solid #61dafb;
-    }
-
-    .navbar .auth-buttons .login:hover {
-      background-color: #61dafb;
-      color: #24292e;
-      transform: scale(1.1);
-    }
-
-    .navbar .auth-buttons .signup {
-      background-color: #61dafb;
-      color: #24292e;
-    }
-
-    .navbar .auth-buttons .signup:hover {
-      background-color: #fff;
-      color: #61dafb;
-      transform: scale(1.1);
-    }
-
-    /* Hamburger menu styles */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: space-around;
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-    }
-
-    .hamburger span {
-      width: 25px;
-      height: 4px;
-      background-color: white;
-      border-radius: 5px;
-    }
-
-    /* Media Query for Mobile Responsiveness */
-    @media (max-width: 768px) {
-      .navbar ul {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        background-color: #333;
-        text-align: center;
-        padding: 10px 0;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
       }
 
-      .navbar ul.active {
+      body {
+        background-color: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+        overflow-x: hidden;
         display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #24292e;
+        color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #61dafb;
+      }
+
+      .navbar ul {
+        display: flex;
+        gap: 20px;
       }
 
       .navbar ul li {
+        font-size: 18px;
+      }
+
+      .navbar ul li a:hover {
+        color: #61dafb;
+      }
+
+      .navbar .auth-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .navbar .auth-buttons button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+
+      .navbar .auth-buttons .login {
+        background-color: transparent;
+        color: #fff;
+        border: 2px solid #61dafb;
+      }
+
+      .navbar .auth-buttons .login:hover {
+        background-color: #61dafb;
+        color: #24292e;
+        transform: scale(1.1);
+      }
+
+      .navbar .auth-buttons .signup {
+        background-color: #61dafb;
+        color: #24292e;
+      }
+
+      .navbar .auth-buttons .signup:hover {
+        background-color: #fff;
+        color: #61dafb;
+        transform: scale(1.1);
+      }
+
+      /* Hamburger menu styles */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+      }
+
+      .hamburger span {
+        width: 25px;
+        height: 4px;
+        background-color: white;
+        border-radius: 5px;
+      }
+
+      /* Media Query for Mobile Responsiveness */
+      @media (max-width: 768px) {
+        .navbar ul {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+          position: absolute;
+          top: 70px;
+          left: 0;
+          background-color: #333;
+          text-align: center;
+          padding: 10px 0;
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar ul.active {
+          display: flex;
+        }
+
+        .navbar ul li {
+          margin: 10px 0;
+        }
+
+        .hamburger {
+          display: flex;
+        }
+
+        .auth-buttons {
+          display: none;
+        }
+      }
+
+      /* Hero Section */
+      .hero {
+        height: 100vh;
+        background: linear-gradient(to right, #1e90ff, #00bfff);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 20px;
+      }
+
+      .hero h1 {
+        font-size: 60px;
+        margin-bottom: 20px;
+        animation: fadeIn 2s ease-in-out;
+        will-change: opacity;
+      }
+
+      .hero p {
+        font-size: 22px;
+        margin-bottom: 40px;
+        animation: fadeIn 2.5s ease-in-out;
+        will-change: opacity;
+      }
+
+      .hero .cta-btn {
+        padding: 15px 40px;
+        font-size: 18px;
+        background-color: #61dafb;
+        color: #24292e;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: transform 0.3s, background-color 0.3s;
+        will-change: transform, background-color;
+      }
+
+      .hero .cta-btn:hover {
+        background-color: #fff;
+        transform: scale(1.05);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* About Section */
+      .about {
+        padding: 80px 50px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 50px;
+        background-color: #fff;
+      }
+
+      .about img {
+        flex: 1;
+        max-width: 500px;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .about-text {
+        flex: 1;
+      }
+
+      .about-text h2 {
+        font-size: 36px;
+        color: #1e90ff;
+        margin-bottom: 20px;
+      }
+
+      .about-text p {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.8;
+        margin-bottom: 20px;
+      }
+
+      .about-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto;
+      }
+
+      @media (min-width: 768px) {
+        .about-img {
+          width: 80%;
+        }
+      }
+
+      @media (min-width: 1200px) {
+        .about-img {
+          width: 50%;
+        }
+      }
+
+      /* Services Section */
+      .services {
+        padding: 80px 50px;
+        background-color: #f9f9f9;
+        text-align: center;
+      }
+
+      .services h2 {
+        font-size: 36px;
+        color: #1e90ff;
+        margin-bottom: 50px;
+      }
+
+      .services-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center;
+      }
+
+      .service {
+        flex: 1 1 300px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s;
+        animation: fadeInUp 1s ease-in-out;
+        will-change: transform, opacity;
+      }
+
+      .service:hover {
+        transform: translateY(-10px);
+      }
+
+      .service i {
+        font-size: 40px;
+        color: #1e90ff;
+        margin-bottom: 15px;
+      }
+
+      .service h3 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .service p {
+        font-size: 16px;
+        color: #555;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Contact Section */
+      .contact {
+        padding: 80px 50px;
+        background-color: #fff;
+        text-align: center;
+      }
+
+      .contact h2 {
+        font-size: 36px;
+        color: #1e90ff;
+        margin-bottom: 30px;
+      }
+
+      .contact form {
+        max-width: 600px;
+        margin: 0 auto;
+        display: grid;
+        gap: 20px;
+      }
+
+      .contact input,
+      .contact textarea {
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+        resize: none;
+      }
+
+      .contact button {
+        background-color: #61dafb;
+        color: #24292e;
+        border: none;
+        padding: 15px 30px;
+        font-size: 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        will-change: background-color;
+      }
+
+      .contact button:hover {
+        background-color: #1e90ff;
+      }
+
+      .physical-address {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .physical-address h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+        font-weight: 600;
+      }
+
+      .address-box {
+        text-align: left;
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 20px;
+      }
+
+      .address-box p {
+        color: #555;
+        margin: 8px 0;
+      }
+
+      .address-box a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .address-box a:hover {
+        text-decoration: underline;
+      }
+
+      /* Footer Section */
+      .footer {
+        background-color: #24292e;
+        color: #fff;
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .footer p {
         margin: 10px 0;
       }
 
-      .hamburger {
-        display: flex;
+      .footer .footer-links a {
+        color: #fff;
+        margin: 0 10px;
+        transition: color 0.3s;
       }
 
-      .auth-buttons {
-        display: none;
+      .footer .footer-links a:hover {
+        color: #1e90ff;
       }
-    }
 
-    /* Hero Section */
-    .hero {
-      height: 100vh;
-      background: linear-gradient(to right, #1e90ff, #00bfff);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 20px;
-    }
-
-    .hero h1 {
-      font-size: 60px;
-      margin-bottom: 20px;
-      animation: fadeIn 2s ease-in-out;
-      will-change: opacity;
-    }
-
-    .hero p {
-      font-size: 22px;
-      margin-bottom: 40px;
-      animation: fadeIn 2.5s ease-in-out;
-      will-change: opacity;
-    }
-
-    .hero .cta-btn {
-      padding: 15px 40px;
-      font-size: 18px;
-      background-color: #61dafb;
-      color: #24292e;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: transform 0.3s, background-color 0.3s;
-      will-change: transform, background-color;
-    }
-
-    .hero .cta-btn:hover {
-      background-color: #fff;
-      transform: scale(1.05);
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
+      .footer .social-icons a {
+        margin: 0 10px;
+        font-size: 20px;
+        color: #fff;
+        transition: color 0.3s;
       }
-      to {
-        opacity: 1;
+
+      .footer .social-icons a:hover {
+        color: #1e90ff;
       }
-    }
 
-    /* About Section */
-    .about {
-      padding: 80px 50px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 50px;
-      background-color: #fff;
-    }
-
-    .about img {
-      flex: 1;
-      max-width: 500px;
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .about-text {
-      flex: 1;
-    }
-
-    .about-text h2 {
-      font-size: 36px;
-      color: #1e90ff;
-      margin-bottom: 20px;
-    }
-
-    .about-text p {
-      font-size: 18px;
-      color: #555;
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-
-    .about-img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      display: block;
-      margin: 0 auto;
-    }
-
-    @media (min-width: 768px) {
-      .about-img {
-        width: 80%;
+      .success {
+        text-align: center;
+        color: green;
+        font-weight: bold;
+        margin-bottom: 20px;
       }
-    }
-
-    @media (min-width: 1200px) {
-      .about-img {
-        width: 50%;
-      }
-    }
-
-    /* Services Section */
-    .services {
-      padding: 80px 50px;
-      background-color: #f9f9f9;
-      text-align: center;
-    }
-
-    .services h2 {
-      font-size: 36px;
-      color: #1e90ff;
-      margin-bottom: 50px;
-    }
-
-    .services-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      justify-content: center;
-    }
-
-    .service {
-      flex: 1 1 300px;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transition: transform 0.3s;
-      animation: fadeInUp 1s ease-in-out;
-      will-change: transform, opacity;
-    }
-
-    .service:hover {
-      transform: translateY(-10px);
-    }
-
-    .service i {
-      font-size: 40px;
-      color: #1e90ff;
-      margin-bottom: 15px;
-    }
-
-    .service h3 {
-      font-size: 24px;
-      margin-bottom: 15px;
-      color: #333;
-    }
-
-    .service p {
-      font-size: 16px;
-      color: #555;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Contact Section */
-    .contact {
-      padding: 80px 50px;
-      background-color: #fff;
-      text-align: center;
-    }
-
-    .contact h2 {
-      font-size: 36px;
-      color: #1e90ff;
-      margin-bottom: 30px;
-    }
-
-    .contact form {
-      max-width: 600px;
-      margin: 0 auto;
-      display: grid;
-      gap: 20px;
-    }
-
-    .contact input,
-    .contact textarea {
-      padding: 10px;
-      font-size: 16px;
-      border: 2px solid #ccc;
-      border-radius: 5px;
-      width: 100%;
-      resize: none;
-    }
-
-    .contact button {
-      background-color: #61dafb;
-      color: #24292e;
-      border: none;
-      padding: 15px 30px;
-      font-size: 18px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      will-change: background-color;
-    }
-
-    .contact button:hover {
-      background-color: #1e90ff;
-    }
-
-    .physical-address {
-      max-width: 600px;
-      margin: 50px auto;
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .physical-address h3 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: #333;
-      font-weight: 600;
-    }
-
-    .address-box {
-      text-align: left;
-      font-size: 16px;
-      line-height: 1.6;
-      margin-top: 20px;
-    }
-
-    .address-box p {
-      color: #555;
-      margin: 8px 0;
-    }
-
-    .address-box a {
-      color: #007bff;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .address-box a:hover {
-      text-decoration: underline;
-    }
-
-    /* Footer Section */
-    .footer {
-      background-color: #24292e;
-      color: #fff;
-      text-align: center;
-      padding: 20px 0;
-    }
-
-    .footer p {
-      margin: 10px 0;
-    }
-
-    .footer .footer-links a {
-      color: #fff;
-      margin: 0 10px;
-      transition: color 0.3s;
-    }
-
-    .footer .footer-links a:hover {
-      color: #1e90ff;
-    }
-
-    .footer .social-icons a {
-      margin: 0 10px;
-      font-size: 20px;
-      color: #fff;
-      transition: color 0.3s;
-    }
-
-    .footer .social-icons a:hover {
-      color: #1e90ff;
-    }
-    
-    .success {
-      text-align: center;
-      color: green;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-  </style>
-</head>
-<body>
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="logo">CodMinds</div>
-    <ul class="nav-links">
-      <li><a href="#hero">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="{% url 'verify_certificate' %}">Verify Internship Certificate</a></li>
-    </ul>
-    <div class="auth-buttons">
-      <a href="{% url 'user_login' %}"><button class="login">Login</button></a>
-      <a href="{% url 'user_signup' %}"><button class="signup">Signup</button></a>
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="logo">CodMinds</div>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li>
+          <a href="{% url 'verify_certificate' %}"
+            >Verify Internship Certificate</a
+          >
+        </li>
+      </ul>
+      <div class="auth-buttons">
+        <a href="{% url 'user_login' %}"
+          ><button class="login">Login</button></a
+        >
+        <a href="{% url 'user_signup' %}"
+          ><button class="signup">Signup</button></a
+        >
+      </div>
+      <!-- Hamburger menu for mobile screens -->
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
-    <!-- Hamburger menu for mobile screens -->
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
-  {% if success %}
+    {% if success %}
     <p class="success">{{ success }}</p>
-  {% endif %}
-  <!-- Hero Section -->
-  <section id="hero" class="hero">
-    <h1>Innovating the Future with CodMinds</h1>
-    <p>Empowering businesses and individuals with cutting-edge technology solutions.</p>
-    <a href="#about"><button class="cta-btn">Get Started</button></a>
-  </section>
+    {% endif %}
+    <!-- Hero Section -->
+    <main>
+      <section id="hero" class="hero">
+        <h1>Innovating the Future with CodMinds</h1>
+        <p>
+          Empowering businesses and individuals with cutting-edge technology
+          solutions.
+        </p>
+        <a href="#about"><button class="cta-btn">Get Started</button></a>
+      </section>
 
-  <!-- About Section -->
-  <section id="about" class="about">
-    <img src="/media/logo.png" alt="About CodMinds" class="about-img">
-    <div class="about-text">
-      <h2>About CodMinds</h2>
-      <p>At CodMinds, we blend innovation with technology to create solutions that redefine possibilities. From AI-driven insights to web development and training, our goal is to empower your journey to success. We are dedicated to bridging the gap between cutting-edge technology and real-world applications, ensuring that businesses and individuals alike can thrive in the digital age.</p>
-<p>Our team of expert developers, data scientists, and educators are passionate about building future-ready solutions tailored to your unique needs.</p>
-<a href="{% url 'about' %}">
-  <button style="
-        background-color: deepskyblue; 
-        border: none; 
-        border-radius: 4px; 
-        color: white; 
-        font-size: 14px; 
-        padding: 8px 16px; 
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    " 
-    onmouseover="this.style.backgroundColor='skyblue'" 
-    onmouseout="this.style.backgroundColor='deepskyblue'">
-    View More
-  </button>
-</a>
+      <!-- About Section -->
+      <section id="about" class="about">
+        <img src="/media/logo.png" alt="About CodMinds" class="about-img" />
+        <div class="about-text">
+          <h2>About CodMinds</h2>
+          <p>
+            At CodMinds, we blend innovation with technology to create solutions
+            that redefine possibilities. From AI-driven insights to web
+            development and training, our goal is to empower your journey to
+            success. We are dedicated to bridging the gap between cutting-edge
+            technology and real-world applications, ensuring that businesses and
+            individuals alike can thrive in the digital age.
+          </p>
+          <p>
+            Our team of expert developers, data scientists, and educators are
+            passionate about building future-ready solutions tailored to your
+            unique needs.
+          </p>
+          <a href="{% url 'about' %}">
+            <button
+              style="
+                background-color: deepskyblue;
+                border: none;
+                border-radius: 4px;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+              "
+              onmouseover="this.style.backgroundColor='skyblue'"
+              onmouseout="this.style.backgroundColor='deepskyblue'"
+            >
+              View More
+            </button>
+          </a>
+        </div>
+      </section>
 
-    </div>
-  </section>
+      <!-- Services Section -->
+      <section id="services" class="services">
+        <h2>Our Services</h2>
+        <div class="services-container">
+          <div class="service">
+            <a href="{% url 'internship_program' %}">
+              <i class="fas fa-chalkboard-teacher"></i>
+              <h3 style="font-size: 20px">Internships Programs</h3>
+              <p style="font-size: 14px">Upskill yourself with Internship.</p>
+            </a>
+          </div>
+          <div class="service">
+            <a href="{% url 'web_development' %}">
+              <i class="fas fa-code"></i>
+              <h3 style="font-size: 20px">Web Development</h3>
+              <p style="font-size: 14px">
+                Building scalable, user-centric, and responsive websites
+                tailored for your business.
+              </p>
+            </a>
+          </div>
+          <p>
+            <a href="{% url 'servicies' %}">
+              <button
+                style="
+                  background-color: deepskyblue;
+                  border: none;
+                  border-radius: 4px;
+                  color: white;
+                  font-size: 14px;
+                  padding: 8px 16px;
+                  cursor: pointer;
+                  transition: background-color 0.3s ease;
+                "
+                onmouseover="this.style.backgroundColor='skyblue'"
+                onmouseout="this.style.backgroundColor='deepskyblue'"
+              >
+                View More
+              </button>
+            </a>
+          </p>
+        </div>
+      </section>
 
-  <!-- Services Section -->
-  <section id="services" class="services">
-    <h2>Our Services</h2>
-    <div class="services-container">
-      <div class="service">
-        <a href="{% url 'internship_program' %}">
-        <i class="fas fa-chalkboard-teacher"></i>
-        <h3 style="font-size: 20px;">Internships Programs</h3>
-        <p style="font-size: 14px;">Upskill yourself with Internship.</p>
-        </a>
-      </div>
-      <div class="service">
-        <a href="{% url 'web_development' %}">
-        <i class="fas fa-code"></i>
-        <h3 style="font-size: 20px;">Web Development</h3>
-        <p style="font-size: 14px;">Building scalable, user-centric, and responsive websites tailored for your business.</p>
-        </a>
-      </div>
-      <p>
-    <a href="{% url 'servicies' %}">
-    <button style="
-        background-color: deepskyblue; 
-        border: none; 
-        border-radius: 4px; 
-        color: white; 
-        font-size: 14px; 
-        padding: 8px 16px; 
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    " 
-    onmouseover="this.style.backgroundColor='skyblue'" 
-    onmouseout="this.style.backgroundColor='deepskyblue'">
-        View More
-    </button>
-</a>    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <h2>Contact Us</h2>
-    <form action="{% url 'contact' %}" method="POST">
-   {% csrf_token %}
-   <input type="text" placeholder="Your Name" name="name" required>
-   <input type="email" placeholder="Your Email" name="email" required>
-   <input type="text" placeholder="Your Subject" name="subject" required>
-   <textarea placeholder="Your Message" rows="5" name="message" required></textarea>
-   <button type="submit">Send Message</button>
- </form>
-  </section>
+      <!-- Contact Section -->
+      <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <form action="{% url 'contact' %}" method="POST">
+          {% csrf_token %}
+          <input type="text" placeholder="Your Name" name="name" required />
+          <input type="email" placeholder="Your Email" name="email" required />
+          <input
+            type="text"
+            placeholder="Your Subject"
+            name="subject"
+            required
+          />
+          <textarea
+            placeholder="Your Message"
+            rows="5"
+            name="message"
+            required
+          ></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </section>
 
       <div class="physical-address">
         <h3>Our Address</h3>
         <div class="address-box">
-            <p><strong>CodMinds</strong></p>
-            <p>Deda, Veraval</p>
-            <p>Gujarat, IN 362255</p>
-            <p>Email: <a href="mailto:codmindsofficial@gmail.com">codmindsofficial@gmail.com</a></p>
-            <p>Phone: <a href="tel:+918160075626">+91 81600 75626</a></p>
+          <p><strong>CodMinds</strong></p>
+          <p>Deda, Veraval</p>
+          <p>Gujarat, IN 362255</p>
+          <p>
+            Email:
+            <a href="mailto:codmindsofficial@gmail.com"
+              >codmindsofficial@gmail.com</a
+            >
+          </p>
+          <p>Phone: <a href="tel:+918160075626">+91 81600 75626</a></p>
         </div>
-    </div>
+      </div>
+    </main>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-links" style="margin-bottom: 10px">
+        <a href="{% url 'carrier' %}">Carriers</a> |
+        <a href="{% url 'T&C' %}">Terms & Conditions</a> |
+        <a href="{% url 'privacy_policy' %}">Privacy Policy</a> |
+        <a href="{% url 'cancellation_refund_policies' %}"
+          >Cancellation/Refund Policies</a
+        >
+        |
+        <a href="{% url 'contact' %}">Contact Us</a>
+      </div>
+      <div class="social-icons" style="margin-bottom: 10px">
+        {% comment %} <a href="#"><i class="fab fa-x"></i></a> {% endcomment %}
+        <a href="https://www.linkedin.com/company/106363766/"
+          ><i class="fab fa-linkedin"></i
+        ></a>
+        {% comment %} <a href="#"><i class="fab fa-instagram"></i></a> {%
+        endcomment %}
+      </div>
+      <p>
+        © 2024 - <span id="current-year"></span> CodMinds. All rights reserved.
+      </p>
+    </footer>
+  </body>
+  <script>
+    const hamburger = document.getElementById("hamburger");
+    const navLinksContainer = document.querySelector(".navbar ul"); // Select the ul element
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-links" style="margin-bottom: 10px;">
-      <a href="{% url 'carrier' %}">Carriers</a> |
-      <a href="{% url 'T&C' %}">Terms & Conditions</a> |
-      <a href="{% url 'privacy_policy' %}">Privacy Policy</a> |
-      <a href="{% url 'cancellation_refund_policies' %}">Cancellation/Refund Policies</a> |
-      <a href="{% url 'contact' %}">Contact Us</a>
-    </div>
-    <div class="social-icons" style="margin-bottom: 10px;">
-      {% comment %} <a href="#"><i class="fab fa-x"></i></a> {% endcomment %}
-      <a href="https://www.linkedin.com/company/106363766/"><i class="fab fa-linkedin"></i></a>
-      {% comment %} <a href="#"><i class="fab fa-instagram"></i></a> {% endcomment %}
-    </div>
-    <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
-  </footer>
-</body>
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const navLinksContainer = document.querySelector(".navbar ul"); // Select the ul element
-
-  hamburger.addEventListener("click", () => {
-    navLinksContainer.classList.toggle("active"); // Toggle 'active' class on ul element
-  });
-
-  // Close hamburger menu when any link is clicked
-  const navLinks = document.querySelectorAll(".navbar ul li a");
-  navLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      navLinksContainer.classList.remove("active"); // Remove the 'active' class to close the menu
+    hamburger.addEventListener("click", () => {
+      navLinksContainer.classList.toggle("active"); // Toggle 'active' class on ul element
     });
-  });
 
-  // Set current year
-  document.getElementById("current-year").textContent = new Date().getFullYear();
-</script>
+    // Close hamburger menu when any link is clicked
+    const navLinks = document.querySelectorAll(".navbar ul li a");
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinksContainer.classList.remove("active"); // Remove the 'active' class to close the menu
+      });
+    });
+
+    // Set current year
+    document.getElementById("current-year").textContent =
+      new Date().getFullYear();
+  </script>
 </html>

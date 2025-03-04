@@ -263,50 +263,46 @@ def user_dashboard(request):
             request, "An unexpected error occurred. Please try again.")
         return redirect('user_login')
 
+
 def internship_dashboard(request):
     return render(request, 'user_intern_dashboard.html')
+
 
 def job_dashboard(request):
     return render(request, 'user_job_dashboard.html')
 
+
 def user_profile(request):
     clear_messages(request)
     try:
-        # Fetch the currently logged-in user
         user = User.objects.get(email=request.session.get('email'))
 
         if request.method == 'POST':
             email_original = request.session.get('email')
-            # Get the data from the form
             name = request.POST.get('name')
-            # Convert email to lowercase
             email = request.POST.get('email').lower()
             phone = str(request.POST.get('phone'))
             password = request.POST.get('password')
 
             request.session['email_change'] = email
 
-            # Validate email
             try:
                 validate_email(email)
             except ValidationError:
                 messages.error(request, "Enter a valid email address.")
                 return render(request, 'edit_profile.html', {'user': user})
 
-            # Validate phone number (10 digits only)
             if not re.match(r'^\d{10}$', phone):
                 messages.error(
                     request, "Phone number must be a 10-digit number.")
                 return render(request, 'edit_profile.html', {'user': user})
 
             try:
-                # Hash the password if provided
                 if password:
                     hashed_password = hashlib.sha256(
                         password.encode('utf-8')).hexdigest()
                     user.password = hashed_password
 
-                # Update user details
                 user.name = name
                 user.email = email
                 user.phone = phone
@@ -347,7 +343,6 @@ def user_profile(request):
                     request, "An unexpected error occurred. Please try again.")
                 return render(request, 'edit_profile.html', {'user': user})
 
-        # GET request: Render the profile editing page
         return render(request, 'edit_profile.html', {'user': user})
     except User.DoesNotExist:
         messages.error(request, "User not found.")

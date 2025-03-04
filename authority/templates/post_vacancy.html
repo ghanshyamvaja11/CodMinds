@@ -1,0 +1,110 @@
+{% extends 'carriers_base.html' %} {% block content %}
+<style>
+  .admin-queries-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .admin-queries-container h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .form-group button {
+    width: 100%;
+    padding: 10px;
+    background: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .form-group button:hover {
+    background: #0b55c9;
+  }
+
+  .success {
+    text-align: center;
+    color: green;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+</style>
+
+<div class="admin-queries-container">
+  <h2>Post Vacancy</h2>
+
+  {% if success %}
+  <p class="success">{{ success }}</p>
+  {% endif %}
+
+  <form method="POST" action="{% url 'post_vacancy' %}">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="title">Job Title</label>
+      <input type="text" name="title" id="title" maxlength="255" required />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Job Description</label>
+      <textarea
+        name="description"
+        id="description"
+        maxlength="1200"
+        style="resize: none"
+        required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input
+        type="text"
+        name="location"
+        id="location"
+        maxlength="255"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="last_date_of_application">Last Date of Application</label>
+      <input
+        type="date"
+        name="last_date_of_application"
+        id="last_date_of_application"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <button type="submit">Post Vacancy</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

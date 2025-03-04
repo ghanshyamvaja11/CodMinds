@@ -25,6 +25,16 @@
       list-style: none;
     }
 
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+    }
+
     /* Updated Navbar Styles */
     .navbar {
       display: flex;
@@ -208,6 +218,7 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-links" style="margin-bottom: 10px;">
+      <a href="{% url 'carrier' %}">Carriers</a> |
       <a href="{% url 'T&C' %}">Terms & Conditions</a> |
       <a href="{% url 'privacy_policy' %}">Privacy Policy</a> |
       <a href="{% url 'cancellation_refund_policies' %}">Cancellation/Refund Policies</a> |
@@ -238,5 +249,5 @@
     // Set current year
     document.getElementById("current-year").textContent = new Date().getFullYear();
   </script>
-</body>
-</html>
+  </body>
+  </html>

@@ -1,254 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodMinds - Innovating the Future</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="icon" type="image/x-icon" href="/media/favicon.ico">
-  <style>
-    /* Reset and Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodMinds - Innovating the Future</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="/media/favicon.ico" />
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
 
-    ul {
-      list-style: none;
-    }
+      ul {
+        list-style: none;
+      }
 
-    /* Updated Navbar Styles */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: #24292e;
-      color: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
 
-    .navbar .logo {
-      display: flex;
-      align-items: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: #61dafb;
-    }
+      main {
+        flex: 1;
+      }
 
-    .navbar .logo img {
-      height: 40px;
-      margin-right: 10px;
-    }
+      /* Updated Navbar Styles */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #24292e;
+        color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-    .navbar ul {
-      display: flex;
-      gap: 20px;
-    }
+      .navbar .logo {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #61dafb;
+      }
 
-    .navbar ul li {
-      font-size: 18px;
-    }
+      .navbar .logo img {
+        height: 40px;
+        margin-right: 10px;
+      }
 
-    .navbar ul li a {
-      color: white;
-    }
-
-    .navbar ul li a:hover {
-      color: #61dafb;
-    }
-
-    .navbar .auth-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .navbar .auth-buttons button {
-      padding: 8px 15px;
-      border: none;
-      border-radius: 20px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .navbar .auth-buttons .logout {
-      background-color: transparent;
-      color: #fff;
-      border: 2px solid #61dafb;
-    }
-
-    .navbar .auth-buttons .logout:hover {
-      background-color: #61dafb;
-      color: #24292e;
-      transform: scale(1.1);
-    }
-
-    /* Hamburger menu styles */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: space-around;
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-    }
-
-    .hamburger span {
-      width: 25px;
-      height: 4px;
-      background-color: white;
-      border-radius: 5px;
-    }
-
-    /* Media Query for Mobile Responsiveness */
-    @media (max-width: 768px) {
       .navbar ul {
-        display: none;
-        width: 100%;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        background-color: #333;
-        text-align: center;
+        display: flex;
+        gap: 20px;
       }
 
       .navbar ul li {
-        margin-right: 0;
-        margin-top: 10px;
-      }
-
-      .navbar ul li a {
         font-size: 18px;
       }
 
+      .navbar ul li a {
+        color: white;
+      }
+
+      .navbar ul li a:hover {
+        color: #61dafb;
+      }
+
+      .navbar .auth-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .navbar .auth-buttons button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+
+      .navbar .auth-buttons .logout {
+        background-color: transparent;
+        color: #fff;
+        border: 2px solid #61dafb;
+      }
+
+      .navbar .auth-buttons .logout:hover {
+        background-color: #61dafb;
+        color: #24292e;
+        transform: scale(1.1);
+      }
+
+      /* Hamburger menu styles */
       .hamburger {
-        display: flex;
-      }
-
-      /* Show nav links when hamburger menu is clicked */
-      .navbar.active ul {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .auth-buttons {
         display: none;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
       }
-    }
 
-    /* Updated Footer Section */
-    .footer {
-      background-color: #24292e;
-      color: #fff;
-      text-align: center;
-      padding: 20px 0;
-    }
+      .hamburger span {
+        width: 25px;
+        height: 4px;
+        background-color: white;
+        border-radius: 5px;
+      }
 
-    .footer p {
-      margin: 10px 0;
-    }
+      /* Media Query for Mobile Responsiveness */
+      @media (max-width: 768px) {
+        .navbar ul {
+          display: none;
+          width: 100%;
+          position: absolute;
+          top: 70px;
+          left: 0;
+          background-color: #333;
+          text-align: center;
+        }
 
-    .footer .footer-links a {
-      color: #fff;
-      margin: 0 10px;
-      transition: color 0.3s;
-    }
+        .navbar ul li {
+          margin-right: 0;
+          margin-top: 10px;
+        }
 
-    .footer .footer-links a:hover {
-      color: #1e90ff;
-    }
+        .navbar ul li a {
+          font-size: 18px;
+        }
 
-    .footer .social-icons a {
-      margin: 0 10px;
-      font-size: 20px;
-      color: #fff;
-      transition: color 0.3s;
-    }
+        .hamburger {
+          display: flex;
+        }
 
-    .footer .social-icons a:hover {
-      color: #1e90ff;
-    }
-    
-    .success {
+        /* Show nav links when hamburger menu is clicked */
+        .navbar.active ul {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .auth-buttons {
+          display: none;
+        }
+      }
+
+      /* Updated Footer Section */
+      .footer {
+        background-color: #24292e;
+        color: #fff;
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .footer p {
+        margin: 10px 0;
+      }
+
+      .footer .footer-links a {
+        color: #fff;
+        margin: 0 10px;
+        transition: color 0.3s;
+      }
+
+      .footer .footer-links a:hover {
+        color: #1e90ff;
+      }
+
+      .footer .social-icons a {
+        margin: 0 10px;
+        font-size: 20px;
+        color: #fff;
+        transition: color 0.3s;
+      }
+
+      .footer .social-icons a:hover {
+        color: #1e90ff;
+      }
+
+      .success {
         text-align: center;
         color: green;
         font-weight: bold;
         margin-bottom: 20px;
-    }
-  </style>
-</head>
-<body>
-  {% if not request.user.is_authenticated %}
-  <script>
-    window.location.href = "{% url 'admin_login' %}";
-  </script>
-  {% endif %}
+      }
+    </style>
+  </head>
+  <body>
+    {% if not request.user.is_authenticated %}
+    <script>
+      window.location.href = "{% url 'admin_login' %}";
+    </script>
+    {% endif %}
 
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="logo">
-      CodMinds
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="logo">CodMinds</div>
+      <ul class="nav-links">
+        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'internship_dashboard' %}">Internships</a></li>
+        <li><a href="{% url 'carriers_dashboard' %}">Carriers</a></li>
+        <li>
+          <a href="{% url 'hire_us_applications' %}">Hire Applications</a>
+        </li>
+        <li><a href="{% url 'contact_us_view' %}">ContactUs</a></li>
+      </ul>
+      <div class="auth-buttons">
+        <form method="POST" action="{% url 'admin_logout' %}">
+          {% csrf_token %}
+          <button class="logout" type="submit">Logout</button>
+        </form>
+      </div>
+      <!-- Hamburger menu for mobile screens -->
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
-    <ul class="nav-links">
-      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-      <li><a href="{% url 'internship_dashboard' %}">Internships</a></li>
-      <li><a href="{% url 'carriers_dashboard' %}">Carriers</a></li>
-      <li><a href="{% url 'hire_us_applications' %}">Hire Applications</a></li>
-      <li><a href="{% url 'contact_us_view' %}">ContactUs</a></li>
-    </ul>
-    <div class="auth-buttons">
-      <form method="POST" action="{% url 'admin_logout' %}">
-        {% csrf_token %}
-        <button class="logout" type="submit">Logout</button>
-      </form>
-    </div>
-    <!-- Hamburger menu for mobile screens -->
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
 
-  <!-- Main Content Area -->
-  <main>
-    {% block content %}{% endblock %}
-  </main>
+    <!-- Main Content Area -->
+    <main>{% block content %}{% endblock %}</main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
-  </footer>
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        © 2024 - <span id="current-year"></span> CodMinds. All rights reserved.
+      </p>
+    </footer>
 
-<script>
-  const hamburger = document.getElementById("hamburger");
-  const navbar = document.querySelector(".navbar");
-  const navLinks = document.querySelectorAll(".navbar ul li a");
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const navbar = document.querySelector(".navbar");
+      const navLinks = document.querySelectorAll(".navbar ul li a");
 
-  hamburger.addEventListener("click", () => {
-    navbar.classList.toggle("active");
-  });
+      hamburger.addEventListener("click", () => {
+        navbar.classList.toggle("active");
+      });
 
-  navLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      navbar.classList.remove("active");
-    });
-  });
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navbar.classList.remove("active");
+        });
+      });
 
-  // Set current year
-  document.getElementById("current-year").textContent = new Date().getFullYear();
-</script>
-
-</body>
+      // Set current year
+      document.getElementById("current-year").textContent =
+        new Date().getFullYear();
+    </script>
+  </body>
 </html>
