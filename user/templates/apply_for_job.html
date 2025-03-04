@@ -1,0 +1,88 @@
+{% extends 'user_job_base.html' %} {% block content %}
+<title>CodMinds User - Apply for Job</title>
+
+<style>
+  .apply-job-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .apply-job-container h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .form-group button {
+    width: 100%;
+    padding: 10px;
+    background: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .form-group button:hover {
+    background: #0b55c9;
+  }
+</style>
+
+<div class="apply-job-container">
+  <h2>Apply for {{ vacancy.title }}</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="applicant_name">Name</label>
+      <input type="text" id="applicant_name" name="applicant_name" required />
+    </div>
+    <div class="form-group">
+      <label for="applicant_email">Email</label>
+      <input
+        type="email"
+        id="applicant_email"
+        name="applicant_email"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="resume">Resume</label>
+      <input type="file" id="resume" name="resume" required />
+    </div>
+    <div class="form-group">
+      <label for="cover_letter">Cover Letter</label>
+      <textarea
+        id="cover_letter"
+        name="cover_letter"
+        rows="5"
+        required
+      ></textarea>
+    </div>
+    <div class="form-group">
+      <button type="submit">Submit Application</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

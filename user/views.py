@@ -21,6 +21,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
 import os
 from django.contrib.messages import get_messages
+from carriers.models import Vacancy, JobApplication
 
 # Razorpay Client Setup
 razorpay_client = razorpay.Client(
@@ -28,10 +29,12 @@ razorpay_client = razorpay.Client(
 
 logger = logging.getLogger(__name__)
 
+
 def clear_messages(request):
     storage = get_messages(request)
     for _ in storage:
         pass
+
 
 def user_signup(request):
     clear_messages(request)
@@ -39,7 +42,8 @@ def user_signup(request):
         try:
             # Get the data from the form
             name = request.POST.get('name')
-            email = request.POST.get('email').lower()  # Convert email to lowercase
+            # Convert email to lowercase
+            email = request.POST.get('email').lower()
             phone = request.POST.get('phone')
             password = request.POST.get('password')
             confirm_password = request.POST.get('confirm_password')
@@ -48,7 +52,7 @@ def user_signup(request):
             if password != confirm_password:
                 messages.error(request, "Passwords do not match.")
                 return render(request, 'signup.html')
-            
+
             # Email validation
             try:
                 validate_email(email)
@@ -58,7 +62,8 @@ def user_signup(request):
 
             # Phone validation
             if not phone or not re.match(r'^\d{10}$', phone):
-                messages.error(request, "Phone number must be a 10-digit number.")
+                messages.error(
+                    request, "Phone number must be a 10-digit number.")
                 return render(request, 'signup.html')
 
             # Check if the email or phone number is already taken
@@ -70,23 +75,28 @@ def user_signup(request):
                 return render(request, 'signup.html')
 
             # Hash the password
-            hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            hashed_password = hashlib.sha256(
+                password.encode('utf-8')).hexdigest()
 
             # Create a new user instance
-            new_user = User(name=name, email=email, phone=phone, password=hashed_password)
+            new_user = User(name=name, email=email,
+                            phone=phone, password=hashed_password)
             new_user.save()
 
             # Optionally, you can add the user to the session and redirect to the login page
-            messages.success(request, "Account created successfully! Please login.")
+            messages.success(
+                request, "Account created successfully! Please login.")
             return redirect('user_login')
 
         except IntegrityError:
             # Handle cases where there's a database integrity error
-            messages.error(request, "Error creating account. Please try again.")
+            messages.error(
+                request, "Error creating account. Please try again.")
             return render(request, 'signup.html')
         except Exception as e:
             logger.error(f"Unexpected error during signup: {str(e)}")
-            messages.error(request, "An unexpected error occurred. Please try again.")
+            messages.error(
+                request, "An unexpected error occurred. Please try again.")
             return render(request, 'signup.html')
     else:
         return render(request, 'signup.html')
@@ -96,10 +106,12 @@ def user_login(request):
     clear_messages(request)
     if request.method == 'POST':
         try:
-            email = request.POST.get('email').lower()  # Convert email to lowercase
+            # Convert email to lowercase
+            email = request.POST.get('email').lower()
             password = request.POST.get('password')
             # Hash the entered password to compare it with the stored one
-            hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            hashed_password = hashlib.sha256(
+                password.encode('utf-8')).hexdigest()
 
             # Try to find the user by email and password
             user = User.objects.get(email=email, password=hashed_password)
@@ -113,11 +125,13 @@ def user_login(request):
             return render(request, 'login.html')
         except Exception as e:
             logger.error(f"Unexpected error during login: {str(e)}")
-            messages.error(request, "An unexpected error occurred. Please try again.")
+            messages.error(
+                request, "An unexpected error occurred. Please try again.")
             return render(request, 'login.html')
     else:
         # GET request, just render the login page
         return render(request, 'login.html')
+
 
 def user_logout(request):
     clear_messages(request)
@@ -128,11 +142,14 @@ def user_logout(request):
     return redirect('user_login')
 
 # Forgot Password View
+
+
 def forgot_password(request):
     clear_messages(request)
     if request.method == "POST":
         try:
-            email = request.POST.get('email').lower()  # Convert email to lowercase
+            # Convert email to lowercase
+            email = request.POST.get('email').lower()
 
             # Check if email exists in the database
             user = User.objects.get(email=email)
@@ -142,7 +159,8 @@ def forgot_password(request):
 
             # Generate OTP and send it via email
             otp = random.randint(100000, 999999)
-            request.session['otp'] = otp  # Store OTP in session for verification
+            # Store OTP in session for verification
+            request.session['otp'] = otp
             send_mail(
                 'Your OTP for Password Reset',
                 f'Your OTP code is: {otp}',
@@ -157,12 +175,15 @@ def forgot_password(request):
             return redirect('forgot_password')
         except Exception as e:
             logger.error(f"Unexpected error during forgot password: {str(e)}")
-            messages.error(request, "An unexpected error occurred. Please try again.")
+            messages.error(
+                request, "An unexpected error occurred. Please try again.")
             return redirect('forgot_password')
 
     return render(request, 'forgot_password.html')
-    
+
 # OTP Verification View
+
+
 def verify_otp(request):
     clear_messages(request)
     if request.method == "POST":
@@ -178,12 +199,15 @@ def verify_otp(request):
                 return render(request, 'verify_otp.html')
         except Exception as e:
             logger.error(f"Unexpected error during OTP verification: {str(e)}")
-            messages.error(request, "An unexpected error occurred. Please try again.")
+            messages.error(
+                request, "An unexpected error occurred. Please try again.")
             return render(request, 'verify_otp.html')
 
     return render(request, 'verify_otp.html')
 
 # Password Reset View
+
+
 def reset_password(request):
     clear_messages(request)
     if request.method == "POST":
@@ -196,7 +220,8 @@ def reset_password(request):
                 user = User.objects.get(email=email)
 
                 # Hash the password
-                hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+                hashed_password = hashlib.sha256(
+                    password.encode('utf-8')).hexdigest()
                 user.password = hashed_password
                 user.save()
                 messages.success(request, "Password successfully reset!")
@@ -211,10 +236,12 @@ def reset_password(request):
             return redirect('forgot_password')
         except Exception as e:
             logger.error(f"Unexpected error during password reset: {str(e)}")
-            messages.error(request, "An unexpected error occurred. Please try again.")
+            messages.error(
+                request, "An unexpected error occurred. Please try again.")
             return render(request, 'reset_password.html')
 
     return render(request, 'reset_password.html')
+
 
 def user_dashboard(request):
     clear_messages(request)
@@ -222,7 +249,8 @@ def user_dashboard(request):
         user = User.objects.get(email=request.session.get('email'))
         name = user.name
         try:
-            internApplication = InternshipApplication.objects.get(email=request.session.get('email'))
+            internApplication = InternshipApplication.objects.get(
+                email=request.session.get('email'))
             return render(request, 'user_dashboard.html', {'name': name, 'internApplication': internApplication})
         except InternshipApplication.DoesNotExist:
             return render(request, 'user_dashboard.html', {'name': name})
@@ -231,8 +259,15 @@ def user_dashboard(request):
         return redirect('user_login')
     except Exception as e:
         logger.error(f"Unexpected error during dashboard access: {str(e)}")
-        messages.error(request, "An unexpected error occurred. Please try again.")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
         return redirect('user_login')
+
+def internship_dashboard(request):
+    return render(request, 'user_intern_dashboard.html')
+
+def job_dashboard(request):
+    return render(request, 'user_job_dashboard.html')
 
 def user_profile(request):
     clear_messages(request)
@@ -244,7 +279,8 @@ def user_profile(request):
             email_original = request.session.get('email')
             # Get the data from the form
             name = request.POST.get('name')
-            email = request.POST.get('email').lower()  # Convert email to lowercase
+            # Convert email to lowercase
+            email = request.POST.get('email').lower()
             phone = str(request.POST.get('phone'))
             password = request.POST.get('password')
 
@@ -259,48 +295,56 @@ def user_profile(request):
 
             # Validate phone number (10 digits only)
             if not re.match(r'^\d{10}$', phone):
-                messages.error(request, "Phone number must be a 10-digit number.")
+                messages.error(
+                    request, "Phone number must be a 10-digit number.")
                 return render(request, 'edit_profile.html', {'user': user})
 
             try:
                 # Hash the password if provided
                 if password:
-                    hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+                    hashed_password = hashlib.sha256(
+                        password.encode('utf-8')).hexdigest()
                     user.password = hashed_password
-                
+
                 # Update user details
                 user.name = name
                 user.email = email
                 user.phone = phone
                 user.save()
-                
+
                 if InternshipApplication.objects.filter(email=email_original).exists():
-                    InternshipAppl = InternshipApplication.objects.get(email=email_original)
+                    InternshipAppl = InternshipApplication.objects.get(
+                        email=email_original)
                     InternshipAppl.email = email
                     InternshipAppl.save()
 
                 if InternshipCertificate.objects.filter(email=email_original).exists():
-                    InternshipCert = InternshipCertificate.objects.get(email=email_original)
+                    InternshipCert = InternshipCertificate.objects.get(
+                        email=email_original)
                     InternshipCert.email = email
                     InternshipCert.save()
-                
+
                 if Payment.objects.filter(email=email_original).exists():
                     pay = Payment.objects.get(email=email_original)
-                    pay.email = email 
+                    pay.email = email
                     pay.save()
 
                 if email_original != request.session.get('email_change'):
-                    request.session['email'] = request.session.get('email_change')
+                    request.session['email'] = request.session.get(
+                        'email_change')
 
                 messages.success(request, "Profile updated successfully.")
                 return render(request, 'edit_profile.html', {'user': user})
 
             except IntegrityError:
-                messages.error(request, "An error occurred while updating your profile. Please try again.")
+                messages.error(
+                    request, "An error occurred while updating your profile. Please try again.")
                 return render(request, 'edit_profile.html', {'user': user})
             except Exception as e:
-                logger.error(f"Unexpected error during profile update: {str(e)}")
-                messages.error(request, "An unexpected error occurred. Please try again.")
+                logger.error(
+                    f"Unexpected error during profile update: {str(e)}")
+                messages.error(
+                    request, "An unexpected error occurred. Please try again.")
                 return render(request, 'edit_profile.html', {'user': user})
 
         # GET request: Render the profile editing page
@@ -310,18 +354,23 @@ def user_profile(request):
         return redirect('user_login')
     except Exception as e:
         logger.error(f"Unexpected error during profile access: {str(e)}")
-        messages.error(request, "An unexpected error occurred. Please try again.")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
         return redirect('user_login')
+
 
 def user_certificates(request):
     clear_messages(request)
     try:
-        certificates = InternshipCertificate.objects.filter(email=request.session.get('email'))
+        certificates = InternshipCertificate.objects.filter(
+            email=request.session.get('email'))
         return render(request, 'user_certificates.html', {'certificates': certificates})
     except Exception as e:
         logger.error(f"Unexpected error during certificate access: {str(e)}")
-        messages.error(request, "An unexpected error occurred. Please try again.")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
         return render(request, 'user_certificates.html')
+
 
 def apply_for_internship(request):
     clear_messages(request)
@@ -340,8 +389,10 @@ def apply_for_internship(request):
 
             # Check if the user already applied for this internship
             try:
-                existing_application = InternshipApplication.objects.get(email=email)
-                errors.append(f"You have already applied for the {existing_application.department} internship.")
+                existing_application = InternshipApplication.objects.get(
+                    email=email)
+                errors.append(
+                    f"You have already applied for the {existing_application.department} internship.")
             except InternshipApplication.DoesNotExist:
                 pass  # No previous application, so continue
 
@@ -366,7 +417,8 @@ def apply_for_internship(request):
             # Resume validation
             if resume:
                 if not resume.name.endswith(('.pdf', '.doc', '.docx')):
-                    errors.append("Resume must be a .pdf, .doc, or .docx file.")
+                    errors.append(
+                        "Resume must be a .pdf, .doc, or .docx file.")
                 if resume.size > 2 * 1024 * 1024:  # 2 MB limit
                     errors.append("Resume file size must not exceed 2 MB.")
             else:
@@ -386,12 +438,13 @@ def apply_for_internship(request):
                 department=department,
                 cover_letter=cover_letter,
                 resume=resume,
-                project_name='', 
+                project_name='',
                 project_description=''
             )
             application.save()
 
-            messages.success(request, "Your application has been submitted successfully!")
+            messages.success(
+                request, "Your application has been submitted successfully!")
             # Redirect back to the form or another page
             return redirect('apply_for_internship')
 
@@ -400,32 +453,41 @@ def apply_for_internship(request):
         messages.error(request, "User not found.")
         return redirect('user_login')
     except Exception as e:
-        logger.error(f"Unexpected error during internship application: {str(e)}")
-        messages.error(request, "An unexpected error occurred. Please try again.")
+        logger.error(
+            f"Unexpected error during internship application: {str(e)}")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
         return redirect('apply_for_internship')
+
 
 def view_internship_application_status(request):
     clear_messages(request)
     try:
-        application = InternshipApplication.objects.get(email=request.session.get('email'))
+        application = InternshipApplication.objects.get(
+            email=request.session.get('email'))
         return render(request, 'view_internship_application_status.html', {'application': application})
     except InternshipApplication.DoesNotExist:
         messages.error(request, "Application not found.")
         return redirect('apply_for_internship')
     except Exception as e:
-        logger.error(f"Unexpected error during application status view: {str(e)}")
-        messages.error(request, "An unexpected error occurred. Please try again.")
+        logger.error(
+            f"Unexpected error during application status view: {str(e)}")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
         return redirect('apply_for_internship')
+
 
 def project_selection(request):
     clear_messages(request)
     try:
         RAZORPAY_KEY_ID = settings.RAZORPAY_KEY_ID
-        internApplication = InternshipApplication.objects.get(email=request.session.get('email'))
+        internApplication = InternshipApplication.objects.get(
+            email=request.session.get('email'))
         user = User.objects.get(email=request.session.get('email'))
         # Fetch all available projects
-        projects = InternshipProjects.objects.filter(field=internApplication.department)
-        
+        projects = InternshipProjects.objects.filter(
+            field=internApplication.department)
+
         for i in projects:
             if internApplication.project_name != '':
                 return render(request, 'view_internship_application_status.html', {'err': f'you already selected Project : {i.title}', 'application': internApplication})
@@ -442,8 +504,10 @@ def project_selection(request):
         return redirect('user_login')
     except Exception as e:
         logger.error(f"Unexpected error during project selection: {str(e)}")
-        messages.error(request, "An unexpected error occurred. Please try again.")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
         return redirect('user_dashboard')
+
 
 def create_order(request):
     clear_messages(request)
@@ -468,7 +532,8 @@ def create_order(request):
             order = razorpay_client.order.create(order_info)
             order_id = order.get('id')
             if not order_id:
-                logger.error("Failed to retrieve order_id from Razorpay response")
+                logger.error(
+                    "Failed to retrieve order_id from Razorpay response")
                 return JsonResponse({'error': 'Failed to create Razorpay order try again'}, status=500)
 
             # Save payment details to the database
@@ -487,6 +552,7 @@ def create_order(request):
 
     logger.error("Invalid request method for create_order")
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
 
 def verify_payment(request):
     clear_messages(request)
@@ -523,10 +589,12 @@ def verify_payment(request):
                 payment.refund_amount = 0
                 payment.save()
 
-            #update internshipapplication data in database
-                proj = InternshipProjects.objects.get(id = request.session.get('project_id'))
+            # update internshipapplication data in database
+                proj = InternshipProjects.objects.get(
+                    id=request.session.get('project_id'))
                 duration = proj.duration
-                InternProjSelected = InternshipApplication.objects.get(email = request.session.get('email'))
+                InternProjSelected = InternshipApplication.objects.get(
+                    email=request.session.get('email'))
                 request.session['name'] = InternProjSelected.name
                 request.session['department'] = InternProjSelected.department
                 InternProjSelected.project_name = proj.title
@@ -536,7 +604,6 @@ def verify_payment(request):
 
             # allocate project and do entry in AllottedProject
                 current_date = datetime.now().date()
-
 
                 # Add 5 days to the current date
                 start_date = current_date + timedelta(days=5)
@@ -580,7 +647,7 @@ def verify_payment(request):
                 payment = Payment.objects.get(order_id=razorpay_order_id)
 
                 # Check if the status is 'Completed'
-                if payment.status != 'Completed':
+                if (payment.status != 'Completed'):
                     payment.delete()  # Delete the payment if the status is not 'Completed'
 
             except ObjectDoesNotExist:
@@ -594,6 +661,7 @@ def verify_payment(request):
             return JsonResponse({'status': 'Failed', 'message': f'Error: {str(e)}'}, status=500)
 
     return JsonResponse({'status': 'Failed', 'message': 'Invalid request method'}, status=400)
+
 
 def select_project(request, project_id):
     clear_messages(request)
@@ -618,8 +686,10 @@ def select_project(request, project_id):
         return redirect('project_selection')
     except Exception as e:
         logger.error(f"Unexpected error during project selection: {str(e)}")
-        messages.error(request, "An unexpected error occurred. Please try again.")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
         return redirect('project_selection')
+
 
 def resend_otp(request):
     clear_messages(request)
@@ -638,6 +708,7 @@ def resend_otp(request):
             return JsonResponse({'success': True})
         return JsonResponse({'success': False, 'message': 'Email not found in session'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
 
 def login_with_otp(request):
     clear_messages(request)
@@ -661,6 +732,7 @@ def login_with_otp(request):
             return redirect('login_with_otp')
     return render(request, 'login_with_otp.html')
 
+
 def verify_login_otp(request):
     clear_messages(request)
     if request.method == 'POST':
@@ -674,3 +746,74 @@ def verify_login_otp(request):
             messages.error(request, "Invalid OTP. Please try again.")
             return render(request, 'verify_login_otp.html')
     return render(request, 'verify_login_otp.html')
+
+
+def jobs(request):
+    clear_messages(request)
+    try:
+        user_email = request.session.get('email')
+        vacancies = Vacancy.objects.filter(
+            is_active=True, last_date_of_application__gte=timezone.now().date()
+        ).order_by('-posted_date')
+
+        applied_jobs = JobApplication.objects.filter(
+            applicant_email=user_email).values_list('vacancy_id', flat=True)
+
+        return render(request, 'jobs.html', {'vacancies': vacancies, 'applied_jobs': applied_jobs})
+    except Exception as e:
+        logger.error(f"Unexpected error during fetching jobs: {str(e)}")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
+        return render(request, 'jobs.html', {'vacancies': [], 'applied_jobs': []})
+
+
+def apply_for_job(request, vacancy_id):
+    clear_messages(request)
+    try:
+        vacancy = get_object_or_404(Vacancy, id=vacancy_id)
+        if request.method == 'POST':
+            applicant_name = request.POST.get('applicant_name')
+            applicant_email = request.POST.get('applicant_email')
+            resume = request.FILES.get('resume')
+            cover_letter = request.POST.get('cover_letter')
+
+            # Validate form data
+            if not applicant_name or not applicant_email or not resume or not cover_letter:
+                messages.error(request, "All fields are required.")
+                return render(request, 'apply_for_job.html', {'vacancy': vacancy})
+
+            # Save the job application
+            job_application = JobApplication(
+                vacancy=vacancy,
+                applicant_name=applicant_name,
+                applicant_email=applicant_email,
+                resume=resume,
+                cover_letter=cover_letter
+            )
+            job_application.save()
+
+            messages.success(
+                request, "Your application has been submitted successfully!")
+            return redirect('jobs')
+
+        return render(request, 'apply_for_job.html', {'vacancy': vacancy})
+    except Exception as e:
+        logger.error(f"Unexpected error during job application: {str(e)}")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
+        return redirect('jobs')
+
+
+def user_job_applications(request):
+    clear_messages(request)
+    try:
+        user_email = request.session.get('email')
+        job_applications = JobApplication.objects.filter(
+            applicant_email=user_email)
+        return render(request, 'user_job_applications.html', {'job_applications': job_applications})
+    except Exception as e:
+        logger.error(
+            f"Unexpected error during fetching job applications: {str(e)}")
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
+        return render(request, 'user_job_applications.html', {'job_applications': []})

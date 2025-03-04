@@ -1,133 +1,139 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <title>CodMinds Admin - Queries</title>
 <style>
-    .admin-queries-container {
-        max-width: 1000px;
-        margin: 20px auto;
-        background-color: #ffffff;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-    }
+  .admin-queries-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #f0f4f8;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
 
-    .admin-queries-container h2 {
-        text-align: center;
-        color: #1e90ff;
-        margin-bottom: 20px;
-    }
+  .admin-queries-container h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
 
-    .query-item {
-        background-color: #f9f9f9;
-        padding: 15px;
-        border-radius: 5px;
-        margin-bottom: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+  .query-item {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-    .query-details {
-        max-width: 70%;
-    }
+  .query-details {
+    max-width: 70%;
+  }
 
-    .query-details p {
-        margin: 5px 0;
-        font-size: 14px;
-    }
+  .query-details p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
 
-    .query-actions {
-        display: flex;
-        gap: 10px;
-    }
+  .query-actions {
+    display: flex;
+    gap: 10px;
+  }
 
-    .query-actions button {
-        background-color: #1e90ff;
-        color: white;
-        padding: 8px 15px;
-        border: none;
-        border-radius: 5px;
-        font-size: 14px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
+  .query-actions button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
 
-    .query-actions button:hover {
-        background-color: #4c9aff;
-    }
+  .query-actions button:hover {
+    background-color: #0056b3;
+  }
 
-    .reply-window {
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 10px;
-        display: none;
-    }
+  .reply-window {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-    .reply-window textarea {
-        width: 100%;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-        resize: none;
-        margin-bottom: 15px;
-    }
+  .reply-window textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: none;
+    margin-bottom: 15px;
+  }
 
-    .reply-window button {
-        background-color: #1e90ff;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 14px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
+  .reply-window button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
 
-    .reply-window button:hover {
-        background-color: #4c9aff;
-    }
+  .reply-window button:hover {
+    background-color: #0056b3;
+  }
 </style>
 
 <div class="admin-queries-container">
-    <h2>Admin Query Replies</h2>
+  <h2>Admin Query Replies</h2>
 
-    {% for query in queries %}
-        <div class="query-item">
-            <div class="query-details">
-                <p><strong>From:</strong> {{ query.name }}</p>
-                <p><strong>Email:</strong> {{ query.email }}</p>
-                <p><strong>Message:</strong> {{ query.message }}</p>
-                {% if query.reply_sent %}
-                    <p><strong>Reply:</strong> {{ query.reply_message }}</p>
-                {% endif %}
-            </div>
-            <div class="query-actions">
-                {% if not query.reply_sent %}
-                    <button onclick="showReplyWindow({{ query.id }})">Reply</button>
-                {% else %}
-                    <button disabled style="background-color: #cccccc; cursor: not-allowed;">Replied</button>
-                {% endif %}
-            </div>
-        </div>
+  {% for query in queries %}
+  <div class="query-item">
+    <div class="query-details">
+      <p><strong>From:</strong> {{ query.name }}</p>
+      <p><strong>Email:</strong> {{ query.email }}</p>
+      <p><strong>Message:</strong> {{ query.message }}</p>
+      {% if query.reply_sent %}
+      <p><strong>Reply:</strong> {{ query.reply_message }}</p>
+      {% endif %}
+    </div>
+    <div class="query-actions">
+      {% if not query.reply_sent %}
+      <button onclick="showReplyWindow({{ query.id }})">Reply</button>
+      {% else %}
+      <button disabled style="background-color: #cccccc; cursor: not-allowed">
+        Replied
+      </button>
+      {% endif %}
+    </div>
+  </div>
 
-        {% if not query.reply_sent %}
-            <div class="reply-window" id="reply-window-{{ query.id }}">
-                <form method="POST" action="{% url 'contact_us_reply' query.id %}">
-                    {% csrf_token %}
-                    <textarea name="reply_message" rows="5" placeholder="Write your reply here..." required></textarea>
-                    <button type="submit">Send Reply</button>
-                </form>
-            </div>
-        {% endif %}
-    {% endfor %}
+  {% if not query.reply_sent %}
+  <div class="reply-window" id="reply-window-{{ query.id }}">
+    <form method="POST" action="{% url 'contact_us_reply' query.id %}">
+      {% csrf_token %}
+      <textarea
+        name="reply_message"
+        rows="5"
+        placeholder="Write your reply here..."
+        required
+      ></textarea>
+      <button type="submit">Send Reply</button>
+    </form>
+  </div>
+  {% endif %} {% endfor %}
 </div>
 
 <script>
-    function showReplyWindow(queryId) {
-        document.getElementById(`reply-window-${queryId}`).style.display = 'block';
-    }
+  function showReplyWindow(queryId) {
+    document.getElementById(`reply-window-${queryId}`).style.display = "block";
+  }
 </script>
 {% endblock %}

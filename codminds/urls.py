@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('entry.urls')),
     path('certificate/', include('certificate.urls')),
     path('user/', include('user.urls')),
+    path('carriers/', include('carriers.urls')),
 ]
 
 handler404 = 'entry.views.error_404_view'

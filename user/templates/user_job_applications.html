@@ -1,0 +1,90 @@
+{% extends 'user_job_base.html' %} {% block content %}
+<div class="container">
+  <h2>Your Job Applications</h2>
+  {% if job_applications %}
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Job Title</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Selection Round</th>
+        <th>Applied On</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for application in job_applications %}
+      <tr>
+        <td>{{ application.vacancy.title }}</td>
+        <td>{{ application.vacancy.location }}</td>
+        <td>{{ application.status }}</td>
+        <td>{{ application.selection_round }}</td>
+        <td>{{ application.applied_date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>You have not applied for any jobs yet.</p>
+  {% endif %}
+</div>
+
+<style>
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f4f8;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: left;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 12px 15px;
+  }
+
+  .styled-table thead tr {
+    background-color: #007bff;
+    color: #ffffff;
+    text-align: left;
+  }
+
+  .styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+
+  .styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #007bff;
+  }
+
+  .styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  p {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+  }
+</style>
+{% endblock %}

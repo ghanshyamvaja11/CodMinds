@@ -60,4 +60,10 @@ urlpatterns = [
          name='hire_us_applications'),
     path('hire-us-reply/<int:application_id>',
          hire_us_reply, name='hire_us_reply'),
+    
+    path('carriers-dashboard', carrier_dashboard, name='carriers_dashboard'),
+    path('post-vacancy', post_vacancy, name='post_vacancy'),
+    path('job-applications/', job_applications, name='job_applications'),
+    path('update-job-application-status/<int:application_id>/',
+         update_job_application_status, name='update_job_application_status'),
 ]

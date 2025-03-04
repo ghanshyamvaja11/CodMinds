@@ -19,4 +19,5 @@ urlpatterns = [
     path('servicies/data-analytics', data_analytics, name='data_analytics'),
     path('page-not-found/', error_404_view, name='error_404_view'),
     path('hire_us', hire_us, name='hire_us'),
+    path('carriers/jobs', carrier, name='carrier'),
 ]

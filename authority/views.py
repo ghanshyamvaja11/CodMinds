@@ -38,6 +38,7 @@ from django.urls import reverse
 from django.conf import settings
 import razorpay
 from django.contrib.messages import get_messages
+from carriers.models import *
 
 # Razorpay Client Setup
 razorpay_client = razorpay.Client(
@@ -867,3 +868,60 @@ def hire_us_reply(request, application_id):
         return redirect('hire_us_applications')
 
     return render(request, 'hireus_reply.html', {'application': application})
+
+
+#Job Vacencies and Job Applications
+def post_vacancy(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+        location = request.POST['location']
+        last_date_of_application = request.POST['last_date_of_application']
+
+        Vacancy.objects.create(
+            title=title,
+            description=description,
+            location=location,
+            last_date_of_application=last_date_of_application
+        )
+
+        return render(request, 'post_vacancy.html', {'success': 'Vacancy posted successfully!'})
+
+    return render(request, 'post_vacancy.html')
+
+def carrier_dashboard(request):
+    return render(request, 'carriers_dashboard.html')
+
+def job_applications(request):
+    applications = JobApplication.objects.filter()
+    return render(request, 'job_applications.html', {'applications': applications})
+
+def update_job_application_status(request, application_id):
+    application = get_object_or_404(JobApplication, id=application_id)
+    if request.method == 'POST':
+        application.status = request.POST['status']
+        application.selection_round = request.POST['selection_round']
+        application.save()
+
+        # Send email notification to the applicant
+        try:
+            if application.status.lower() == 'rejected':
+                email_subject = "Application Status Update: Rejected"
+                email_message = f"Dear {application.name},\n\nWe regret to inform you that your application has been rejected. Thank you for your interest in joining CodMinds.\n\nBest regards,\nCodMinds Team"
+            else:
+                email_subject = "Application Status Update"
+                email_message = f"Dear {application.name},\n\nYour application status has been updated to {application.status}. You are now in the {application.selection_round} round.\n\nBest regards,\nCodMinds Team"
+
+            send_mail(
+                subject=email_subject,
+                message=email_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[application.email],
+                fail_silently=False,
+            )
+            messages.success(request, "Application status updated and email sent successfully.")
+        except Exception as e:
+            messages.error(request, f"Failed to send email. Error: {str(e)}")
+
+        return redirect('job_applications')
+    return render(request, 'job_applications.html')

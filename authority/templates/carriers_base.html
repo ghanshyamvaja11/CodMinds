@@ -39,9 +39,16 @@
     }
 
     .navbar .logo {
+      display: flex;
+      align-items: center;
       font-size: 24px;
       font-weight: bold;
       color: #61dafb;
+    }
+
+    .navbar .logo img {
+      height: 40px;
+      margin-right: 10px;
     }
 
     .navbar ul {
@@ -51,6 +58,10 @@
 
     .navbar ul li {
       font-size: 18px;
+    }
+
+    .navbar ul li a {
+      color: white;
     }
 
     .navbar ul li a:hover {
@@ -71,26 +82,15 @@
       transition: background-color 0.3s, transform 0.3s;
     }
 
-    .navbar .auth-buttons .login {
+    .navbar .auth-buttons .logout {
       background-color: transparent;
       color: #fff;
       border: 2px solid #61dafb;
     }
 
-    .navbar .auth-buttons .login:hover {
+    .navbar .auth-buttons .logout:hover {
       background-color: #61dafb;
       color: #24292e;
-      transform: scale(1.1);
-    }
-
-    .navbar .auth-buttons .signup {
-      background-color: #61dafb;
-      color: #24292e;
-    }
-
-    .navbar .auth-buttons .signup:hover {
-      background-color: #fff;
-      color: #61dafb;
       transform: scale(1.1);
     }
 
@@ -115,27 +115,31 @@
     @media (max-width: 768px) {
       .navbar ul {
         display: none;
-        flex-direction: column;
         width: 100%;
         position: absolute;
         top: 70px;
         left: 0;
         background-color: #333;
         text-align: center;
-        padding: 10px 0;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-      }
-
-      .navbar ul.active {
-        display: flex;
       }
 
       .navbar ul li {
-        margin: 10px 0;
+        margin-right: 0;
+        margin-top: 10px;
+      }
+
+      .navbar ul li a {
+        font-size: 18px;
       }
 
       .hamburger {
         display: flex;
+      }
+
+      /* Show nav links when hamburger menu is clicked */
+      .navbar.active ul {
+        display: flex;
+        flex-direction: column;
       }
 
       .auth-buttons {
@@ -175,21 +179,37 @@
     .footer .social-icons a:hover {
       color: #1e90ff;
     }
+    
+    .success {
+        text-align: center;
+        color: green;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
+  {% if not request.user.is_authenticated %}
+  <script>
+    window.location.href = "{% url 'admin_login' %}";
+  </script>
+  {% endif %}
+
   <!-- Navbar -->
   <div class="navbar">
-    <div class="logo">CodMinds</div>
+    <div class="logo">
+      CodMinds
+    </div>
     <ul class="nav-links">
-      <li><a href="{% url 'home' %}">Home</a></li>
-      <li><a href="{% url 'servicies' %}">Services</a></li>
-      <li><a href="{% url 'about' %}">About Us</a></li>
-      <li><a href="{% url 'verify_certificate' %}">Verify Internship Certificate</a></li>
+      <li><a href="{% url 'carriers_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'post_vacancy' %}">Post Vacancy</a></li>
+      <li><a href="{% url 'job_applications' %}">Job Applications</a></li>
     </ul>
     <div class="auth-buttons">
-      <a href="{% url 'user_login' %}"><button class="login">Login</button></a>
-      <a href="{% url 'user_signup' %}"><button class="signup">Signup</button></a>
+      <form method="POST" action="{% url 'admin_logout' %}">
+        {% csrf_token %}
+        <button class="logout" type="submit">Logout</button>
+      </form>
     </div>
     <!-- Hamburger menu for mobile screens -->
     <div class="hamburger" id="hamburger">
@@ -206,38 +226,27 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-links" style="margin-bottom: 10px;">
-      <a href="{% url 'carrier' %}">Carriers</a> |
-      <a href="{% url 'T&C' %}">Terms & Conditions</a> |
-      <a href="{% url 'privacy_policy' %}">Privacy Policy</a> |
-      <a href="{% url 'cancellation_refund_policies' %}">Cancellation/Refund Policies</a> |
-      <a href="{% url 'contact' %}">Contact Us</a>
-    </div>
-    <div class="social-icons" style="margin-bottom: 10px;">
-      {% comment %} <a href="#"><i class="fab fa-x"></i></a> {% endcomment %}
-      <a href="https://www.linkedin.com/company/106363766/"><i class="fab fa-linkedin"></i></a>
-      {% comment %} <a href="#"><i class="fab fa-instagram"></i></a> {% endcomment %}
-    </div>
     <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
   </footer>
 
-  <script>
-    const hamburger = document.getElementById("hamburger");
-    const navLinks = document.querySelector(".nav-links");
+<script>
+  const hamburger = document.getElementById("hamburger");
+  const navbar = document.querySelector(".navbar");
+  const navLinks = document.querySelectorAll(".navbar ul li a");
 
-    hamburger.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
+  hamburger.addEventListener("click", () => {
+    navbar.classList.toggle("active");
+  });
+
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      navbar.classList.remove("active");
     });
+  });
 
-    // Close menu when a link is clicked
-    navLinks.addEventListener("click", (event) => {
-      if (event.target.tagName === "A") {
-        navLinks.classList.remove("active");
-      }
-    });
+  // Set current year
+  document.getElementById("current-year").textContent = new Date().getFullYear();
+</script>
 
-    // Set current year
-    document.getElementById("current-year").textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>

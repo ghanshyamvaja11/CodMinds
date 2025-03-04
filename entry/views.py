@@ -5,7 +5,8 @@ from django.contrib.messages import get_messages
 from authority.models import InternshipProjects
 from django.core.mail import send_mail
 from django.conf import settings
-
+from django.utils import timezone
+from carriers.models import *
 
 def clear_messages(request):
     storage = get_messages(request)
@@ -134,3 +135,28 @@ def hire_us(request):
             request, "Thank you for your request. We will get back to you soon.")
         return redirect(request.META.get('HTTP_REFERER', '/'))
     return redirect('home')
+
+
+def carrier(request):
+    clear_messages(request)
+    try:
+        if request.session.get('email'):
+            user_email = request.session.get('email')
+            vacancies = Vacancy.objects.filter(
+                is_active=True, last_date_of_application__gte=timezone.now().date()
+            ).order_by('-posted_date')
+
+            applied_jobs = JobApplication.objects.filter(
+                applicant_email=user_email).values_list('vacancy_id', flat=True)
+
+            return render(request, 'carrier.html', {'vacancies': vacancies, 'applied_jobs': applied_jobs})
+        else:
+            vacancies = Vacancy.objects.filter(
+                is_active=True, last_date_of_application__gte=timezone.now().date()
+            ).order_by('-posted_date')
+
+            return render(request, 'carrier.html', {'vacancies': vacancies, 'applied_jobs': []})
+    except Exception as e:
+        messages.error(
+            request, "An unexpected error occurred. Please try again.")
+        return render(request, 'carrier.html', {'vacancies': [], 'applied_jobs': []})

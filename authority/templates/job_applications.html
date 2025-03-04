@@ -1,0 +1,169 @@
+{% extends 'carriers_base.html' %}
+
+{% block content %}
+<style>
+    .admin-queries-container {
+        max-width: 1000px;
+        margin: 20px auto;
+        background-color: #f0f4f8;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .admin-queries-container h2 {
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .form-group button {
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .form-group button:hover {
+        background: #0056b3;
+    }
+
+    .success {
+        text-align: center;
+        color: green;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table th, table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    table th {
+        background-color: #007bff;
+        color: #ffffff;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+
+    table tr:hover {
+        background-color: #e9ecef;
+    }
+
+    table th, table td {
+        padding: 12px 15px;
+    }
+
+    table th:first-child, table td:first-child {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    table th:last-child, table td:last-child {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .form-inline {
+        display: flex;
+        gap: 10px;
+    }
+
+    .form-inline select, .form-inline input, .form-inline button {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .form-inline button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .form-inline button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="admin-queries-container">
+    <h2>Job Applications</h2>
+
+    {% if success %}
+        <p class="success">{{ success }}</p>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Applicant Name</th>
+                <th>Email</th>
+                <th>Resume</th>
+                <th>Cover Letter</th>
+                <th>Status</th>
+                <th>Selection Round</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+            <tr>
+                <td>{{ application.applicant_name }}</td>
+                <td>{{ application.applicant_email }}</td>
+                <td><a href="{{ application.resume.url }}">Download</a></td>
+                <td>{{ application.cover_letter }}</td>
+                <td>{{ application.status }}</td>
+                <td>{{ application.selection_round }}</td>
+                <td>
+                    <form method="POST" action="{% url 'update_application_status' application.id %}" class="form-inline">
+                        {% csrf_token %}
+                        <select name="status">
+                            <option value="Submitted" {% if application.status == 'Submitted' %}selected{% endif %}>Submitted</option>
+                            <option value="Selected" {% if application.status == 'Selected' %}selected{% endif %}>Selected</option>
+                            <option value="Rejected" {% if application.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                        <input type="text" name="selection_round" placeholder="Selection Round" value="{{ application.selection_round }}">
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

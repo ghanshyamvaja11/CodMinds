@@ -1,7 +1,7 @@
-{% extends 'user_base.html' %}
+{% extends 'user_job_base.html' %}
 
 {% block content %}
-<title>CodMinds - User Dashboard</title>
+<title>CodMinds - User Job Dashboard</title>
 
 <style>
     /* Dashboard Container */
@@ -165,19 +165,14 @@
     <!-- Other Dashboard Cards -->
     <div class="dashboard-cards">
         <div class="card">
-            <h3>Internship Dashboard</h3>
-            <p>Access Internship Dashboard.</p>
-            <a href="{% url 'user_intern_dashboard' %}">View</a>
+            <h3>Available Jobs</h3>
+            <p>View and Apply for Jobs.</p>
+            <a href="{% url 'jobs' %}">View Jobs</a>
         </div>
         <div class="card">
-            <h3>Jobs</h3>
-            <p>Explore and apply for jobs.</p>
-            <a href="{% url 'job_dashboard' %}">Apply Now</a>
-        </div>
-        <div class="card">
-            <h3>Your Profile</h3>
-            <p>View and update your personal information.</p>
-            <a href="{% url 'user_profile' %}">View Profile</a>
+            <h3>Your Job Applications</h3>
+            <p>View your Job Applications.</p>
+            <a href="{% url 'user_job_applications' %}">View Job Applications</a>
         </div>
     </div>
 </div>
