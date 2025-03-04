@@ -8,7 +8,7 @@
         <th>Job Title</th>
         <th>Location</th>
         <th>Status</th>
-        <th>Selection Round</th>
+        {% comment %} <th>Selection Round</th> {% endcomment %}
         <th>Applied On</th>
       </tr>
     </thead>
@@ -18,7 +18,7 @@
         <td>{{ application.vacancy.title }}</td>
         <td>{{ application.vacancy.location }}</td>
         <td>{{ application.status }}</td>
-        <td>{{ application.selection_round }}</td>
+        {% comment %} <td>{{ application.selection_round }}</td> {% endcomment %}
         <td>{{ application.applied_date }}</td>
       </tr>
       {% endfor %}
