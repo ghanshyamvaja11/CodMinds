@@ -59,11 +59,6 @@
         color: #61dafb;
       }
 
-      .navbar .logo img {
-        height: 40px;
-        margin-right: 10px;
-      }
-
       .navbar ul {
         display: flex;
         gap: 20px;
@@ -165,32 +160,13 @@
         background-color: #24292e;
         color: #fff;
         text-align: center;
-        padding: 20px 0;
+        padding: 15px 0;
+        width: 100%;
+        margin-top: auto;
       }
 
       .footer p {
-        margin: 10px 0;
-      }
-
-      .footer .footer-links a {
-        color: #fff;
-        margin: 0 10px;
-        transition: color 0.3s;
-      }
-
-      .footer .footer-links a:hover {
-        color: #1e90ff;
-      }
-
-      .footer .social-icons a {
-        margin: 0 10px;
-        font-size: 20px;
-        color: #fff;
-        transition: color 0.3s;
-      }
-
-      .footer .social-icons a:hover {
-        color: #1e90ff;
+        margin: 0;
       }
 
       .success {
@@ -212,7 +188,7 @@
     <div class="navbar">
       <div class="logo">CodMinds</div>
       <ul class="nav-links">
-        <li><a href="{% url 'carriers_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
         <li><a href="{% url 'post_vacancy' %}">Post Vacancy</a></li>
         <li><a href="{% url 'job_applications' %}">Job Applications</a></li>
       </ul>

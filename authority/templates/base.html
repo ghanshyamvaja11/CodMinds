@@ -37,7 +37,7 @@
         flex: 1;
       }
 
-      /* Updated Navbar Styles */
+      /* Navbar Styling */
       .navbar {
         display: flex;
         justify-content: space-between;
@@ -52,16 +52,9 @@
       }
 
       .navbar .logo {
-        display: flex;
-        align-items: center;
         font-size: 24px;
         font-weight: bold;
         color: #61dafb;
-      }
-
-      .navbar .logo img {
-        height: 40px;
-        margin-right: 10px;
       }
 
       .navbar ul {
@@ -75,6 +68,7 @@
 
       .navbar ul li a {
         color: white;
+        transition: color 0.3s;
       }
 
       .navbar ul li a:hover {
@@ -124,80 +118,49 @@
         border-radius: 5px;
       }
 
-      /* Media Query for Mobile Responsiveness */
+      /* Updated Footer Section */
+      .footer {
+        background-color: #24292e;
+        color: #fff;
+        text-align: center;
+        padding: 15px 0;
+        width: 100%;
+        margin-top: auto;
+      }
+
+      .footer p {
+        margin: 0;
+      }
+
+      /* Mobile Responsiveness */
       @media (max-width: 768px) {
         .navbar ul {
           display: none;
+          flex-direction: column;
           width: 100%;
           position: absolute;
-          top: 70px;
+          top: 60px;
           left: 0;
           background-color: #333;
           text-align: center;
+          padding: 10px 0;
         }
 
         .navbar ul li {
-          margin-right: 0;
           margin-top: 10px;
-        }
-
-        .navbar ul li a {
-          font-size: 18px;
         }
 
         .hamburger {
           display: flex;
         }
 
-        /* Show nav links when hamburger menu is clicked */
         .navbar.active ul {
           display: flex;
-          flex-direction: column;
         }
 
         .auth-buttons {
           display: none;
         }
-      }
-
-      /* Updated Footer Section */
-      .footer {
-        background-color: #24292e;
-        color: #fff;
-        text-align: center;
-        padding: 20px 0;
-      }
-
-      .footer p {
-        margin: 10px 0;
-      }
-
-      .footer .footer-links a {
-        color: #fff;
-        margin: 0 10px;
-        transition: color 0.3s;
-      }
-
-      .footer .footer-links a:hover {
-        color: #1e90ff;
-      }
-
-      .footer .social-icons a {
-        margin: 0 10px;
-        font-size: 20px;
-        color: #fff;
-        transition: color 0.3s;
-      }
-
-      .footer .social-icons a:hover {
-        color: #1e90ff;
-      }
-
-      .success {
-        text-align: center;
-        color: green;
-        font-weight: bold;
-        margin-bottom: 20px;
       }
     </style>
   </head>
@@ -218,7 +181,7 @@
         <li>
           <a href="{% url 'hire_us_applications' %}">Hire Applications</a>
         </li>
-        <li><a href="{% url 'contact_us_view' %}">ContactUs</a></li>
+        <li><a href="{% url 'contact_us_view' %}">Contact Us</a></li>
       </ul>
       <div class="auth-buttons">
         <form method="POST" action="{% url 'admin_logout' %}">

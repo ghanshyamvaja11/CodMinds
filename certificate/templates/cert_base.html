@@ -1,253 +1,257 @@
 <!-- base.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}CodMinds - Innovating the Future{% endblock %}</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="icon" type="image/x-icon" href="/media/favicon.ico">
-  <style>
-    /* Reset and Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    ul {
-      list-style: none;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    main {
-      flex: 1;
-    }
-
-    /* Updated Navbar Styles */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: #24292e;
-      color: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .navbar .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #61dafb;
-    }
-
-    .navbar ul {
-      display: flex;
-      gap: 20px;
-    }
-
-    .navbar ul li {
-      font-size: 18px;
-    }
-
-    .navbar ul li a:hover {
-      color: #61dafb;
-    }
-
-    .navbar .auth-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .navbar .auth-buttons button {
-      padding: 8px 15px;
-      border: none;
-      border-radius: 20px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .navbar .auth-buttons .login {
-      background-color: transparent;
-      color: #fff;
-      border: 2px solid #61dafb;
-    }
-
-    .navbar .auth-buttons .login:hover {
-      background-color: #61dafb;
-      color: #24292e;
-      transform: scale(1.1);
-    }
-
-    .navbar .auth-buttons .signup {
-      background-color: #61dafb;
-      color: #24292e;
-    }
-
-    .navbar .auth-buttons .signup:hover {
-      background-color: #fff;
-      color: #61dafb;
-      transform: scale(1.1);
-    }
-
-    /* Hamburger menu styles */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: space-around;
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-    }
-
-    .hamburger span {
-      width: 25px;
-      height: 4px;
-      background-color: white;
-      border-radius: 5px;
-    }
-
-    /* Media Query for Mobile Responsiveness */
-    @media (max-width: 768px) {
-      .navbar ul {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        background-color: #333;
-        text-align: center;
-        padding: 10px 0;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}CodMinds - Innovating the Future{% endblock %}
+    </title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="/media/favicon.ico" />
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
       }
 
-      .navbar ul.active {
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      body {
         display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      main {
+        flex: 1;
+      }
+
+      /* Updated Navbar Styles */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #24292e;
+        color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #61dafb;
+      }
+
+      .navbar ul {
+        display: flex;
+        gap: 20px;
       }
 
       .navbar ul li {
-        margin: 10px 0;
+        font-size: 18px;
       }
 
-      .hamburger {
+      .navbar ul li a:hover {
+        color: #61dafb;
+      }
+
+      .navbar .auth-buttons {
         display: flex;
+        gap: 10px;
       }
 
-      .auth-buttons {
+      .navbar .auth-buttons button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+
+      .navbar .auth-buttons .login {
+        background-color: transparent;
+        color: #fff;
+        border: 2px solid #61dafb;
+      }
+
+      .navbar .auth-buttons .login:hover {
+        background-color: #61dafb;
+        color: #24292e;
+        transform: scale(1.1);
+      }
+
+      .navbar .auth-buttons .signup {
+        background-color: #61dafb;
+        color: #24292e;
+      }
+
+      .navbar .auth-buttons .signup:hover {
+        background-color: #fff;
+        color: #61dafb;
+        transform: scale(1.1);
+      }
+
+      /* Hamburger menu styles */
+      .hamburger {
         display: none;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
       }
-    }
 
-    /* Updated Footer Section */
-    .footer {
-      background-color: #24292e;
-      color: #fff;
-      text-align: center;
-      padding: 20px 0;
-    }
-
-    .footer p {
-      margin: 10px 0;
-    }
-
-    .footer .footer-links a {
-      color: #fff;
-      margin: 0 10px;
-      transition: color 0.3s;
-    }
-
-    .footer .footer-links a:hover {
-      color: #1e90ff;
-    }
-
-    .footer .social-icons a {
-      margin: 0 10px;
-      font-size: 20px;
-      color: #fff;
-      transition: color 0.3s;
-    }
-
-    .footer .social-icons a:hover {
-      color: #1e90ff;
-    }
-  </style>
-</head>
-<body>
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="logo">CodMinds</div>
-    <ul class="nav-links">
-      <li><a href="{% url 'home' %}">Home</a></li>
-      <li><a href="{% url 'servicies' %}">Services</a></li>
-      <li><a href="{% url 'about' %}">About Us</a></li>
-      <li><a href="{% url 'verify_certificate' %}">Verify Internship Certificate</a></li>
-    </ul>
-    <div class="auth-buttons">
-      <a href="{% url 'user_login' %}"><button class="login">Login</button></a>
-      <a href="{% url 'user_signup' %}"><button class="signup">Signup</button></a>
-    </div>
-    <!-- Hamburger menu for mobile screens -->
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
-
-  <!-- Main Content Area -->
-  <main>
-    {% block content %}{% endblock %}
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-links" style="margin-bottom: 10px;">
-      <a href="{% url 'carrier' %}">Carriers</a> |
-      <a href="{% url 'T&C' %}">Terms & Conditions</a> |
-      <a href="{% url 'privacy_policy' %}">Privacy Policy</a> |
-      <a href="{% url 'cancellation_refund_policies' %}">Cancellation/Refund Policies</a> |
-      <a href="{% url 'contact' %}">Contact Us</a>
-    </div>
-    <div class="social-icons" style="margin-bottom: 10px;">
-      {% comment %} <a href="#"><i class="fab fa-x"></i></a> {% endcomment %}
-      <a href="https://www.linkedin.com/company/106363766/"><i class="fab fa-linkedin"></i></a>
-      {% comment %} <a href="#"><i class="fab fa-instagram"></i></a> {% endcomment %}
-    </div>
-    <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
-  </footer>
-  <script>
-    const hamburger = document.getElementById("hamburger");
-    const navLinks = document.querySelector(".nav-links");
-
-    hamburger.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
-    });
-
-    // Close menu when a link is clicked
-    navLinks.addEventListener("click", (event) => {
-      if (event.target.tagName === "A") {
-        navLinks.classList.remove("active");
+      .hamburger span {
+        width: 25px;
+        height: 4px;
+        background-color: white;
+        border-radius: 5px;
       }
-    });
 
-    // Set current year
-    document.getElementById("current-year").textContent = new Date().getFullYear();
-  </script>
+      /* Media Query for Mobile Responsiveness */
+      @media (max-width: 768px) {
+        .navbar ul {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+          position: absolute;
+          top: 70px;
+          left: 0;
+          background-color: #333;
+          text-align: center;
+          padding: 10px 0;
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar ul.active {
+          display: flex;
+        }
+
+        .navbar ul li {
+          margin: 10px 0;
+        }
+
+        .hamburger {
+          display: flex;
+        }
+
+        .auth-buttons {
+          display: none;
+        }
+      }
+
+      /* Updated Footer Section */
+      .footer {
+        background-color: #24292e;
+        color: #fff;
+        text-align: center;
+        padding: 15px 0;
+        width: 100%;
+        margin-top: auto;
+      }
+
+      .footer p {
+        margin: 0;
+      }
+
+      .footer .footer-links a {
+        color: #fff;
+        margin: 0 10px;
+        transition: color 0.3s;
+      }
+
+      .footer .footer-links a:hover {
+        color: #1e90ff;
+      }
+
+      .footer .social-icons a {
+        margin: 0 10px;
+        font-size: 20px;
+        color: #fff;
+        transition: color 0.3s;
+      }
+
+      .footer .social-icons a:hover {
+        color: #1e90ff;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="logo">CodMinds</div>
+      <ul class="nav-links">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'servicies' %}">Services</a></li>
+        <li><a href="{% url 'about' %}">About Us</a></li>
+        <li>
+          <a href="{% url 'verify_certificate' %}"
+            >Verify Internship Certificate</a
+          >
+        </li>
+      </ul>
+      <div class="auth-buttons">
+        <a href="{% url 'user_login' %}"
+          ><button class="login">Login</button></a
+        >
+        <a href="{% url 'user_signup' %}"
+          ><button class="signup">Signup</button></a
+        >
+      </div>
+      <!-- Hamburger menu for mobile screens -->
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main>{% block content %}{% endblock %}</main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        © 2024 - <span id="current-year"></span> CodMinds. All rights reserved.
+      </p>
+    </footer>
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const navLinks = document.querySelector(".nav-links");
+
+      hamburger.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      // Close menu when a link is clicked
+      navLinks.addEventListener("click", (event) => {
+        if (event.target.tagName === "A") {
+          navLinks.classList.remove("active");
+        }
+      });
+
+      // Set current year
+      document.getElementById("current-year").textContent =
+        new Date().getFullYear();
+    </script>
   </body>
-  </html>
+</html>

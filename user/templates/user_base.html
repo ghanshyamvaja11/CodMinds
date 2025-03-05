@@ -27,17 +27,19 @@
         list-style: none;
       }
 
-      body {
+      /* Make body fill full height & use flexbox */
+      html, body {
+        height: 100%;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
       }
 
+      /* Ensure main takes full space if content is less */
       main {
         flex: 1;
       }
 
-      /* Updated Navbar Styles */
+      /* Navbar Styles */
       .navbar {
         display: flex;
         justify-content: space-between;
@@ -60,8 +62,8 @@
       }
 
       .navbar .logo img {
-        height: 40px; /* Adjust the height of the logo */
-        margin-right: 10px; /* Space between image and text */
+        height: 40px;
+        margin-right: 10px;
       }
 
       .navbar ul {
@@ -103,7 +105,7 @@
         transform: scale(1.1);
       }
 
-      /* Hamburger menu styles */
+      /* Hamburger Menu */
       .hamburger {
         display: none;
         flex-direction: column;
@@ -120,7 +122,7 @@
         border-radius: 5px;
       }
 
-      /* Media Query for Mobile Responsiveness */
+      /* Mobile Responsive Styles */
       @media (max-width: 768px) {
         .navbar ul {
           display: none;
@@ -137,15 +139,10 @@
           margin-top: 10px;
         }
 
-        .navbar ul li a {
-          font-size: 18px;
-        }
-
         .hamburger {
           display: flex;
         }
 
-        /* Show nav links when hamburger menu is clicked */
         .navbar.active ul {
           display: flex;
           flex-direction: column;
@@ -156,44 +153,17 @@
         }
       }
 
-      /* Updated Footer Section */
+      /* Footer - Always at Bottom */
       .footer {
         background-color: #24292e;
         color: #fff;
         text-align: center;
-        padding: 20px 0;
+        padding: 15px 0;
+        width: 100%;
       }
 
       .footer p {
-        margin: 10px 0;
-      }
-
-      .footer .footer-links a {
-        color: #fff;
-        margin: 0 10px;
-        transition: color 0.3s;
-      }
-
-      .footer .footer-links a:hover {
-        color: #1e90ff;
-      }
-
-      .footer .social-icons a {
-        margin: 0 10px;
-        font-size: 20px;
-        color: #fff;
-        transition: color 0.3s;
-      }
-
-      .footer .social-icons a:hover {
-        color: #1e90ff;
-      }
-
-      .success {
-        text-align: center;
-        color: green;
-        font-weight: bold;
-        margin-bottom: 20px;
+        margin: 0;
       }
     </style>
   </head>
@@ -208,7 +178,6 @@
     <div class="navbar">
       <div class="logo">
         <img src="/media/logo.png" alt="CodMinds Logo" />
-        <!-- Update this path with your logo image -->
         CodMinds
       </div>
       <ul class="nav-links">
@@ -222,7 +191,6 @@
           ><button class="logout">Logout</button></a
         >
       </div>
-      <!-- Hamburger menu for mobile screens -->
       <div class="hamburger" id="hamburger">
         <span></span>
         <span></span>
@@ -230,34 +198,33 @@
       </div>
     </div>
 
-    <!-- Main Content Area -->
-    <main>{% block content %}{% endblock %}</main>
+    <!-- Main Content -->
+    <main>
+      {% block content %}{% endblock %}
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
-      <p>
-        © 2024 - <span id="current-year"></span> CodMinds. All rights reserved.
-      </p>
+      <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
     </footer>
-  </body>
-  <script>
-    const hamburger = document.getElementById("hamburger");
-    const navbar = document.querySelector(".navbar");
-    const navLinks = document.querySelectorAll(".navbar ul li a"); // Select all navbar links
 
-    hamburger.addEventListener("click", () => {
-      navbar.classList.toggle("active");
-    });
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const navbar = document.querySelector(".navbar");
+      const navLinks = document.querySelectorAll(".navbar ul li a");
 
-    // Close hamburger menu when any link is clicked
-    navLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        navbar.classList.remove("active"); // Remove the 'active' class to close the menu
+      hamburger.addEventListener("click", () => {
+        navbar.classList.toggle("active");
       });
-    });
 
-    // Set current year
-    document.getElementById("current-year").textContent =
-      new Date().getFullYear();
-  </script>
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navbar.classList.remove("active");
+        });
+      });
+
+      document.getElementById("current-year").textContent =
+        new Date().getFullYear();
+    </script>
+  </body>
 </html>

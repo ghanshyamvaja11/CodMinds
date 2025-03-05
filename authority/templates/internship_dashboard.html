@@ -1,183 +1,197 @@
+{% extends 'internship_base.html' %}
 <!DOCTYPE html>
+
 {% if not request.user.is_authenticated %}
 <script>
-    window.location.href = "{% url 'admin_login' %}";
+  window.location.href = "{% url 'admin_login' %}";
 </script>
 {% endif %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodMinds Admin - Internship Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-      <link rel="icon" type="image/x-icon" href="/media/favicon.ico">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f4f7fc;
-            color: #333;
-        }
 
-        .dashboard-header {
-            background: #1a73e8;
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-        }
+{% block content %}
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-        .logout-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #fff;
-            color: #1a73e8;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 29px;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
+  body {
+    font-family: "Poppins", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f4f7fc;
+    color: #333;
+    overflow-x: hidden; /* Prevents horizontal scroll */
+  }
 
-        .logout-button:hover {
-            background: #f4f7fc;
-            color: #0c47b6;
-        }
+  .dashboard-header {
+    background: #1a73e8;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
 
-        .dashboard-content {
-            padding: 40px 20px;
-            text-align: center;
-        }
+  .logout-button {
+    padding: 10px 20px;
+    background: #fff;
+    color: #1a73e8;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 29px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
 
-        .dashboard-content h2 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #1a73e8;
-        }
+  .logout-button:hover {
+    background: #f4f7fc;
+    color: #0c47b6;
+  }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+  .dashboard-content {
+    flex: 1;
+    padding: 40px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-        .dashboard-card {
-            background: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+  .dashboard-content h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1a73e8;
+  }
 
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+  }
 
-        .dashboard-card h3 {
-            font-size: 20px;
-            font-weight: 500;
-            margin: 10px 0;
-            color: #333;
-        }
+  .dashboard-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
 
-        .dashboard-card p {
-            font-size: 14px;
-            color: #777;
-            margin-bottom: 15px;
-        }
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
 
-        .dashboard-card a {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #1a73e8;
-            color: #fff;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
+  .dashboard-card h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 10px 0;
+    color: #333;
+  }
 
-        .dashboard-card a:hover {
-            background: #0c47b6;
-        }
+  .dashboard-card p {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 15px;
+  }
 
-        /* Responsive Design for Small Screens */
-        @media (max-width: 768px) {
-            .dashboard-grid {
-                display: flex;
-                flex-direction: column;
-                align-items: center; /* Centers cards horizontally */
-            }
+  .dashboard-card a {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #1a73e8;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+  }
 
-            .dashboard-card {
-                width: 90%; /* Adjust width for better appearance */
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="dashboard-header">
-        <span>Admin Dashboard</span>
-        <a href="{% url 'admin_logout' %}" class="logout-button">Logout</a>
+  .dashboard-card a:hover {
+    background: #0c47b6;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .dashboard-card {
+      width: 90%;
+    }
+  }
+</style>
+
+<div class="dashboard-content">
+  <h2>Welcome, Admin!</h2>
+  <p>Use the options below to manage Internship Data.</p>
+  <div class="dashboard-grid">
+    <div class="dashboard-card">
+      <h3>Internship Applications</h3>
+      <p>Browse through the list of all Internship Applications.</p>
+      <a href="{% url 'view_internship_applications' %}">View</a>
     </div>
-    <div class="dashboard-content">
-        <h2>Welcome, Admin!</h2>
-        <p>Use the options below to manage Internship Data.</p>
-        <div class="dashboard-grid">
-            <div class="dashboard-card">
-                <h3>Internship Applications</h3>
-                <p>Browse through the list of all Internship Applications.</p>
-                <a href="{% url 'view_internship_applications' %}">View</a>
-            </div>
 
-            <div class="dashboard-card">
-                <h3>Add Internship Projects</h3>
-                <p>Add Projects for Different Domain for Interns.</p>
-                <a href="{% url 'add_internship_project' %}">View</a>
-            </div>
-
-             <div class="dashboard-card">
-                <h3>Added Internship Projects</h3>
-                <p>View and Edit Added Internship Projects.</p>
-                <a href="{% url 'added_internship_projects' %}">View</a>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Send Offer Letter</h3>
-                <p>Provide offer letters to eligible users.</p>
-                <a href="{% url 'eligible_for_internship_offer_letter' %}">View</a>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Issue Certificate</h3>
-                <p>Create and issue new certificates to individuals.</p>
-                <a href="{% url 'eligible_for_internship_certificate' %}">View</a>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Issued Internship Certificates</h3>
-                <p>View Internship Certificates Issued to the individuals.</p>
-                <a href="{% url 'issued_internship_certificates' %}">View</a>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Received Payments</h3>
-                <p>View Received Payments and refund to users if required.</p>
-                <a href="{% url 'received_internship_payments' %}">View</a>
-            </div>
-        </div>
+    <div class="dashboard-card">
+      <h3>Add Internship Projects</h3>
+      <p>Add Projects for Different Domains for Interns.</p>
+      <a href="{% url 'add_internship_project' %}">View</a>
     </div>
-</body>
+
+    <div class="dashboard-card">
+      <h3>Added Internship Projects</h3>
+      <p>View and Edit Added Internship Projects.</p>
+      <a href="{% url 'added_internship_projects' %}">View</a>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>Send Offer Letter</h3>
+      <p>Provide offer letters to eligible users.</p>
+      <a href="{% url 'eligible_for_internship_offer_letter' %}">View</a>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>Issue Certificate</h3>
+      <p>Create and issue new certificates to individuals.</p>
+      <a href="{% url 'eligible_for_internship_certificate' %}">View</a>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>Issued Internship Certificates</h3>
+      <p>View Internship Certificates Issued to the individuals.</p>
+      <a href="{% url 'issued_internship_certificates' %}">View</a>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>Received Payments</h3>
+      <p>View Received Payments and refund to users if required.</p>
+      <a href="{% url 'received_internship_payments' %}">View</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+<footer class="footer">
+  <p>© 2024 - <span id="current-year"></span> CodMinds. All rights reserved.</p>
+  <p>
+</footer>
+
+<script>
+  document.getElementById("current-year").textContent = new Date().getFullYear();
+</script>
 </html>
