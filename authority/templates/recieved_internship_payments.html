@@ -1,189 +1,238 @@
-{% extends 'internship_base.html' %}
-
-{% block content %}
+{% extends 'internship_base.html' %} {% block content %}
 <title>CodMinds Admin - Recieved Internship Payments</title>
 <style>
-    .admin-queries-container {
-        max-width: 1000px;
-        margin: 20px auto;
-        background-color: #ffffff;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-    }
+  .admin-queries-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow-x: auto;
+  }
 
-    .admin-queries-container h2 {
-        text-align: center;
-        color: #1e90ff;
-        margin-bottom: 20px;
-    }
+  .admin-queries-container h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
 
-    .messages {
-        list-style: none;
-        padding: 0;
-        margin-bottom: 20px;
-    }
+  .messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+  }
 
-    .messages li {
-        padding: 10px;
-        margin-bottom: 5px;
-        border-radius: 4px;
-        font-size: 14px;
-    }
+  .messages li {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
 
-    .messages .success {
-        background-color: #d4edda;
-        color: #155724;
-    }
+  .messages .success {
+    background-color: #d4edda;
+    color: #155724;
+  }
 
-    .messages .error {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
+  .messages .error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
 
-    .messages .info {
-        background-color: #cce5ff;
-        color: #004085;
-    }
+  .messages .info {
+    background-color: #cce5ff;
+    color: #004085;
+  }
 
-    .table-responsive {
-        overflow-x: auto;
-    }
+  .table-responsive {
+    overflow-x: auto;
+  }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    min-width: 800px;
+  }
 
-    th, td {
-        padding: 12px 15px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-    }
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+  }
 
-    th {
-        background-color: #1a73e8;
-        color: white;
-    }
+  th {
+    background-color: #1e90ff;
+    color: white;
+  }
 
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .action-input {
+    width: 100px;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .refund-btn {
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .refund-btn:hover {
+    background: darkred;
+  }
+
+  .form-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .form-container input {
+    width: 120px;
+  }
+
+  .form-container button {
+    width: 100px;
+  }
+
+  @media (max-width: 768px) {
+    th,
     td {
-        font-size: 14px;
+      font-size: 12px;
+      padding: 8px;
     }
 
-    .action-input {
-        width: 100px;
-        padding: 5px;
-        margin-right: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
+    .admin-queries-container {
+      padding: 15px;
     }
 
+    .action-input,
     .refund-btn {
-        background: red;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 6px 10px;
-        cursor: pointer;
-    }
-
-    .refund-btn:hover {
-        background: darkred;
+      width: 80px;
     }
 
     .form-container {
-        display: flex;
-        align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     .form-container input {
-        width: 120px;
+      width: 100%;
+      margin-bottom: 10px;
     }
 
     .form-container button {
-        width: 100px;
+      width: 100%;
     }
-
-    @media (max-width: 768px) {
-        .action-input, .refund-btn {
-            width: 80px;
-        }
-
-        .form-container {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-    }
+  }
 </style>
 
 <div class="admin-queries-container">
-    <h2>Received Payments</h2>
+  <h2>Received Payments</h2>
 
-    <!-- Display Django Messages -->
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+  <!-- Display Django Messages -->
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
 
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Payment ID</th>
-                    <th>Total Amount(₹)</th>
-                    <th>Refund Payment ID</th>
-                    <th>Status</th>
-                    <th>Refund Amount(₹)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for payment in received_payments_list %}
-                    {% if payment.payment_id != '' %}
-                        <tr>
-                            <td>{{ payment.email }}</td>
-                            <td>{{ payment.payment_id }}</td>
-                            <td>{{ payment.amount }}</td>
-                            <td>
-                            {% if payment.refund_payment_id %}
-                                {{ payment.refund_payment_id }}
-                            {% else %}
-                                no refund perfomed till now.
-                            {% endif %}
-                            </td>
-                            <td>{{ payment.status }}</td>
-                            <td>
-                                {% if payment.refund_payment_id == '' %}
-                                    <div class="form-container">
-                                        <form action="{% url 'process_refund' payment.payment_id %}" method="POST">
-                                            {% csrf_token %}
-                                            <input type="number" name="refund_amount" class="action-input" placeholder="Amount" min="0" required>
-                                            <button type="submit" class="refund-btn">Refund</button>
-                                        </form>
-                                    </div>
-                                {% else %}
-                                    <div class="form-container">
-                                        <form>
-                                            {% csrf_token %}
-                                            <input type="number" name="refund_amount" class="action-input" value="{{ payment.refund_amount }}" placeholder="Amount" min="0" required disabled>
-                                            <button type="submit" class="refund-btn" style="background-color: #cccccc; cursor: not-allowed;" disabled>Refund Completed</button>
-                                        </form>
-                                    </div>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="6" style="text-align: center;">No payments received.</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Payment ID</th>
+          <th>Total Amount(₹)</th>
+          <th>Refund Payment ID</th>
+          <th>Status</th>
+          <th>Refund Amount(₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for payment in received_payments_list %} {% if payment.payment_id !=
+        '' %}
+        <tr>
+          <td>{{ payment.email }}</td>
+          <td>{{ payment.payment_id }}</td>
+          <td>{{ payment.amount }}</td>
+          <td>
+            {% if payment.refund_payment_id %} {{ payment.refund_payment_id }}
+            {% else %} no refund perfomed till now. {% endif %}
+          </td>
+          <td>{{ payment.status }}</td>
+          <td>
+            {% if payment.refund_payment_id == '' %}
+            <div class="form-container">
+              <form
+                action="{% url 'process_refund' payment.payment_id %}"
+                method="POST"
+              >
+                {% csrf_token %}
+                <input
+                  type="number"
+                  name="refund_amount"
+                  class="action-input"
+                  placeholder="Amount"
+                  min="0"
+                  required
+                />
+                <button type="submit" class="refund-btn">Refund</button>
+              </form>
+            </div>
+            {% else %}
+            <div class="form-container">
+              <form>
+                {% csrf_token %}
+                <input
+                  type="number"
+                  name="refund_amount"
+                  class="action-input"
+                  value="{{ payment.refund_amount }}"
+                  placeholder="Amount"
+                  min="0"
+                  required
+                  disabled
+                />
+                <button
+                  type="submit"
+                  class="refund-btn"
+                  style="background-color: #cccccc; cursor: not-allowed"
+                  disabled
+                >
+                  Refund Completed
+                </button>
+              </form>
+            </div>
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" style="text-align: center">No payments received.</td>
+        </tr>
+        {% endif %} {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endblock %}
