@@ -201,6 +201,73 @@
         transform: scale(1.05);
       }
 
+      .hero .icon {
+        position: absolute;
+        font-size: 50px;
+        color: rgba(255, 255, 255, 0.2);
+        animation: float 5s infinite;
+        transition: transform 0.3s, top 0.5s ease, left 0.5s ease, color 0.3s;
+      }
+
+      .hero .icon:hover {
+        transform: scale(1.2);
+        color: white;
+      }
+
+      .hero .icon:nth-child(1) {
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      .hero .icon:nth-child(2) {
+        top: 40%;
+        left: 80%;
+        animation-delay: 1s;
+      }
+
+      .hero .icon:nth-child(3) {
+        top: 60%;
+        left: 30%;
+        animation-delay: 2s;
+      }
+
+      .hero .icon:nth-child(4) {
+        top: 80%;
+        left: 60%;
+        animation-delay: 3s;
+      }
+
+      .hero .icon:nth-child(5) {
+        top: 10%;
+        left: 50%;
+        animation-delay: 4s;
+      }
+
+      .hero .icon:nth-child(6) {
+        top: 50%;
+        left: 20%;
+        animation-delay: 5s;
+      }
+
+      .hero .icon:nth-child(7) {
+        top: 70%;
+        left: 90%;
+        animation-delay: 6s;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -496,6 +563,17 @@
           solutions.
         </p>
         <a href="#about"><button class="cta-btn">Get Started</button></a>
+        <i class="fab fa-python icon"></i>
+        <i class="fab fa-js-square icon"></i>
+        <i class="fab fa-html5 icon"></i>
+        <i class="fab fa-css3-alt icon"></i>
+        <i class="fab fa-react icon"></i>
+        <i class="fab fa-node icon"></i>
+        <i class="fab fa-php icon"></i>
+        <i class="fab fa-java icon"></i>
+        <i class="fab fa-github icon"></i>
+        <i class="fab fa-docker icon"></i>
+         <i class="fab fa-aws icon"></i>
       </section>
 
       <!-- About Section -->
@@ -510,11 +588,6 @@
             success. We are dedicated to bridging the gap between cutting-edge
             technology and real-world applications, ensuring that businesses and
             individuals alike can thrive in the digital age.
-          </p>
-          <p>
-            Our team of expert developers, data scientists, and educators are
-            passionate about building future-ready solutions tailored to your
-            unique needs.
           </p>
           <a href="{% url 'about' %}">
             <button
@@ -658,6 +731,75 @@
         navLinksContainer.classList.remove("active"); // Remove the 'active' class to close the menu
       });
     });
+
+    // Change icon positions on hover
+    const icons = document.querySelectorAll(".hero .icon");
+    icons.forEach((icon) => {
+      icon.addEventListener("mouseover", () => {
+        icon.style.color = "white"; // Ensure color changes to white on hover
+        setTimeout(() => {
+          let newTop, newLeft;
+          let conflict;
+          do {
+            conflict = false;
+            newTop = `${Math.random() * 80 + 10}%`;
+            newLeft = `${Math.random() * 80 + 10}%`;
+            icons.forEach((otherIcon) => {
+              if (otherIcon !== icon) {
+                const otherTop = parseFloat(otherIcon.style.top);
+                const otherLeft = parseFloat(otherIcon.style.left);
+                const thisTop = parseFloat(newTop);
+                const thisLeft = parseFloat(newLeft);
+                if (
+                  Math.abs(thisTop - otherTop) < 10 &&
+                  Math.abs(thisLeft - otherLeft) < 10
+                ) {
+                  conflict = true;
+                }
+              }
+            });
+          } while (conflict);
+          icon.style.top = newTop;
+          icon.style.left = newLeft;
+          icon.style.color = "rgba(255, 255, 255, 0.2)"; // Reset color after moving
+        }, 195); // Change color for 1 second
+      });
+    });
+
+    // Initial position check to avoid conflicts
+    function checkInitialPositions() {
+      icons.forEach((icon, index) => {
+        let conflict;
+        do {
+          conflict = false;
+          icons.forEach((otherIcon, otherIndex) => {
+            if (index !== otherIndex) {
+              const otherTop = parseFloat(otherIcon.style.top);
+              const otherLeft = parseFloat(otherIcon.style.left);
+              const thisTop = parseFloat(icon.style.top);
+              const thisLeft = parseFloat(icon.style.left);
+              if (
+                Math.abs(thisTop - otherTop) < 10 &&
+                Math.abs(thisLeft - otherLeft) < 10
+              ) {
+                conflict = true;
+                icon.style.top = `${Math.random() * 80 + 10}%`;
+                icon.style.left = `${Math.random() * 80 + 10}%`;
+              }
+            }
+          });
+        } while (conflict);
+      });
+    }
+
+    // Set initial positions
+    icons.forEach((icon) => {
+      icon.style.top = `${Math.random() * 80 + 10}%`;
+      icon.style.left = `${Math.random() * 80 + 10}%`;
+    });
+
+    // Check initial positions for conflicts
+    checkInitialPositions();
 
     // Set current year
     document.getElementById("current-year").textContent =
