@@ -30,6 +30,11 @@ razorpay_client = razorpay.Client(
 logger = logging.getLogger(__name__)
 
 
+def userCheck(request):
+    if not request.session.get('email') or request.session.get('role') != 'user':
+        return redirect('user_login')
+
+
 def clear_messages(request):
     storage = get_messages(request)
     for _ in storage:
@@ -117,6 +122,7 @@ def user_login(request):
             user = User.objects.get(email=email, password=hashed_password)
             # Set session variables on successful login
             request.session['email'] = user.email
+            request.session['role'] = 'user'
             # Redirect to dashboard after successful login
             return redirect('user_dashboard')
         except User.DoesNotExist:
@@ -245,6 +251,7 @@ def reset_password(request):
 
 def user_dashboard(request):
     clear_messages(request)
+    userCheck(request)
     try:
         user = User.objects.get(email=request.session.get('email'))
         name = user.name
@@ -265,26 +272,28 @@ def user_dashboard(request):
 
 
 def internship_dashboard(request):
+    clear_messages(request)
+    userCheck(request)
     return render(request, 'user_intern_dashboard.html')
 
 
 def job_dashboard(request):
+    clear_messages(request)
+    userCheck(request)
     return render(request, 'user_job_dashboard.html')
 
 
 def user_profile(request):
     clear_messages(request)
+    userCheck(request)
     try:
         user = User.objects.get(email=request.session.get('email'))
 
         if request.method == 'POST':
             email_original = request.session.get('email')
-            name = request.POST.get('name')
             email = request.POST.get('email').lower()
             phone = str(request.POST.get('phone'))
             password = request.POST.get('password')
-
-            request.session['email_change'] = email
 
             try:
                 validate_email(email)
@@ -302,10 +311,8 @@ def user_profile(request):
                     hashed_password = hashlib.sha256(
                         password.encode('utf-8')).hexdigest()
                     user.password = hashed_password
-
-                user.name = name
-                user.email = email
                 user.phone = phone
+                user.email = email
                 user.save()
 
                 if InternshipApplication.objects.filter(email=email_original).exists():
@@ -325,9 +332,8 @@ def user_profile(request):
                     pay.email = email
                     pay.save()
 
-                if email_original != request.session.get('email_change'):
-                    request.session['email'] = request.session.get(
-                        'email_change')
+                if email_original != email:
+                    request.session['email'] = email
 
                 messages.success(request, "Profile updated successfully.")
                 return render(request, 'edit_profile.html', {'user': user})
@@ -354,8 +360,29 @@ def user_profile(request):
         return redirect('user_login')
 
 
+def verify_email_otp(request):
+    clear_messages(request)
+    if request.method == 'POST':
+        otp_old = request.POST.get('otp_old')
+        otp_new = request.POST.get('otp_new')
+
+        if str(request.session.get('otp_old')) == otp_old and str(request.session.get('otp_new')) == otp_new:
+            email = request.session.get('email_change')
+            user = User.objects.get(email=request.session.get('email'))
+            user.email = email
+            user.save()
+            request.session['email'] = email
+            messages.success(request, "Email updated successfully.")
+            return redirect('user_profile')
+        else:
+            messages.error(request, "Invalid OTP. Please try again.")
+            return redirect('user_profile')
+    return redirect('user_profile')
+
+
 def user_certificates(request):
     clear_messages(request)
+    userCheck(request)
     try:
         certificates = InternshipCertificate.objects.filter(
             email=request.session.get('email'))
@@ -369,6 +396,7 @@ def user_certificates(request):
 
 def apply_for_internship(request):
     clear_messages(request)
+    userCheck(request)
     try:
         user = User.objects.get(email=request.session.get('email'))
         if request.method == 'POST':
@@ -457,6 +485,7 @@ def apply_for_internship(request):
 
 def view_internship_application_status(request):
     clear_messages(request)
+    userCheck(request)
     try:
         application = InternshipApplication.objects.get(
             email=request.session.get('email'))
@@ -474,6 +503,7 @@ def view_internship_application_status(request):
 
 def project_selection(request):
     clear_messages(request)
+    userCheck(request)
     try:
         RAZORPAY_KEY_ID = settings.RAZORPAY_KEY_ID
         internApplication = InternshipApplication.objects.get(
@@ -506,6 +536,7 @@ def project_selection(request):
 
 def create_order(request):
     clear_messages(request)
+    userCheck(request)
     if request.method == "POST":
         try:
             data = json.loads(request.body)
@@ -551,6 +582,7 @@ def create_order(request):
 
 def verify_payment(request):
     clear_messages(request)
+    userCheck(request)
     if request.method == "POST":
         try:
             # Parse JSON payload
@@ -660,6 +692,7 @@ def verify_payment(request):
 
 def select_project(request, project_id):
     clear_messages(request)
+    userCheck(request)
     try:
         # Fetch the project by ID
         project = get_object_or_404(InternshipProjects, id=project_id)
@@ -736,6 +769,7 @@ def verify_login_otp(request):
             email = request.session.get('email')
             user = User.objects.get(email=email)
             request.session['email'] = user.email
+            request.session['role'] = 'user'
             return redirect('user_dashboard')
         else:
             messages.error(request, "Invalid OTP. Please try again.")
@@ -745,6 +779,7 @@ def verify_login_otp(request):
 
 def jobs(request):
     clear_messages(request)
+    userCheck(request)
     try:
         user_email = request.session.get('email')
         vacancies = Vacancy.objects.filter(
@@ -764,6 +799,7 @@ def jobs(request):
 
 def apply_for_job(request, vacancy_id):
     clear_messages(request)
+    userCheck(request)
     try:
         vacancy = get_object_or_404(Vacancy, id=vacancy_id)
         if request.method == 'POST':
@@ -801,6 +837,7 @@ def apply_for_job(request, vacancy_id):
 
 def user_job_applications(request):
     clear_messages(request)
+    userCheck(request)
     try:
         user_email = request.session.get('email')
         job_applications = JobApplication.objects.filter(

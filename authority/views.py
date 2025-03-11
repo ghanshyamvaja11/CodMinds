@@ -69,6 +69,7 @@ def admin_login(request):
 
 def admin_dashboard(request):
     clear_messages(request)
+    adminCheck(request)
     return render(request, 'admin_dashboard.html')
 
 
@@ -171,6 +172,7 @@ def reset_password(request):
 
 def add_internship_project(request):
     clear_messages(request)
+    adminCheck(request)
     if request.method == 'POST':
         # Extract form data from POST request
         field = request.POST.get('field')
@@ -197,6 +199,7 @@ def add_internship_project(request):
 
 def view_internship_applications(request):
     clear_messages(request)
+    adminCheck(request)
     applications = InternshipApplication.objects.all()
     return render(request, 'view_internship_applications.html', {'applications': applications})
 
@@ -205,6 +208,7 @@ def view_internship_applications(request):
 
 def approve_or_reject_application(request, app_id):
     clear_messages(request)
+    adminCheck(request)
     # Fetch the internship application by ID
     application = get_object_or_404(InternshipApplication, id=app_id)
 
@@ -245,6 +249,7 @@ def approve_or_reject_application(request, app_id):
 
 def update_project_allocation(request, app_id):
     clear_messages(request)
+    adminCheck(request)
     # Fetch the internship application by ID
     application = get_object_or_404(InternshipApplication, id=app_id)
 
@@ -272,6 +277,7 @@ def update_project_allocation(request, app_id):
 
 def eligible_for_internship_offer_letter(request):
     clear_messages(request)
+    adminCheck(request)
     users = None
     try:
         # Assuming you want to fetch all applications where project_name is not empty
@@ -291,6 +297,7 @@ def eligible_for_internship_offer_letter(request):
 
 def download_internship_offer_letter(request):
     clear_messages(request)
+    adminCheck(request)
     email = ''
 
     # Check if email is provided in the GET request, else use session
@@ -350,6 +357,7 @@ def download_internship_offer_letter(request):
 
 def issue_internship_offer_letter(request):
     clear_messages(request)
+    adminCheck(request)
     # Check if POST request and handle file upload
     if request.method == 'POST' and request.FILES['certificate_file']:
         certificate_file = request.FILES['certificate_file']
@@ -413,6 +421,7 @@ CodMinds Team
 # Recieved Payments
 def received_internship_payments(request):
     clear_messages(request)
+    adminCheck(request)
     received_payments_list = Payment.objects.all()
 
     return render(request, 'recieved_internship_payments.html', {'received_payments_list': received_payments_list})
@@ -421,6 +430,7 @@ def received_internship_payments(request):
 # Refund
 def process_refund(request, payment_id):
     clear_messages(request)
+    adminCheck(request)
     """
     Processes a refund for the given Razorpay payment ID.
     Updates the database with refund details after successful processing.
@@ -479,12 +489,14 @@ def process_refund(request, payment_id):
 
 def eligible_for_internship_certificate(request):
     clear_messages(request)
+    adminCheck(request)
     users = InternshipApplication.objects.filter(status=1)
     return render(request, 'eligible_for_certificate.html', {'users': users})
 
 
 def issue_internship_certificate(request):
     clear_messages(request)
+    adminCheck(request)
     user = None
     internship = None
     email = request.GET.get('email')
@@ -582,12 +594,14 @@ def issue_internship_certificate(request):
 # upload Internship certificate
 def eligible_interns_for_certificate(request):
     clear_messages(request)
+    adminCheck(request)
     users = InternshipApplication.objects.filter(status=1)
     return render(request, 'eligible_for_internship_certificate.html', {'users': users})
 
 
 def upload_internship_certificate(request):
     clear_messages(request)
+    adminCheck(request)
     email = request.session.get('email')
 
     # Check if email is provided in the GET request, else use session
@@ -663,6 +677,7 @@ def upload_internship_certificate(request):
 
 def generate_internship_certificate(request, certificate_code):
     clear_messages(request)
+    adminCheck(request)
     certificate = InternshipCertificate.objects.get(
         certificate_code=certificate_code)
 
@@ -681,6 +696,7 @@ def generate_internship_certificate(request, certificate_code):
 
 def issued_internship_certificates(request):
     clear_messages(request)
+    adminCheck(request)
     # Fetch all issued certificates from the database
     issued_certificates = InternshipCertificate.objects.all()
 
@@ -693,6 +709,7 @@ def issued_internship_certificates(request):
 
 def contact_us(request):
     clear_messages(request)
+    adminCheck(request)
     """View to display all contact queries."""
     queries = ContactForm.objects.all()
     return render(request, 'contactus_reply.html', {'queries': queries})
@@ -700,6 +717,7 @@ def contact_us(request):
 
 def contact_us_reply(request, query_id):
     clear_messages(request)
+    adminCheck(request)
     """View to handle replying to a specific contact query."""
     query = get_object_or_404(ContactForm, id=query_id)
 
@@ -736,12 +754,14 @@ def contact_us_reply(request, query_id):
 
 def added_internship_projects(request):
     clear_messages(request)
+    adminCheck(request)
     projects = InternshipProjects.objects.all()
     return render(request, 'added_projects.html', {'projects': projects})
 
 
 def edit_internship_project(request, project_id):
     clear_messages(request)
+    adminCheck(request)
     project = get_object_or_404(InternshipProjects, id=project_id)
 
     if request.method == 'POST':
@@ -758,6 +778,7 @@ def edit_internship_project(request, project_id):
 
 def delete_internship_project(request, project_id):
     clear_messages(request)
+    adminCheck(request)
     project = get_object_or_404(InternshipProjects, id=project_id)
     project.delete()
     messages.success(request, "Project deleted successfully.")
@@ -785,6 +806,7 @@ def resend_otp(request):
 
 def internship_dashboard(request):
     clear_messages(request)
+    adminCheck(request)
     return render(request, 'internship_dashboard.html')
 
 
@@ -828,6 +850,7 @@ def admin_verify_login_otp(request):
 
 def hire_us_applications(request):
     clear_messages(request)
+    adminCheck(request)
     """View to display all HireUs applications."""
     applications = HireUs.objects.all()
     return render(request, 'hireus_reply.html', {'applications': applications})
@@ -835,6 +858,7 @@ def hire_us_applications(request):
 
 def hire_us_reply(request, application_id):
     clear_messages(request)
+    adminCheck(request)
     """View to handle replying to a specific HireUs application."""
     application = get_object_or_404(HireUs, id=application_id)
 
@@ -870,8 +894,10 @@ def hire_us_reply(request, application_id):
     return render(request, 'hireus_reply.html', {'application': application})
 
 
-#Job Vacencies and Job Applications
+# Job Vacencies and Job Applications
 def post_vacancy(request):
+    clear_messages(request)
+    adminCheck(request)
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
@@ -889,14 +915,23 @@ def post_vacancy(request):
 
     return render(request, 'post_vacancy.html')
 
+
 def carrier_dashboard(request):
+    clear_messages(request)
+    adminCheck(request)
     return render(request, 'carriers_dashboard.html')
 
+
 def job_applications(request):
+    clear_messages(request)
+    adminCheck(request)
     applications = JobApplication.objects.filter()
     return render(request, 'job_applications.html', {'applications': applications})
 
+
 def update_job_application_status(request, application_id):
+    clear_messages(request)
+    adminCheck(request)
     application = get_object_or_404(JobApplication, id=application_id)
     if request.method == 'POST':
         application.status = request.POST['status']
@@ -919,9 +954,15 @@ def update_job_application_status(request, application_id):
                 recipient_list=[application.email],
                 fail_silently=False,
             )
-            messages.success(request, "Application status updated and email sent successfully.")
+            messages.success(
+                request, "Application status updated and email sent successfully.")
         except Exception as e:
             messages.error(request, f"Failed to send email. Error: {str(e)}")
 
         return redirect('job_applications')
     return render(request, 'job_applications.html')
+
+
+def adminCheck(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('admin_login')
