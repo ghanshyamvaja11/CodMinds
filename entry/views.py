@@ -231,7 +231,7 @@ def code_formatter(request):
                     error_message = "Unsupported language selected."
             except Exception as e:
                 error_message = f"Error formatting code: {str(e)}"
-    return render(request, 'tools/Code&Utilities/code_formatter.html', {'formatted_code': formatted_code, 'error_message': error_message})
+    return render(request, 'Tools/Code&Utilities/code_formatter.html', {'formatted_code': formatted_code, 'error_message': error_message})
 
 
 def text_diff_checker(request):
@@ -242,7 +242,7 @@ def text_diff_checker(request):
         if input_diff:
             # Implement diff checking logic here
             diff_result = input_diff  # Placeholder for actual diff logic
-    return render(request, 'tools/Code&Utilities/diff_checker.html', {'diff_result': diff_result})
+    return render(request, 'Tools/Code&Utilities/diff_checker.html', {'diff_result': diff_result})
 
 
 def json_formatter_validator(request):
@@ -257,7 +257,7 @@ def json_formatter_validator(request):
                 formatted_json = json.dumps(parsed_json, indent=4)
             except json.JSONDecodeError:
                 error_message = "Invalid JSON"
-    return render(request, 'tools/Code&Utilities/json_formatter_validator.html', {'formatted_json': formatted_json, 'error_message': error_message})
+    return render(request, 'Tools/Code&Utilities/json_formatter_validator.html', {'formatted_json': formatted_json, 'error_message': error_message})
 
 
 def markdown_to_html_converter(request):
@@ -271,7 +271,7 @@ def markdown_to_html_converter(request):
                 converted_html = markdown2.markdown(input_markdown)
             except Exception as e:
                 error_message = f"Error converting Markdown: {str(e)}"
-    return render(request, 'tools/Code&Utilities/markdown_to_html_converter.html', {'converted_html': converted_html, 'error_message': error_message})
+    return render(request, 'Tools/Code&Utilities/markdown_to_html_converter.html', {'converted_html': converted_html, 'error_message': error_message})
 
 
 def diff_checker(request):
@@ -287,7 +287,7 @@ def diff_checker(request):
                 lineterm=''
             )
             diff_result = '\n'.join(diff)
-    return render(request, 'tools/Code&Utilities/diff_checker.html', {'diff_result': diff_result})
+    return render(request, 'Tools/Code&Utilities/diff_checker.html', {'diff_result': diff_result})
 
 
 def base64_encoder_decoder(request):
@@ -303,7 +303,7 @@ def base64_encoder_decoder(request):
                 # If decoding fails, encode the input text
                 base64_result = base64.b64encode(
                     input_text.encode('utf-8')).decode('utf-8')
-    return render(request, 'tools/Code&Utilities/base64_encoder_decoder.html', {'base64_result': base64_result})
+    return render(request, 'Tools/Code&Utilities/base64_encoder_decoder.html', {'base64_result': base64_result})
 
 
 def case_converter(request):
@@ -355,7 +355,7 @@ def case_converter(request):
                 import random
                 converted_text = ''.join(char.upper() if random.choice(
                     [True, False]) else char.lower() for char in input_text)
-    return render(request, 'tools/Code&Utilities/case_converter.html', {'converted_text': converted_text})
+    return render(request, 'Tools/Code&Utilities/case_converter.html', {'converted_text': converted_text})
 
 
 def string_hash_generator(request):
@@ -431,7 +431,7 @@ def string_hash_generator(request):
                     error_message = "Unsupported algorithm selected."
             except Exception as e:
                 error_message = f"Error generating hash: {str(e)}"
-    return render(request, 'tools/Code&Utilities/string_hash_generator.html', {'hash_result': hash_result, 'error_message': error_message})
+    return render(request, 'Tools/Code&Utilities/string_hash_generator.html', {'hash_result': hash_result, 'error_message': error_message})
 
 
 def minifier_beautifier(request):
@@ -442,7 +442,7 @@ def minifier_beautifier(request):
         if input_code:
             # Implement minify/beautify logic here
             result_code = input_code  # Placeholder for actual minify/beautify logic
-    return render(request, 'tools/Code&Utilities/minifier_beautifier.html', {'result_code': result_code})
+    return render(request, 'Tools/Code&Utilities/minifier_beautifier.html', {'result_code': result_code})
 
 
 def url_encoder_decoder(request):
@@ -457,7 +457,7 @@ def url_encoder_decoder(request):
             except Exception:
                 # If decoding fails, encode the input URL
                 url_result = urllib.parse.quote(input_url)
-    return render(request, 'tools/Code&Utilities/url_encoder_decoder.html', {'url_result': url_result})
+    return render(request, 'Tools/Code&Utilities/url_encoder_decoder.html', {'url_result': url_result})
 
 
 def jwt_decoder_generator(request):
@@ -484,7 +484,7 @@ def jwt_decoder_generator(request):
                     payload_dict, secret, algorithm="HS256")
             except Exception as e:
                 error_message = f"Error generating JWT: {str(e)}"
-    return render(request, 'tools/Code&Utilities/jwt_decoder_generator.html', {'jwt_result': jwt_result, 'error_message': error_message})
+    return render(request, 'Tools/Code&Utilities/jwt_decoder_generator.html', {'jwt_result': jwt_result, 'error_message': error_message})
 
 
 def regex_tester(request):
@@ -503,7 +503,7 @@ def regex_tester(request):
                     matches) if matches else "No matches found"
             except re.error as e:
                 error_message = f"Invalid Regex: {str(e)}"
-    return render(request, 'tools/Code&Utilities/regex_tester.html', {'regex_result': regex_result, 'error_message': error_message})
+    return render(request, 'Tools/Code&Utilities/regex_tester.html', {'regex_result': regex_result, 'error_message': error_message})
 
 
 def api_tester(request):
@@ -558,7 +558,7 @@ def api_tester(request):
             except requests.RequestException as e:
                 error_message = f"Request failed: {str(e)}"
 
-    return render(request, 'tools/API&WebAnalysis/api_tester.html', {
+    return render(request, 'Tools/API&WebAnalysis/api_tester.html', {
         'api_response': api_response,
         'status_code': status_code,
         'status_code_color': status_code_color,
@@ -583,12 +583,12 @@ def network_analyzer(request):
                     '\n'.join(ip_addresses)
             except Exception as e:
                 error_message = f"Error analyzing network data: {str(e)}"
-    return render(request, 'tools/API&WebAnalysis/network_analyzer.html', {'analysis_result': analysis_result, 'error_message': error_message})
+    return render(request, 'Tools/API&WebAnalysis/network_analyzer.html', {'analysis_result': analysis_result, 'error_message': error_message})
 
 
 def rest_api_tester(request):
     clear_messages(request)
-    return render(request, 'tools/API&WebAnalysis/rest_api_tester.html')
+    return render(request, 'Tools/API&WebAnalysis/rest_api_tester.html')
 
 
 def http_headers_inspector(request):
@@ -622,12 +622,12 @@ def dns_lookup_tool(request):
                         dns_records[record_type] = 'No record found'
             except Exception as e:
                 error_message = f"Error resolving domain: {str(e)}"
-    return render(request, 'tools/API&WebAnalysis/dns_lookup_tool.html', {'dns_records': dns_records, 'error_message': error_message})
+    return render(request, 'Tools/API&WebAnalysis/dns_lookup_tool.html', {'dns_records': dns_records, 'error_message': error_message})
 
 
 def whois_lookup(request):
     clear_messages(request)
-    return render(request, 'tools/API&WebAnalysis/whois_lookup.html')
+    return render(request, 'Tools/API&WebAnalysis/whois_lookup.html')
 
 
 def ip_address_lookup(request):
@@ -645,17 +645,17 @@ def ip_address_lookup(request):
                     error_message = "Error fetching IP information."
             except requests.RequestException as e:
                 error_message = f"Error fetching IP information: {str(e)}"
-    return render(request, 'tools/API&WebAnalysis/ip_address_lookup.html', {'ip_info': ip_info, 'error_message': error_message})
+    return render(request, 'Tools/API&WebAnalysis/ip_address_lookup.html', {'ip_info': ip_info, 'error_message': error_message})
 
 
 def port_scanner(request):
     clear_messages(request)
-    return render(request, 'tools/API&WebAnalysis/port_scanner.html')
+    return render(request, 'Tools/API&WebAnalysis/port_scanner.html')
 
 
 def website_screenshot_api(request):
     clear_messages(request)
-    return render(request, 'tools/API&WebAnalysis/website_screenshot_api.html')
+    return render(request, 'Tools/API&WebAnalysis/website_screenshot_api.html')
 
 
 def meta_tag_analyzer(request):
@@ -674,14 +674,14 @@ def meta_tag_analyzer(request):
                 error_message = f"Error fetching URL: {str(e)}"
             except Exception as e:
                 error_message = f"Error parsing HTML: {str(e)}"
-    return render(request, 'tools/API&WebAnalysis/meta_tag_analyzer.html', {'meta_tags': meta_tags, 'error_message': error_message})
+    return render(request, 'Tools/API&WebAnalysis/meta_tag_analyzer.html', {'meta_tags': meta_tags, 'error_message': error_message})
 
 
 def robots_txt_sitemap_validator(request):
     clear_messages(request)
-    return render(request, 'tools/API&WebAnalysis/robots_txt_sitemap_validator.html')
+    return render(request, 'Tools/API&WebAnalysis/robots_txt_sitemap_validator.html')
 
 
 def ssl_certificate_checker(request):
     clear_messages(request)
-    return render(request, 'tools/API&WebAnalysis/ssl_certificate_checker.html')
+    return render(request, 'Tools/API&WebAnalysis/ssl_certificate_checker.html')
