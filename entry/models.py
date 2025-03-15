@@ -22,3 +22,9 @@ class HireUs(models.Model):
 
     def __str__(self):
         return f"Message from {self.name}"
+
+class Subscribe(models.Model):
+    email = models.EmailField(primary_key=True)
+
+    def __str__(self):
+        return f"email: {self.email}"

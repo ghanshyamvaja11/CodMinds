@@ -186,7 +186,32 @@ def tools_library(request):
     clear_messages(request)
     return render(request, 'tools_library.html')
 
-
+def subscribe(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email:
+            try:
+                # Check if email already exists in the database
+                subscriber = Subscribe.objects.get(email=email)
+                messages.warning(
+                    request, "Email already exists in our database. Please try another one.")
+            except Subscribe.DoesNotExist:
+                # Save new subscriber to the database
+                subscriber = Subscribe(email=email)
+                subscriber.save()
+                send_mail(
+                    subject="subscribe confirmation",
+                    message="Thank you for subscribing to our newsletter. You will receive updates soon.",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[email]
+                )
+                messages.success(
+                    request, "Thank you for subscribing to our newsletter. You will receive updates soon.")
+        else:
+            messages.error(
+                request, "Please enter a valid email address.")
+    return redirect('tools_library')
+            
 def code_formatter(request):
     clear_messages(request)
     formatted_code = None

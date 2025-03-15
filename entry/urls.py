@@ -20,7 +20,10 @@ urlpatterns = [
     path('page-not-found/', error_404_view, name='error_404_view'),
     path('hire_us', hire_us, name='hire_us'),
     path('carriers/jobs', carrier, name='carrier'),
+
+    #Online Tools
     path('tools-library', tools_library, name='tools_library'),
+    path("subscribe", subscribe, name='subscribe'),
     path('tools-library/code-formatter', code_formatter, name='code_formatter'),
     path('tools-library/text-diff-checker',
          text_diff_checker, name='text_diff_checker'),

@@ -531,6 +531,15 @@
   </div>
 </section>
 
+<div class="subscribe-container">
+  <p>Stay updated with our latest tools and features. Subscribe now!</p>
+  <form class="subscribe-form" action="{% url 'subscribe' %}" method="POST">
+    {% csrf_token %}
+    <input type="email" id="email" name="email" placeholder="Enter your email">
+    <input type="submit" id="submit" value="Subscribe">
+  </form>
+</div>
+
 <!-- Styles specific to tools library page -->
 <style>
   /* Tools Library Section */
@@ -734,6 +743,53 @@
     #category-filter {
       width: 100%;
     }
+  }
+
+  .subscribe-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #1e90ff;
+    color: white;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .subscribe-container p {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .subscribe-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .subscribe-form input[type="email"] {
+    height: 45px;
+    width: 300px;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px;
+    border: none;
+  }
+
+  .subscribe-form input[type="submit"] {
+    height: 45px;
+    width: 120px;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .subscribe-form input[type="submit"]:hover {
+    background-color: #ff4500;
+    transform: scale(1.05);
   }
 </style>
 
