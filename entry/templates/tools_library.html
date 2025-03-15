@@ -5,6 +5,19 @@
   href="https://fonts.googleapis.com/icon?family=Material+Icons"
 />
 
+<!-- Display Success or Error Messages -->
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+  <div
+    class="alert {% if message.tags == 'error' %} alert-danger {% elif message.tags == 'success' %} alert-success {% elif message.tags == 'warning' %} alert-warning {% else %} alert-info {% endif %}"
+  >
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 <!-- Tools Library Section -->
 <section id="tools-library" class="tools-library">
   <h1>Explore Our Digital Tools Library</h1>
@@ -790,6 +803,39 @@
   .subscribe-form input[type="submit"]:hover {
     background-color: #ff4500;
     transform: scale(1.05);
+  }
+
+  .messages {
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  .alert {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  .alert-info {
+    background-color: #cce5ff;
+    color: #004085;
   }
 </style>
 
