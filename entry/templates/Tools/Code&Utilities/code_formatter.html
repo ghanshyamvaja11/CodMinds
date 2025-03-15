@@ -1,0 +1,209 @@
+{% extends "Tools/tools_base.html" %} {% block content %}
+<title>CodMinds Tools - Code Formatter</title>
+<style>
+  .page-title {
+    text-align: center;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .styled-form-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .styled-form label {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .styled-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .styled-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .styled-form button {
+    background-color: #1e90ff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .styled-form button:hover {
+    background-color: #4c9aff;
+  }
+
+  .result-title {
+    text-align: center;
+    color: #1e90ff;
+    margin-top: 20px;
+  }
+
+  .result-content {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    white-space: pre-wrap;
+    position: relative;
+  }
+
+  .copy-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #1e90ff;
+  }
+
+  .tooltip {
+    position: absolute;
+    top: -25px;
+    right: 10px;
+    background-color: #1e90ff;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: none;
+  }
+
+  .error-message {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .loading-spinner {
+    display: none;
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #1e90ff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+    z-index: 9999;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+  
+</style>
+<div class="styled-form-container">
+  <h2 class="page-title">Code Formatter</h2>
+  <form method="post" class="styled-form" onsubmit="showSpinner()">
+    {% csrf_token %}
+    <label for="input_code" class="form-label">Enter Code:</label>
+    <textarea
+      id="input_code"
+      name="input_code"
+      class="form-textarea"
+      required
+    ></textarea>
+    <label for="language" class="form-label">Select Language:</label>
+    <select id="language" name="language" class="form-select">
+      <option value="python">Python</option>
+      <option value="javascript">JavaScript</option>
+      <option value="java">Java</option>
+      <option value="c">C</option>
+      <option value="cpp">C++</option>
+      <option value="csharp">C#</option>
+      <option value="swift">Swift</option>
+      <option value="kotlin">Kotlin</option>
+      <option value="go">Go</option>
+      <option value="rust">Rust</option>
+      <option value="html">HTML</option>
+      <option value="css">CSS</option>
+      <option value="typescript">TypeScript</option>
+      <option value="php">PHP</option>
+      <option value="ruby">Ruby</option>
+      <option value="dart">Dart</option>
+      <option value="assembly">Assembly</option>
+      <option value="bash">Bash</option>
+      <option value="powershell">PowerShell</option>
+      <option value="perl">Perl</option>
+      <option value="lua">Lua</option>
+      <option value="r">R</option>
+      <option value="julia">Julia</option>
+      <option value="matlab">MATLAB</option>
+      <option value="sql">SQL</option>
+      <option value="plsql">PL/SQL</option>
+      <option value="graphql">GraphQL</option>
+      <option value="haskell">Haskell</option>
+      <option value="lisp">Lisp</option>
+      <option value="scheme">Scheme</option>
+      <option value="clojure">Clojure</option>
+      <option value="fsharp">F#</option>
+      <option value="erlang">Erlang</option>
+      <option value="elixir">Elixir</option>
+      <option value="cobol">COBOL</option>
+      <option value="fortran">Fortran</option>
+      <option value="pascal">Pascal</option>
+      <option value="delphi">Delphi</option>
+      <option value="prolog">Prolog</option>
+      <!-- Add more languages as needed -->
+    </select>
+    <button type="submit" class="form-button">Format Code</button>
+  </form>
+  <div class="loading-spinner" id="loadingSpinner"></div>
+  {% if formatted_code %}
+  <h2 class="result-title">Formatted Code:</h2>
+  <div class="result-content">
+    <i class="copy-icon" onclick="copyToClipboard()">📋</i>
+    <div class="tooltip">Copied!</div>
+    <pre>{{ formatted_code }}</pre>
+  </div>
+  {% endif %} {% if error_message %}
+  <div class="error-message">{{ error_message }}</div>
+  {% endif %}
+</div>
+<script>
+  function copyToClipboard() {
+    const codeContent = document.querySelector(".result-content pre").innerText;
+    navigator.clipboard.writeText(codeContent).then(() => {
+      const tooltip = document.querySelector(".tooltip");
+      tooltip.style.display = "block";
+      setTimeout(() => {
+        tooltip.style.display = "none";
+      }, 1000);
+    });
+  }
+
+  function showSpinner() {
+    document.getElementById("loadingSpinner").style.display = "block";
+  }
+</script>
+{% endblock %}

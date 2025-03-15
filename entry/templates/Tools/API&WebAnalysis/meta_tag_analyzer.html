@@ -1,0 +1,155 @@
+{% extends "Tools/tools_base.html" %} {% block content %}
+<title>CodMinds Tools - Meta Tag Analyzer</title>
+<style>
+  .page-title {
+    text-align: center;
+    color: #1e90ff;
+    margin-bottom: 20px;
+  }
+
+  .styled-form-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .styled-form label {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .styled-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .styled-form button {
+    background-color: #1e90ff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .styled-form button:hover {
+    background-color: #4c9aff;
+  }
+
+  .result-title {
+    text-align: center;
+    color: #1e90ff;
+    margin-top: 20px;
+  }
+
+  .result-content {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    white-space: pre-wrap;
+    position: relative;
+  }
+
+  .copy-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #1e90ff;
+  }
+
+  .tooltip {
+    position: absolute;
+    top: -25px;
+    right: 10px;
+    background-color: #1e90ff;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: none;
+  }
+
+  .error-message {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* Fixed Centered Spinner */
+  .loading-spinner {
+    display: none;
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #1e90ff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+    z-index: 9999;
+  }
+
+  @keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+</style>
+
+<div class="styled-form-container">
+  <h2 class="page-title">Meta Tag Analyzer</h2>
+  <form method="post" class="styled-form" onsubmit="showSpinner()">
+    {% csrf_token %}
+    <label for="website_url">Enter Website URL:</label>
+    <textarea id="website_url" name="website_url" required></textarea>
+    <button type="submit">Analyze Meta Tags</button>
+  </form>
+
+  <!-- Centered Spinner -->
+  <div class="loading-spinner" id="loadingSpinner"></div>
+
+  {% if meta_tags %}
+  <h2 class="result-title">Meta Tags:</h2>
+  <div class="result-content">
+    <i class="copy-icon" onclick="copyToClipboard()">📋</i>
+    <div class="tooltip">Copied!</div>
+    <pre>{{ meta_tags }}</pre>
+  </div>
+  {% endif %}
+
+  {% if error_message %}
+  <div class="error-message">{{ error_message }}</div>
+  {% endif %}
+</div>
+
+<script>
+  function showSpinner() {
+    document.getElementById("loadingSpinner").style.display = "block";
+  }
+
+  function copyToClipboard() {
+    const codeContent = document.querySelector(".result-content pre").innerText;
+    navigator.clipboard.writeText(codeContent).then(() => {
+      const tooltip = document.querySelector(".tooltip");
+      tooltip.style.display = "block";
+      setTimeout(() => {
+        tooltip.style.display = "none";
+      }, 1000);
+    });
+  }
+</script>
+{% endblock %}
