@@ -120,6 +120,13 @@
       alt="Website Screenshot"
       style="width: 100%; border-radius: 10px"
     />
+    <form method="post" action="{% url 'download_screenshot' %}">
+      {% csrf_token %}
+      <input type="hidden" name="screenshot_data" value="{{ screenshot }}" />
+      <button type="submit" class="form-button" style="margin-top: 10px">
+        Download Screenshot
+      </button>
+    </form>
   </div>
   {% endif %} {% if error_message %}
   <div class="error-message">{{ error_message }}</div>

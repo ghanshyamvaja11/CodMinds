@@ -66,6 +66,15 @@
     white-space: pre-wrap;
     font-size: 16px;
     color: #333;
+    position: relative;
+  }
+
+  .copy-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #1e90ff;
   }
 
   .loading-spinner {
@@ -90,6 +99,18 @@
     100% {
       transform: translate(-50%, -50%) rotate(360deg);
     }
+  }
+
+  .tooltip {
+    position: absolute;
+    top: -25px;
+    right: 10px;
+    background-color: #1e90ff;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: none;
   }
 </style>
 <div class="styled-form-container">
@@ -135,9 +156,11 @@
   <div class="loading-spinner" id="loadingSpinner"></div>
   {% if converted_text %}
   <h2 class="result-title">Converted Text:</h2>
-  <i class="copy-icon" onclick="copyToClipboard()">📋</i>
-  <div class="tooltip">Copied!</div>
-  <pre class="result-content">{{ converted_text }}</pre>
+  <div class="result-content">
+    <i class="copy-icon" onclick="copyToClipboard()">📋</i>
+    <div class="tooltip">Copied!</div>
+    <pre>{{ converted_text }}</pre>
+  </div>
   {% endif %}
 </div>
 <script>

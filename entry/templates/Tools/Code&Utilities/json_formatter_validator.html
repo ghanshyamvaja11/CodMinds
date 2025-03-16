@@ -111,11 +111,10 @@
       transform: translate(-50%, -50%) rotate(360deg);
     }
   }
-  
 </style>
 <div class="styled-form-container">
   <h2 class="page-title">JSON Formatter & Validator</h2>
-  <form method="post" class="styled-form">
+  <form method="post" class="styled-form" onsubmit="showSpinner()">
     {% csrf_token %}
     <label for="input_json" class="form-label">Enter JSON:</label>
     <textarea

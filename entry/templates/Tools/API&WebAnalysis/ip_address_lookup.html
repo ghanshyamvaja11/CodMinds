@@ -63,24 +63,29 @@
     overflow-x: auto;
   }
 
-  .copy-icon {
+  .copy-container {
     position: absolute;
     top: 10px;
     right: 10px;
+  }
+
+  .copy-icon {
     cursor: pointer;
+    font-size: 18px;
     color: #1e90ff;
   }
 
   .tooltip {
     position: absolute;
-    top: -25px;
-    right: 10px;
+    top: -6.9px;
+    right: 0;
     background-color: #1e90ff;
     color: white;
-    padding: 5px;
+    padding: 5px 8px;
     border-radius: 5px;
     font-size: 12px;
     display: none;
+    white-space: nowrap;
   }
 
   .error-message {
@@ -112,7 +117,6 @@
       transform: translate(-50%, -50%) rotate(360deg);
     }
   }
-
 </style>
 <div class="styled-form-container">
   <h2 class="page-title">IP Address Lookup</h2>
@@ -131,10 +135,11 @@
   {% if ip_info %}
   <h2 class="result-title">IP Address Information:</h2>
   <div class="result-content">
-    {% comment %} <i class="copy-icon" onclick="copyToClipboard()">📋</i> {%
-    endcomment %}
-    <div class="tooltip">Copied!</div>
-    <pre>{{ ip_info }}</pre>
+    <div class="copy-container">
+      <i class="copy-icon" onclick="copyToClipboard()">📋</i>
+      <span class="tooltip" id="tooltip">Copied!</span>
+    </div>
+    <pre id="ipInfoContent">{{ ip_info|safe }}</pre>
   </div>
   {% endif %} {% if error_message %}
   <div class="error-message">{{ error_message }}</div>
@@ -144,7 +149,7 @@
   function copyToClipboard() {
     const codeContent = document.querySelector(".result-content pre").innerText;
     navigator.clipboard.writeText(codeContent).then(() => {
-      const tooltip = document.querySelector(".tooltip");
+      const tooltip = document.getElementById("tooltip");
       tooltip.style.display = "block";
       setTimeout(() => {
         tooltip.style.display = "none";

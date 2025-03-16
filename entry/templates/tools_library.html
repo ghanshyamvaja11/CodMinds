@@ -55,84 +55,65 @@
       <h3>Code & Text Utilities</h3>
       {% comment %} <p>Tools for developers to manipulate code and text.</p> {% endcomment %}
       <div class="examples">
-        <div class="example">
-          <a href="{% url 'code_formatter' %}">
+          <a href="{% url 'code_formatter' %}" class="example">
             <i class="material-icons">format_align_left</i>
             <h4>Code Formatter</h4>
             {% comment %} <p>Format your code for better readability.</p> {% endcomment %}
           </a>
-        </div>
         <!-- New tools -->
-        <div class="example">
-          <a href="{% url 'json_formatter_validator' %}">
+          <a href="{% url 'json_formatter_validator' %}" class="example">
             <i class="material-icons">code</i>
             <h4>JSON Formatter & Validator</h4>
             {% comment %} <p>Format and validate JSON with error highlighting.</p> {% endcomment %}
           </a>
-        </div>
-        <div class="example">
-          <a href="{% url 'base64_encoder_decoder' %}">
+          <a href="{% url 'base64_encoder_decoder' %}" class="example">
             <i class="material-icons">description</i>
             <h4>Base64 Encoder/Decoder</h4>
             {% comment %} <p>Convert text or image files to Base64 and back.</p> {% endcomment %}
           </a>
-        </div>
-        <div class="example">
-          <a href="{% url 'case_converter' %}">
+          <a href="{% url 'case_converter' %}" class="example">
             <i class="material-icons">text_fields</i>
             <h4>Case Converter</h4>
             {% comment %} <p>Convert text between different cases.</p> {% endcomment %}
           </a>
-        </div>
-        <div class="example">
-          <a href="{% url 'string_hash_generator' %}">
+          <a href="{% url 'string_hash_generator' %}" class="example">
             <i class="material-icons">tag</i>
             <h4>String Hash Generator</h4>
             {% comment %} <p>Generate hash values from any input string.</p> {% endcomment %}
           </a>
-        </div>
-        <div class="example">
-          <a href="{% url 'jwt_decoder_generator' %}">
+          <a href="{% url 'jwt_decoder_generator' %}" class="example">
             <i class="material-icons">vpn_key</i>
             <h4>JWT Decoder & Generator</h4>
             {% comment %} <p>Decode and generate JSON Web Tokens.</p> {% endcomment %}
           </a>
-        </div>
-        <div class="example">
-          <a href="{% url 'regex_tester' %}">
+          <a href="{% url 'regex_tester' %}" class="example">
             <i class="material-icons">code</i>
             <h4>Regex Tester</h4>
             {% comment %} <p>Test regular expressions against sample text in real time.</p> {% endcomment %}
           </a>
-        </div>
       </div>
     </div>
+
+
+
     <!-- Category: API, Network & Web Analysis Tools -->
     <div class="category">
       <i class="material-icons">network_check</i>
       <h3>API, Network & Web Analysis Tools</h3>
       {% comment %} <p>Analyze & debug APIs, networks, and websites.</p> {% endcomment %}
       <div class="examples">
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'api_tester' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'api_tester' %}" class="example">
             <i class="material-icons">science</i>
             <h4>API Tester</h4>
             {% comment %} <p>Test and debug your APIs with ease.</p> {% endcomment %}
           </a>
-        </div>
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'network_analyzer' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'network_analyzer' %}" class="example">
             <i class="material-icons">show_chart</i>
             <h4>Network Analyzer</h4>
             {% comment %} <p>Monitor and analyze network traffic.</p> {% endcomment %}
           </a>
-        </div>
         <!-- New tools from line 190: add 'new-tool' class -->
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'rest_api_tester' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'rest_api_tester' %}" class="example">
             <i class="material-icons">http</i>
             <h4>REST API Tester</h4>
             {% comment %} <p>
@@ -140,86 +121,60 @@
               payloads.
             </p>{% endcomment %}
           </a>
-        </div>
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'http_headers_inspector' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'http_headers_inspector' %}" class="example">
             <i class="material-icons">http</i>
             <h4>HTTP Headers Inspector</h4>
             {% comment %} <p>Fetch and display HTTP response headers from any URL.</p> {% endcomment %}
           </a>
-        </div>
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'dns_lookup_tool' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'dns_lookup_tool' %}" class="example">
             <i class="material-icons">dns</i>
             <h4>DNS Lookup Tool</h4>
             {% comment %} <p>Retrieve DNS records for a domain.</p> {% endcomment %}
           </a>
-          <span class="upcoming-tag">Upcoming</span>
-        </div>
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'meta_tag_analyzer' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'meta_tag_analyzer' %}" class="example">
             <i class="material-icons">search</i>
             <h4>Meta Tag Analyzer</h4>
             {% comment %} <p>Analyze SEO-related meta tags from a webpage.</p> {% endcomment %}
           </a>
-          <span class="upcoming-tag">Upcoming</span>
-        </div>
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'whois_lookup' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'whois_lookup' %}" class="example">
             <i class="material-icons">search</i>
             <h4>WHOIS Lookup</h4>
             {% comment %} <p>Look up domain registration details.</p> {% endcomment %}
           </a>
-          <span class="upcoming-tag">Upcoming</span>
-        </div>
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'ip_address_lookup' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'ip_address_lookup' %}" class="example">
             <i class="material-icons">location_on</i>
             <h4>IP Address Lookup</h4>
             {% comment %} <p>Get geographic and ISP details based on an IP address.</p> {% endcomment %}
           </a>
-          <span class="upcoming-tag">Upcoming</span>
-        </div>
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'port_scanner' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'port_scanner' %}" class="example">
             <i class="material-icons">settings_input_antenna</i>
             <h4>Port Scanner</h4>
             {% comment %} <p>Scan a domain or IP for open ports.</p> {% endcomment %}
           </a>
-        </div>
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'website_screenshot_api' %}"> {% endcomment %}
-            <a href="">
+          <a href="{% url 'website_screenshot_api' %}" class="example">
             <i class="material-icons">camera_alt</i>
             <h4>Website Screenshot API</h4>
             {% comment %} <p>Capture full-page screenshots of websites.</p> {% endcomment %}
           </a>
-        </div>
-        {% comment %} <div class="example new-tool">
-          <a href="{% url 'robots_txt_sitemap_validator' %}">
+        {% comment %}
+          <a href="{% url 'robots_txt_sitemap_validator' %}" class="example">
             <i class="material-icons">robot</i>
             <h4>Robots.txt & Sitemap Validator</h4>
              <p>
               Validate and analyze a website’s robots.txt and sitemap.xml files.
             </p>
           </a>
-        </div> {% endcomment %}
-        <div class="example new-tool">
-          {% comment %} <a href="{% url 'ssl_certificate_checker' %}"> {% endcomment %}
-            <a href="">
+        {% endcomment %}
+          <a href="{% url 'ssl_certificate_checker' %}" class="example">
             <i class="material-icons">https</i>
             <h4>SSL Certificate Checker</h4>
             {% comment %} <p>Verify the details and expiry of a website’s SSL certificate.</p> {% endcomment %}
           </a>
-        </div>
       </div>
     </div>
+
+
+
     <!-- Category: Security & Authentication Tools -->
     <div class="category">
       <i class="material-icons">lock</i>
@@ -652,7 +607,7 @@
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    flex: 1 1 calc(50% - 10px);
+    flex: 1 1 calc(30% - 10px);
     min-height: 110px;
   }
 

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from .models import *
 from django.contrib import messages
 from django.contrib.messages import get_messages
@@ -26,6 +27,15 @@ import requests
 from django.middleware.csrf import get_token
 import dns.resolver
 from bs4 import BeautifulSoup
+import socket
+import concurrent.futures
+import ssl
+import datetime
+import os
+import whois  # Add this import
+# from selenium import webdriver
+# from selenium.webdriver.chrome.options import Options
+import json
 
 
 def clear_messages(request):
@@ -186,6 +196,7 @@ def tools_library(request):
     clear_messages(request)
     return render(request, 'tools_library.html')
 
+
 def subscribe(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -211,7 +222,8 @@ def subscribe(request):
             messages.error(
                 request, "Please enter a valid email address.")
     return redirect('tools_library')
-            
+
+
 def code_formatter(request):
     clear_messages(request)
     formatted_code = None
@@ -234,17 +246,6 @@ def code_formatter(request):
     return render(request, 'Tools/Code&Utilities/code_formatter.html', {'formatted_code': formatted_code, 'error_message': error_message})
 
 
-def text_diff_checker(request):
-    clear_messages(request)
-    diff_result = None
-    if request.method == 'POST':
-        input_diff = request.POST.get('input_diff')
-        if input_diff:
-            # Implement diff checking logic here
-            diff_result = input_diff  # Placeholder for actual diff logic
-    return render(request, 'Tools/Code&Utilities/diff_checker.html', {'diff_result': diff_result})
-
-
 def json_formatter_validator(request):
     clear_messages(request)
     formatted_json = None
@@ -258,36 +259,6 @@ def json_formatter_validator(request):
             except json.JSONDecodeError:
                 error_message = "Invalid JSON"
     return render(request, 'Tools/Code&Utilities/json_formatter_validator.html', {'formatted_json': formatted_json, 'error_message': error_message})
-
-
-def markdown_to_html_converter(request):
-    clear_messages(request)
-    converted_html = None
-    error_message = None
-    if request.method == 'POST':
-        input_markdown = request.POST.get('input_markdown')
-        if input_markdown:
-            try:
-                converted_html = markdown2.markdown(input_markdown)
-            except Exception as e:
-                error_message = f"Error converting Markdown: {str(e)}"
-    return render(request, 'Tools/Code&Utilities/markdown_to_html_converter.html', {'converted_html': converted_html, 'error_message': error_message})
-
-
-def diff_checker(request):
-    clear_messages(request)
-    diff_result = None
-    if request.method == 'POST':
-        input_diff1 = request.POST.get('input_diff1')
-        input_diff2 = request.POST.get('input_diff2')
-        if input_diff1 and input_diff2:
-            diff = unified_diff(
-                input_diff1.splitlines(),
-                input_diff2.splitlines(),
-                lineterm=''
-            )
-            diff_result = '\n'.join(diff)
-    return render(request, 'Tools/Code&Utilities/diff_checker.html', {'diff_result': diff_result})
 
 
 def base64_encoder_decoder(request):
@@ -434,30 +405,27 @@ def string_hash_generator(request):
     return render(request, 'Tools/Code&Utilities/string_hash_generator.html', {'hash_result': hash_result, 'error_message': error_message})
 
 
-def minifier_beautifier(request):
-    clear_messages(request)
-    result_code = None
-    if request.method == 'POST':
-        input_code = request.POST.get('input_code')
-        if input_code:
-            # Implement minify/beautify logic here
-            result_code = input_code  # Placeholder for actual minify/beautify logic
-    return render(request, 'Tools/Code&Utilities/minifier_beautifier.html', {'result_code': result_code})
-
-
 def url_encoder_decoder(request):
     clear_messages(request)
     url_result = None
+    error_message = None
     if request.method == 'POST':
         input_url = request.POST.get('input_url')
-        if input_url:
+        action = request.POST.get('action')
+        if input_url and action:
             try:
-                # Try to decode the input URL
-                url_result = urllib.parse.unquote(input_url)
-            except Exception:
-                # If decoding fails, encode the input URL
-                url_result = urllib.parse.quote(input_url)
-    return render(request, 'Tools/Code&Utilities/url_encoder_decoder.html', {'url_result': url_result})
+                if action == 'encode':
+                    # Encode the URL with base64
+                    url_result = base64.urlsafe_b64encode(
+                        input_url.encode('utf-8')).decode('utf-8')
+                elif action == 'decode':
+                    url_result = base64.urlsafe_b64decode(
+                        input_url.encode('utf-8')).decode('utf-8')
+                else:
+                    error_message = "Invalid action selected."
+            except Exception as e:
+                error_message = f"Error processing URL: {str(e)}"
+    return render(request, 'Tools/API&WebAnalysis/url_encoder_decoder.html', {'url_result': url_result, 'error_message': error_message})
 
 
 def jwt_decoder_generator(request):
@@ -588,7 +556,63 @@ def network_analyzer(request):
 
 def rest_api_tester(request):
     clear_messages(request)
-    return render(request, 'Tools/API&WebAnalysis/rest_api_tester.html')
+    api_response = None
+    status_code = None
+    status_code_color = None
+    status_code_message = None
+    error_message = None
+
+    if request.method == 'POST':
+        api_url = request.POST.get('api_url')
+        request_method = request.POST.get('request_method')
+        request_headers = request.POST.get('request_headers')
+        request_body = request.POST.get('request_body')
+
+        headers = {}
+        if request_headers:
+            try:
+                headers = json.loads(request_headers)
+            except json.JSONDecodeError:
+                error_message = "Invalid JSON format for headers."
+
+        data = {}
+        if request_body:
+            try:
+                data = json.loads(request_body)
+            except json.JSONDecodeError:
+                error_message = "Invalid JSON format for body."
+
+        if not error_message:
+            try:
+                csrf_token = get_token(request)
+                headers['X-CSRFToken'] = csrf_token
+                response = requests.request(
+                    method=request_method,
+                    url=api_url,
+                    headers=headers,
+                    json=data
+                )
+                api_response = response.text
+                status_code = response.status_code
+                status_code_message = response.reason
+                if 200 <= status_code < 300:
+                    status_code_color = "green"
+                elif 400 <= status_code < 500:
+                    status_code_color = "orange"
+                elif 500 <= status_code < 600:
+                    status_code_color = "red"
+                else:
+                    status_code_color = "black"
+            except requests.RequestException as e:
+                error_message = f"Request failed: {str(e)}"
+
+    return render(request, 'Tools/API&WebAnalysis/rest_api_tester.html', {
+        'api_response': api_response,
+        'status_code': status_code,
+        'status_code_color': status_code_color,
+        'status_code_message': status_code_message,
+        'error_message': error_message
+    })
 
 
 def http_headers_inspector(request):
@@ -627,7 +651,17 @@ def dns_lookup_tool(request):
 
 def whois_lookup(request):
     clear_messages(request)
-    return render(request, 'Tools/API&WebAnalysis/whois_lookup.html')
+    whois_info = None
+    error_message = None
+    if request.method == 'POST':
+        domain = request.POST.get('domain')
+        if domain:
+            try:
+                w = whois.whois(domain)
+                whois_info = json.dumps(w, indent=4, default=str)
+            except Exception as e:
+                error_message = f"Error retrieving WHOIS information: {str(e)}"
+    return render(request, 'Tools/API&WebAnalysis/whois_lookup.html', {'whois_info': whois_info, 'error_message': error_message})
 
 
 def ip_address_lookup(request):
@@ -650,12 +684,107 @@ def ip_address_lookup(request):
 
 def port_scanner(request):
     clear_messages(request)
-    return render(request, 'Tools/API&WebAnalysis/port_scanner.html')
+    scan_result = None
+
+    def check_port(ip, port):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(0.1)
+        result = sock.connect_ex((ip, port))
+        sock.close()
+        return port if result == 0 else None
+
+    if request.method == 'POST':
+        target_ip = request.POST.get('target_ip')
+        if target_ip:
+            open_ports = []
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                futures = [executor.submit(check_port, target_ip, p)
+                           for p in range(1, 1025)]
+                for future in concurrent.futures.as_completed(futures):
+                    port = future.result()
+                    if port:
+                        open_ports.append(port)
+            scan_result = open_ports if open_ports else "No open ports found."
+    return render(request, 'Tools/API&WebAnalysis/port_scanner.html', {'scan_result': scan_result})
 
 
 def website_screenshot_api(request):
     clear_messages(request)
-    return render(request, 'Tools/API&WebAnalysis/website_screenshot_api.html')
+    screenshot = None
+    html_content = None
+    error_message = None
+
+    if request.method == 'POST':
+        website_url = request.POST.get('website_url')
+        if website_url:
+            try:
+                options = Options()
+                options.headless = True
+                options.add_argument("--start-maximized")
+                options.add_argument("--disable-infobars")
+                options.add_argument("--disable-gpu")
+                options.add_argument("--disable-dev-shm-usage")
+                options.add_argument("--no-sandbox")
+
+                driver = webdriver.Chrome(options=options)
+                driver.get(website_url)
+
+                # Wait until the page is fully loaded
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.TAG_NAME, "body"))
+                )
+
+                # Get total scroll height and width
+                total_width = driver.execute_script(
+                    "return document.body.scrollWidth")
+                total_height = driver.execute_script(
+                    "return document.body.scrollHeight")
+
+                # Set window size to capture the entire page
+                driver.set_window_size(total_width, total_height)
+
+                # Ensure page is fully scrolled to capture everything
+                driver.execute_script("window.scrollTo(0, 0);")
+
+                # Capture full-page screenshot
+                screenshot = driver.get_screenshot_as_base64()
+
+                # Capture full HTML source
+                html_content = driver.page_source
+
+                driver.quit()
+
+                screenshot = f"data:image/png;base64,{screenshot}"
+
+            except Exception as e:
+                error_message = f"Error capturing screenshot: {str(e)}"
+
+    return render(request, 'Tools/API&WebAnalysis/website_screenshot_api.html', {
+        'screenshot': screenshot,
+        'html_content': html_content,
+        'error_message': error_message
+    })
+
+
+def download_screenshot(request):
+    if request.method == 'POST':
+        screenshot_data = request.POST.get('screenshot_data')
+        if screenshot_data:
+            screenshot_data = screenshot_data.split(",")[1]
+            screenshot_bytes = base64.b64decode(screenshot_data)
+            response = HttpResponse(screenshot_bytes, content_type='image/png')
+            response['Content-Disposition'] = 'attachment; filename="full_page_screenshot.png"'
+            return response
+    return redirect('website_screenshot_api')
+
+def download_full_html(request):
+    if request.method == 'POST':
+        html_content = request.POST.get('html_content')
+        if html_content:
+            response = HttpResponse(html_content, content_type='text/html')
+            response['Content-Disposition'] = 'attachment; filename="full_page.html"'
+            return response
+    return redirect('website_screenshot_api')
 
 
 def meta_tag_analyzer(request):
@@ -684,4 +813,28 @@ def robots_txt_sitemap_validator(request):
 
 def ssl_certificate_checker(request):
     clear_messages(request)
-    return render(request, 'Tools/API&WebAnalysis/ssl_certificate_checker.html')
+    ssl_info = None
+    error_message = None
+    if request.method == 'POST':
+        website_url = request.POST.get('website_url')
+        if website_url:
+            try:
+                hostname = website_url.replace(
+                    'https://', '').replace('http://', '').strip('/')
+                context = ssl.create_default_context()
+                conn = socket.create_connection((hostname, 443), timeout=5)
+                sock = context.wrap_socket(conn, server_hostname=hostname)
+                cert = sock.getpeercert()
+                sock.close()
+                subject = dict(x[0] for x in cert["subject"])
+                issuer = dict(x[0] for x in cert["issuer"])
+                not_before = cert["notBefore"]
+                not_after = cert["notAfter"]
+                ssl_info = f"Subject: {subject}\nIssuer: {issuer}\nValid From: {not_before}\nValid Until: {not_after}"
+            except Exception as e:
+                error_message = f"Error retrieving SSL certificate: {str(e)}"
+
+    return render(request, 'Tools/API&WebAnalysis/ssl_certificate_checker.html', {
+        'ssl_info': ssl_info,
+        'error_message': error_message
+    })

@@ -96,10 +96,43 @@
     text-align: center;
     margin-top: 20px;
   }
+
+  .loading-spinner {
+    display: none;
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #1e90ff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+    z-index: 9999;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .status-code {
+    font-weight: bold;
+  }
 </style>
 <div class="styled-form-container">
   <h2 class="page-title">REST API Tester</h2>
-  <form method="post" class="styled-form">
+  <form
+    method="post"
+    class="styled-form"
+    id="rest-api-tester-form"
+    onsubmit="showSpinner()"
+  >
     {% csrf_token %}
     <label for="api_url" class="form-label">API URL:</label>
     <textarea
@@ -116,13 +149,31 @@
       <option value="DELETE">DELETE</option>
       <!-- Add more methods as needed -->
     </select>
+    <label for="request_headers" class="form-label"
+      >Request Headers (JSON format):</label
+    >
+    <textarea
+      id="request_headers"
+      name="request_headers"
+      class="form-textarea"
+    ></textarea>
+    <label for="request_body" class="form-label"
+      >Request Body (JSON format):</label
+    >
+    <textarea
+      id="request_body"
+      name="request_body"
+      class="form-textarea"
+    ></textarea>
     <button type="submit" class="form-button">Send Request</button>
   </form>
+  <div class="loading-spinner" id="loadingSpinner"></div>
   {% if api_response %}
   <h2 class="result-title">API Response:</h2>
   <div class="result-content">
     <i class="copy-icon" onclick="copyToClipboard()">📋</i>
     <div class="tooltip">Copied!</div>
+    <pre>Status Code: <span class="status-code" style="color: {{ status_code_color }}">{{ status_code }} - {{ status_code_message }}</span></pre>
     <pre>{{ api_response }}</pre>
   </div>
   {% endif %} {% if error_message %}
@@ -139,6 +190,10 @@
         tooltip.style.display = "none";
       }, 1000);
     });
+  }
+
+  function showSpinner() {
+    document.getElementById("loadingSpinner").style.display = "block";
   }
 </script>
 {% endblock %}
