@@ -21,7 +21,9 @@
 <!-- Tools Library Section -->
 <section id="tools-library" class="tools-library">
   <h1>Explore Our Digital Tools Library</h1>
-  {% comment %} <p>Discover a wide range of helpful tools.</p> {% endcomment %}
+  {% comment %}
+  <p>Discover a wide range of helpful tools.</p>
+  {% endcomment %}
   <div class="search-container">
     <input type="text" id="search-input" placeholder="Search tools..." />
     <select id="category-filter">
@@ -53,176 +55,230 @@
     <div class="category">
       <i class="material-icons">code</i>
       <h3>Code & Text Utilities</h3>
-      {% comment %} <p>Tools for developers to manipulate code and text.</p> {% endcomment %}
+      {% comment %}
+      <p>Tools for developers to manipulate code and text.</p>
+      {% endcomment %}
       <div class="examples">
-          <a href="{% url 'code_formatter' %}" class="example">
-            <i class="material-icons">format_align_left</i>
-            <h4>Code Formatter</h4>
-            {% comment %} <p>Format your code for better readability.</p> {% endcomment %}
-          </a>
+        <a href="{% url 'code_formatter' %}" class="example">
+          <i class="material-icons">format_align_left</i>
+          <h4>Code Formatter</h4>
+          {% comment %}
+          <p>Format your code for better readability.</p>
+          {% endcomment %}
+        </a>
         <!-- New tools -->
-          <a href="{% url 'json_formatter_validator' %}" class="example">
-            <i class="material-icons">code</i>
-            <h4>JSON Formatter & Validator</h4>
-            {% comment %} <p>Format and validate JSON with error highlighting.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'base64_encoder_decoder' %}" class="example">
-            <i class="material-icons">description</i>
-            <h4>Base64 Encoder/Decoder</h4>
-            {% comment %} <p>Convert text or image files to Base64 and back.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'case_converter' %}" class="example">
-            <i class="material-icons">text_fields</i>
-            <h4>Case Converter</h4>
-            {% comment %} <p>Convert text between different cases.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'string_hash_generator' %}" class="example">
-            <i class="material-icons">tag</i>
-            <h4>String Hash Generator</h4>
-            {% comment %} <p>Generate hash values from any input string.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'jwt_decoder_generator' %}" class="example">
-            <i class="material-icons">vpn_key</i>
-            <h4>JWT Decoder & Generator</h4>
-            {% comment %} <p>Decode and generate JSON Web Tokens.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'regex_tester' %}" class="example">
-            <i class="material-icons">code</i>
-            <h4>Regex Tester</h4>
-            {% comment %} <p>Test regular expressions against sample text in real time.</p> {% endcomment %}
-          </a>
+        <a href="{% url 'json_formatter_validator' %}" class="example">
+          <i class="material-icons">code</i>
+          <h4>JSON Formatter & Validator</h4>
+          {% comment %}
+          <p>Format and validate JSON with error highlighting.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'base64_encoder_decoder' %}" class="example">
+          <i class="material-icons">description</i>
+          <h4>Base64 Encoder/Decoder</h4>
+          {% comment %}
+          <p>Convert text or image files to Base64 and back.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'case_converter' %}" class="example">
+          <i class="material-icons">text_fields</i>
+          <h4>Case Converter</h4>
+          {% comment %}
+          <p>Convert text between different cases.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'string_hash_generator' %}" class="example">
+          <i class="material-icons">tag</i>
+          <h4>String Hash Generator</h4>
+          {% comment %}
+          <p>Generate hash values from any input string.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'jwt_decoder_generator' %}" class="example">
+          <i class="material-icons">vpn_key</i>
+          <h4>JWT Decoder & Generator</h4>
+          {% comment %}
+          <p>Decode and generate JSON Web Tokens.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'regex_tester' %}" class="example">
+          <i class="material-icons">code</i>
+          <h4>Regex Tester</h4>
+          {% comment %}
+          <p>Test regular expressions against sample text in real time.</p>
+          {% endcomment %}
+        </a>
       </div>
     </div>
-
-
 
     <!-- Category: API, Network & Web Analysis Tools -->
     <div class="category">
       <i class="material-icons">network_check</i>
       <h3>API, Network & Web Analysis Tools</h3>
-      {% comment %} <p>Analyze & debug APIs, networks, and websites.</p> {% endcomment %}
+      {% comment %}
+      <p>Analyze & debug APIs, networks, and websites.</p>
+      {% endcomment %}
       <div class="examples">
-          <a href="{% url 'api_tester' %}" class="example">
-            <i class="material-icons">science</i>
-            <h4>API Tester</h4>
-            {% comment %} <p>Test and debug your APIs with ease.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'network_analyzer' %}" class="example">
-            <i class="material-icons">show_chart</i>
-            <h4>Network Analyzer</h4>
-            {% comment %} <p>Monitor and analyze network traffic.</p> {% endcomment %}
-          </a>
+        <a href="{% url 'api_tester' %}" class="example">
+          <i class="material-icons">science</i>
+          <h4>API Tester</h4>
+          {% comment %}
+          <p>Test and debug your APIs with ease.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'network_analyzer' %}" class="example">
+          <i class="material-icons">show_chart</i>
+          <h4>Network Analyzer</h4>
+          {% comment %}
+          <p>Monitor and analyze network traffic.</p>
+          {% endcomment %}
+        </a>
         <!-- New tools from line 190: add 'new-tool' class -->
-          <a href="{% url 'rest_api_tester' %}" class="example">
-            <i class="material-icons">http</i>
-            <h4>REST API Tester</h4>
-            {% comment %} <p>
-              Send requests to API endpoints with custom headers and body
-              payloads.
-            </p>{% endcomment %}
-          </a>
-          <a href="{% url 'http_headers_inspector' %}" class="example">
-            <i class="material-icons">http</i>
-            <h4>HTTP Headers Inspector</h4>
-            {% comment %} <p>Fetch and display HTTP response headers from any URL.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'dns_lookup_tool' %}" class="example">
-            <i class="material-icons">dns</i>
-            <h4>DNS Lookup Tool</h4>
-            {% comment %} <p>Retrieve DNS records for a domain.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'meta_tag_analyzer' %}" class="example">
-            <i class="material-icons">search</i>
-            <h4>Meta Tag Analyzer</h4>
-            {% comment %} <p>Analyze SEO-related meta tags from a webpage.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'whois_lookup' %}" class="example">
-            <i class="material-icons">search</i>
-            <h4>WHOIS Lookup</h4>
-            {% comment %} <p>Look up domain registration details.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'ip_address_lookup' %}" class="example">
-            <i class="material-icons">location_on</i>
-            <h4>IP Address Lookup</h4>
-            {% comment %} <p>Get geographic and ISP details based on an IP address.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'port_scanner' %}" class="example">
-            <i class="material-icons">settings_input_antenna</i>
-            <h4>Port Scanner</h4>
-            {% comment %} <p>Scan a domain or IP for open ports.</p> {% endcomment %}
-          </a>
-          <a href="{% url 'website_screenshot_api' %}" class="example">
-            <i class="material-icons">camera_alt</i>
-            <h4>Website Screenshot API</h4>
-            {% comment %} <p>Capture full-page screenshots of websites.</p> {% endcomment %}
-          </a>
+        <a href="{% url 'rest_api_tester' %}" class="example">
+          <i class="material-icons">http</i>
+          <h4>REST API Tester</h4>
+          {% comment %}
+          <p>
+            Send requests to API endpoints with custom headers and body
+            payloads.
+          </p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'http_headers_inspector' %}" class="example">
+          <i class="material-icons">http</i>
+          <h4>HTTP Headers Inspector</h4>
+          {% comment %}
+          <p>Fetch and display HTTP response headers from any URL.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'dns_lookup_tool' %}" class="example">
+          <i class="material-icons">dns</i>
+          <h4>DNS Lookup Tool</h4>
+          {% comment %}
+          <p>Retrieve DNS records for a domain.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'meta_tag_analyzer' %}" class="example">
+          <i class="material-icons">search</i>
+          <h4>Meta Tag Analyzer</h4>
+          {% comment %}
+          <p>Analyze SEO-related meta tags from a webpage.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'whois_lookup' %}" class="example">
+          <i class="material-icons">search</i>
+          <h4>WHOIS Lookup</h4>
+          {% comment %}
+          <p>Look up domain registration details.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'ip_address_lookup' %}" class="example">
+          <i class="material-icons">location_on</i>
+          <h4>IP Address Lookup</h4>
+          {% comment %}
+          <p>Get geographic and ISP details based on an IP address.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'port_scanner' %}" class="example">
+          <i class="material-icons">settings_input_antenna</i>
+          <h4>Port Scanner</h4>
+          {% comment %}
+          <p>Scan a domain or IP for open ports.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'website_screenshot_api' %}" class="example">
+          <i class="material-icons">camera_alt</i>
+          <h4>Website Screenshot API</h4>
+          {% comment %}
+          <p>Capture full-page screenshots of websites.</p>
+          {% endcomment %}
+        </a>
         {% comment %}
-          <a href="{% url 'robots_txt_sitemap_validator' %}" class="example">
-            <i class="material-icons">robot</i>
-            <h4>Robots.txt & Sitemap Validator</h4>
-             <p>
-              Validate and analyze a website’s robots.txt and sitemap.xml files.
-            </p>
-          </a>
+        <a href="{% url 'robots_txt_sitemap_validator' %}" class="example">
+          <i class="material-icons">robot</i>
+          <h4>Robots.txt & Sitemap Validator</h4>
+          <p>
+            Validate and analyze a website’s robots.txt and sitemap.xml files.
+          </p>
+        </a>
         {% endcomment %}
-          <a href="{% url 'ssl_certificate_checker' %}" class="example">
-            <i class="material-icons">https</i>
-            <h4>SSL Certificate Checker</h4>
-            {% comment %} <p>Verify the details and expiry of a website’s SSL certificate.</p> {% endcomment %}
-          </a>
+        <a href="{% url 'ssl_certificate_checker' %}" class="example">
+          <i class="material-icons">https</i>
+          <h4>SSL Certificate Checker</h4>
+          {% comment %}
+          <p>Verify the details and expiry of a website’s SSL certificate.</p>
+          {% endcomment %}
+        </a>
       </div>
     </div>
-
-
 
     <!-- Category: Security & Authentication Tools -->
     <div class="category">
       <i class="material-icons">lock</i>
       <h3>Security & Authentication Tools</h3>
-      {% comment %} <p>Focused on security, encryption, and vulnerability testing.</p> {% endcomment %}
+      {% comment %}
+      <p>Focused on security, encryption, and vulnerability testing.</p>
+      {% endcomment %}
       <div class="examples">
         <div class="example new-tool">
           <i class="material-icons">vpn_key</i>
           <h4>Password Generator</h4>
-          {% comment %} <p>Generate secure passwords.</p> {% endcomment %}
+          {% comment %}
+          <p>Generate secure passwords.</p>
+          {% endcomment %}
         </div>
         <!-- New tools -->
         <div class="example new-tool">
           <i class="material-icons">check</i>
           <h4>Password Strength Checker</h4>
-          {% comment %} <p>Analyze a given password and provide strength feedback.</p> {% endcomment %}
+          {% comment %}
+          <p>Analyze a given password and provide strength feedback.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">fingerprint</i>
           <h4>UUID Generator</h4>
-          {% comment %} <p>Create universally unique identifiers.</p> {% endcomment %}
+          {% comment %}
+          <p>Create universally unique identifiers.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">bug_report</i>
           <h4>XSS Vulnerability Tester</h4>
-          {% comment %} <p>
+          {% comment %}
+          <p>
             Check if a webpage is vulnerable to Cross-Site Scripting attacks.
-          </p> {% endcomment %}
+          </p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">bug_report</i>
           <h4>SQL Injection Tester</h4>
-          {% comment %} <p>Identify potential SQL injection flaws in input fields.</p> {% endcomment %}
+          {% comment %}
+          <p>Identify potential SQL injection flaws in input fields.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">lock</i>
           <h4>Bcrypt & Argon2 Hasher</h4>
-          {% comment %} <p>Securely hash passwords using robust algorithms.</p> {% endcomment %}
+          {% comment %}
+          <p>Securely hash passwords using robust algorithms.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">lock</i>
           <h4>Data Encryption & Decryption Tool</h4>
-          {% comment %} <p>Encrypt or decrypt text using various algorithms.</p> {% endcomment %}
+          {% comment %}
+          <p>Encrypt or decrypt text using various algorithms.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">schedule</i>
           <h4>JWT Expiry Checker</h4>
-          {% comment %} <p>Verify the expiration dates and validity of JWTs.</p> {% endcomment %}
+          {% comment %}
+          <p>Verify the expiration dates and validity of JWTs.</p>
+          {% endcomment %}
         </div>
       </div>
     </div>
@@ -230,58 +286,80 @@
     <div class="category">
       <i class="material-icons">compare_arrows</i>
       <h3>Data Conversion & Processing Tools</h3>
-      {% comment %} <p>Convert data and handle file processing.</p> {% endcomment %}
+      {% comment %}
+      <p>Convert data and handle file processing.</p>
+      {% endcomment %}
       <div class="examples">
         <div class="example new-tool">
           <i class="material-icons">table_chart</i>
           <h4>CSV to JSON Converter</h4>
-          {% comment %} <p>Convert CSV files to JSON format.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert CSV files to JSON format.</p>
+          {% endcomment %}
         </div>
-        {% comment %} <div class="example new-tool">
+        {% comment %}
+        <div class="example new-tool">
           <i class="material-icons">picture_as_pdf</i>
           <h4>PDF to Text Extractor</h4>
           <p>Extract text from PDF files.</p>
-        </div> {% endcomment %}
+        </div>
+        {% endcomment %}
         <!-- New tools -->
         <div class="example new-tool">
           <i class="material-icons">table_chart</i>
           <h4>JSON to CSV Converter</h4>
-          {% comment %} <p>Convert JSON data into CSV format.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert JSON data into CSV format.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">image</i>
           <h4>Image to Base64 Converter</h4>
-          {% comment %} <p>Convert images to Base64 strings.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert images to Base64 strings.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">table_chart</i>
           <h4>HTML Table to JSON Converter</h4>
-          {% comment %} <p>Convert HTML table data into JSON format.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert HTML table data into JSON format.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">code</i>
           <h4>XML to JSON Converter</h4>
-          {% comment %} <p>Transform XML data into JSON.</p> {% endcomment %}
+          {% comment %}
+          <p>Transform XML data into JSON.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">code</i>
           <h4>YAML to JSON Converter</h4>
-          {% comment %} <p>Convert YAML files into JSON.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert YAML files into JSON.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">cleaning_services</i>
           <h4>Data Cleaner</h4>
-          {% comment %} <p>Remove duplicates and normalize text data.</p> {% endcomment %}
+          {% comment %}
+          <p>Remove duplicates and normalize text data.</p>
+          {% endcomment %}
         </div>
-        {% comment %} <div class="example new-tool">
+        {% comment %}
+        <div class="example new-tool">
           <i class="material-icons">description</i>
           <h4>File Format Converter</h4>
           <p>Convert between plain text and other file formats.</p>
-        </div> {% endcomment %}
+        </div>
+        {% endcomment %}
         <div class="example new-tool">
           <i class="material-icons">merge_type</i>
           <h4>Data Aggregator</h4>
-          {% comment %} <p>Merge or split datasets.</p> {% endcomment %}
+          {% comment %}
+          <p>Merge or split datasets.</p>
+          {% endcomment %}
         </div>
       </div>
     </div>
@@ -289,53 +367,72 @@
     <div class="category">
       <i class="material-icons">qr_code</i>
       <h3>QR, Barcode & Imaging Tools</h3>
-      {% comment %} <p>Generate/scan codes and handle images.</p> {% endcomment %}
+      {% comment %}
+      <p>Generate/scan codes and handle images.</p>
+      {% endcomment %}
       <div class="examples">
         <div class="example new-tool">
           <i class="material-icons">qr_code</i>
           <h4>QR Code Generator</h4>
-          {% comment %} <p>Generate QR codes.</p> {% endcomment %}
+          {% comment %}
+          <p>Generate QR codes.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">qr_code</i>
           <h4>Barcode Generator</h4>
-          {% comment %} <p>Generate barcodes.</p> {% endcomment %}
+          {% comment %}
+          <p>Generate barcodes.</p>
+          {% endcomment %}
         </div>
         <!-- New tools -->
-        {% comment %} <div class="example new-tool">
+        {% comment %}
+        <div class="example new-tool">
           <i class="material-icons">qr_code_scanner</i>
           <h4>QR Code Scanner</h4>
           <p>Decode QR codes using camera input or file upload.</p>
-        </div> {% endcomment %}
+        </div>
+        {% endcomment %}
         <div class="example new-tool">
           <i class="material-icons">image</i>
           <h4>EXIF Data Viewer</h4>
-          {% comment %} <p>Display image metadata.</p> {% endcomment %}
+          {% comment %}
+          <p>Display image metadata.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">compress</i>
           <h4>Image Compression Tool</h4>
-          {% comment %} <p>Compress image files to reduce size.</p> {% endcomment %}
+          {% comment %}
+          <p>Compress image files to reduce size.</p>
+          {% endcomment %}
         </div>
-        {% comment %} <div class="example new-tool">
+        {% comment %}
+        <div class="example new-tool">
           <i class="material-icons">crop</i>
           <h4>Image Resizer & Cropper</h4>
           <p>Resize and crop images online.</p>
-        </div> {% endcomment %}
-        {% comment %} <div class="example new-tool">
+        </div>
+        {% endcomment %} {% comment %}
+        <div class="example new-tool">
           <i class="material-icons">image</i>
           <h4>Image Format Converter</h4>
           <p>Convert images between formats.</p>
-        </div> {% endcomment %}
+        </div>
+        {% endcomment %}
         <div class="example new-tool">
           <i class="material-icons">palette</i>
           <h4>Color Palette Extractor</h4>
-          {% comment %} <p>Extract dominant colors from an image.</p> {% endcomment %}
+          {% comment %}
+          <p>Extract dominant colors from an image.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">remove_circle</i>
           <h4>Photo Metadata Remover</h4>
-          {% comment %} <p>Strip EXIF data from images.</p> {% endcomment %}
+          {% comment %}
+          <p>Strip EXIF data from images.</p>
+          {% endcomment %}
         </div>
       </div>
     </div>
@@ -343,63 +440,87 @@
     <div class="category">
       <i class="material-icons">schedule</i>
       <h3>Time, Date & Calculation Tools</h3>
-      {% comment %} <p>Convert times, run calculations, and more.</p> {% endcomment %}
+      {% comment %}
+      <p>Convert times, run calculations, and more.</p>
+      {% endcomment %}
       <div class="examples">
         <div class="example new-tool">
           <i class="material-icons">public</i>
           <h4>Time Zone Converter</h4>
-          {% comment %} <p>Convert time zones.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert time zones.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">fitness_center</i>
           <h4>BMI Calculator</h4>
-          {% comment %} <p>Calculate Body Mass Index.</p> {% endcomment %}
+          {% comment %}
+          <p>Calculate Body Mass Index.</p>
+          {% endcomment %}
         </div>
         <!-- New tools -->
         <div class="example new-tool">
           <i class="material-icons">schedule</i>
           <h4>Unix Timestamp Converter</h4>
-          {% comment %} <p>Convert Unix timestamps to readable dates and vice versa.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert Unix timestamps to readable dates and vice versa.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">schedule</i>
           <h4>Time Zone Converter</h4>
-          {% comment %} <p>Convert times between different time zones.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert times between different time zones.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">schedule</i>
           <h4>Cron Expression Generator & Validator</h4>
-          {% comment %} <p>Build and test cron job expressions.</p> {% endcomment %}
+          {% comment %}
+          <p>Build and test cron job expressions.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">description</i>
           <h4>File Size Converter</h4>
-          {% comment %} <p>Convert file sizes between different units.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert file sizes between different units.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">calculate</i>
           <h4>Number Base Converter</h4>
-          {% comment %} <p>Convert numbers between different bases.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert numbers between different bases.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">cake</i>
           <h4>Age Calculator</h4>
-          {% comment %} <p>Determine exact age given a birthdate.</p> {% endcomment %}
+          {% comment %}
+          <p>Determine exact age given a birthdate.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">account_balance</i>
           <h4>Loan EMI Calculator</h4>
-          {% comment %} <p>Compute monthly installment amounts.</p> {% endcomment %}
+          {% comment %}
+          <p>Compute monthly installment amounts.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">attach_money</i>
           <h4>Currency Converter</h4>
-          {% comment %} <p>Convert amounts between currencies.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert amounts between currencies.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">restaurant</i>
           <h4>Tip & Split Calculator</h4>
-          {% comment %} <p>Calculate tips and split bills among multiple people.</p> {% endcomment %}
+          {% comment %}
+          <p>Calculate tips and split bills among multiple people.</p>
+          {% endcomment %}
         </div>
       </div>
     </div>
@@ -407,43 +528,59 @@
     <div class="category">
       <i class="material-icons">brush</i>
       <h3>Design & Visual Tools</h3>
-      {% comment %} <p>Create or pick colors, generate gradients, etc.</p> {% endcomment %}
+      {% comment %}
+      <p>Create or pick colors, generate gradients, etc.</p>
+      {% endcomment %}
       <div class="examples">
         <div class="example new-tool">
           <i class="material-icons">colorize</i>
           <h4>Color Picker</h4>
-          {% comment %} <p>Pick colors for your designs.</p> {% endcomment %}
+          {% comment %}
+          <p>Pick colors for your designs.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">palette</i>
           <h4>Hex to RGB Converter</h4>
-          {% comment %} <p>Convert Hex colors to RGB.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert Hex colors to RGB.</p>
+          {% endcomment %}
         </div>
         <!-- New tools -->
         <div class="example new-tool">
           <i class="material-icons">gradient</i>
           <h4>CSS Gradient Generator</h4>
-          {% comment %} <p>Create customizable CSS gradients with a live preview.</p> {% endcomment %}
+          {% comment %}
+          <p>Create customizable CSS gradients with a live preview.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">font_download</i>
           <h4>Font Pairing Tool</h4>
-          {% comment %} <p>Suggest complementary font combinations for web design.</p> {% endcomment %}
+          {% comment %}
+          <p>Suggest complementary font combinations for web design.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">search</i>
           <h4>Icon Finder</h4>
-          {% comment %} <p>Search and preview free icons based on keywords.</p> {% endcomment %}
+          {% comment %}
+          <p>Search and preview free icons based on keywords.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">image</i>
           <h4>Image Color Extractor</h4>
-          {% comment %} <p>Extract dominant colors from an image.</p> {% endcomment %}
+          {% comment %}
+          <p>Extract dominant colors from an image.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">phone_android</i>
           <h4>Responsive Design Tester</h4>
-          {% comment %} <p>Preview how a website looks on various devices.</p> {% endcomment %}
+          {% comment %}
+          <p>Preview how a website looks on various devices.</p>
+          {% endcomment %}
         </div>
       </div>
     </div>
@@ -451,48 +588,64 @@
     <div class="category">
       <i class="material-icons">task</i>
       <h3>Productivity & General Utility Tools</h3>
-      {% comment %} <p>Boost daily productivity with these helpful utilities.</p> {% endcomment %}
+      {% comment %}
+      <p>Boost daily productivity with these helpful utilities.</p>
+      {% endcomment %}
       <div class="examples">
         <div class="example new-tool">
           <i class="material-icons">text_fields</i>
           <h4>Lorem Ipsum Generator</h4>
-          {% comment %} <p>Generate placeholder text.</p> {% endcomment %}
+          {% comment %}
+          <p>Generate placeholder text.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">text_fields</i>
           <h4>Case Converter</h4>
-          {% comment %} <p>Convert text case.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert text case.</p>
+          {% endcomment %}
         </div>
         <!-- New tools -->
         <div class="example new-tool">
           <i class="material-icons">straighten</i>
           <h4>Unit Converter</h4>
-          {% comment %} <p>
+          {% comment %}
+          <p>
             Convert between measurement units (length, weight, temperature,
             etc.).
-          </p> {% endcomment %}
+          </p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">calendar_today</i>
           <h4>Calendar & Planner</h4>
-          {% comment %} <p>Basic scheduling tool to plan daily tasks or events.</p> {% endcomment %}
+          {% comment %}
+          <p>Basic scheduling tool to plan daily tasks or events.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">link</i>
           <h4>URL Shortener</h4>
-          {% comment %} <p>Shorten long URLs and track basic click statistics.</p> {% endcomment %}
+          {% comment %}
+          <p>Shorten long URLs and track basic click statistics.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">volume_up</i>
           <h4>Text to Speech Converter</h4>
-          {% comment %} <p>Convert written text into spoken words.</p> {% endcomment %}
+          {% comment %}
+          <p>Convert written text into spoken words.</p>
+          {% endcomment %}
         </div>
         <div class="example new-tool">
           <i class="material-icons">timer</i>
           <h4>Focus Timer/Pomodoro Tool</h4>
-          {% comment %} <p> 
+          {% comment %}
+          <p>
             Implement a simple timer with customizable work/break intervals.
-          </p> {% endcomment %}
+          </p>
+          {% endcomment %}
         </div>
       </div>
     </div>
@@ -503,8 +656,13 @@
   <p>Stay updated with our latest tools and features. Subscribe now!</p>
   <form class="subscribe-form" action="{% url 'subscribe' %}" method="POST">
     {% csrf_token %}
-    <input type="email" id="email" name="email" placeholder="Enter your email">
-    <input type="submit" id="submit" value="Subscribe">
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="Enter your email"
+    />
+    <input type="submit" id="submit" value="Subscribe" />
   </form>
 </div>
 
@@ -566,13 +724,8 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s;
-    cursor: pointer;
     position: relative;
     overflow: hidden;
-  }
-
-  .category:hover {
-    transform: translateY(-10px);
   }
 
   .category i {
@@ -609,6 +762,11 @@
     align-items: center;
     flex: 1 1 calc(30% - 10px);
     min-height: 110px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .example:hover {
+    transform: translateY(-10px);
   }
 
   .example i {
