@@ -2,14 +2,14 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('about', about,
+    path('/', home, name='home'),
+    path('about/', about,
          name='about'),  # Redirect after login
-    path('servicies', services, name='servicies'),
-    path('contact', contact, name='contact'),
-    path('terms-and-conditions', T_and_C, name='T&C'),
-    path('privacy-policy', privacy_policy, name="privacy_policy"),
-    path('cancellation-refund-policies', cancellation_refund_policies,
+    path('servicies/', services, name='servicies'),
+    path('contact/', contact, name='contact'),
+    path('terms-and-conditions/', T_and_C, name='T&C'),
+    path('privacy-policy/', privacy_policy, name="privacy_policy"),
+    path('cancellation-refund-policies/', cancellation_refund_policies,
          name='cancellation_refund_policies'),
     path('servicies/internship-program',
          internship_program, name='internship_program'),
@@ -60,4 +60,21 @@ urlpatterns = [
          robots_txt_sitemap_validator, name='robots_txt_sitemap_validator'),
     path('tools-library/ssl-certificate-checker',
          ssl_certificate_checker, name='ssl_certificate_checker'),
+
+    # Security & Authentication Tools
+    path('tools-library/password-generator',
+         password_generator, name='password_generator'),
+    path('tools-library/password-strength-checker',
+         password_strength_checker, name='password_strength_checker'),
+    path('tools-library/uuid-generator', uuid_generator, name='uuid_generator'),
+    path('tools-library/xss-vulnerability-tester',
+         xss_vulnerability_tester, name='xss_vulnerability_tester'),
+    path('tools-library/sql-injection-tester',
+         sql_injection_tester, name='sql_injection_tester'),
+    path('tools-library/bcrypt-argon2-hasher',
+         bcrypt_argon2_hasher, name='bcrypt_argon2_hasher'),
+    path('tools-library/data-encryption-decryption-tool',
+         data_encryption_decryption_tool, name='data_encryption_decryption_tool'),
+    path('tools-library/jwt-expiry-checker',
+         jwt_expiry_checker, name='jwt_expiry_checker'),
 ]

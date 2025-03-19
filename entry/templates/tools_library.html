@@ -221,29 +221,29 @@
       <p>Focused on security, encryption, and vulnerability testing.</p>
       {% endcomment %}
       <div class="examples">
-        <div class="example new-tool">
+        <a href="{% url 'password_generator' %}" class="example">
           <i class="material-icons">vpn_key</i>
           <h4>Password Generator</h4>
           {% comment %}
           <p>Generate secure passwords.</p>
           {% endcomment %}
-        </div>
+        </a>
         <!-- New tools -->
-        <div class="example new-tool">
+        <a href="{% url 'password_strength_checker' %}" class="example">
           <i class="material-icons">check</i>
           <h4>Password Strength Checker</h4>
           {% comment %}
           <p>Analyze a given password and provide strength feedback.</p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'uuid_generator' %}" class="example">
           <i class="material-icons">fingerprint</i>
           <h4>UUID Generator</h4>
           {% comment %}
           <p>Create universally unique identifiers.</p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'xss_vulnerability_tester' %}" class="example">
           <i class="material-icons">bug_report</i>
           <h4>XSS Vulnerability Tester</h4>
           {% comment %}
@@ -251,35 +251,35 @@
             Check if a webpage is vulnerable to Cross-Site Scripting attacks.
           </p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'sql_injection_tester' %}" class="example">
           <i class="material-icons">bug_report</i>
           <h4>SQL Injection Tester</h4>
           {% comment %}
           <p>Identify potential SQL injection flaws in input fields.</p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'bcrypt_argon2_hasher' %}" class="example">
           <i class="material-icons">lock</i>
           <h4>Bcrypt & Argon2 Hasher</h4>
           {% comment %}
           <p>Securely hash passwords using robust algorithms.</p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'data_encryption_decryption_tool' %}" class="example">
           <i class="material-icons">lock</i>
           <h4>Data Encryption & Decryption Tool</h4>
           {% comment %}
           <p>Encrypt or decrypt text using various algorithms.</p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'jwt_expiry_checker' %}" class="example">
           <i class="material-icons">schedule</i>
           <h4>JWT Expiry Checker</h4>
           {% comment %}
           <p>Verify the expiration dates and validity of JWTs.</p>
           {% endcomment %}
-        </div>
+        </a>
       </div>
     </div>
     <!-- Category: Data Conversion & Processing Tools -->

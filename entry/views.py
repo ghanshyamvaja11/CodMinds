@@ -377,7 +377,7 @@ def string_hash_generator(request):
                 elif algorithm == 'argon2':
                     hash_result = argon2.PasswordHasher().hash(input_string)
                 elif algorithm == 'pbkdf2':
-                    hash_result = hashlib.pbkdf2_hmac(
+                    hash_result = hashlib.pbdf2_hmac(
                         'sha256', input_string.encode(), b'salt', 100000).hex()
                 elif algorithm == 'crc32':
                     hash_result = format(zlib.crc32(
@@ -777,6 +777,7 @@ def download_screenshot(request):
             return response
     return redirect('website_screenshot_api')
 
+
 def download_full_html(request):
     if request.method == 'POST':
         html_content = request.POST.get('html_content')
@@ -838,3 +839,125 @@ def ssl_certificate_checker(request):
         'ssl_info': ssl_info,
         'error_message': error_message
     })
+
+
+def password_generator(request):
+    clear_messages(request)
+    generated_password = None
+    if request.method == 'POST':
+        length = int(request.POST.get('length', 12))
+        import string
+        import random
+        characters = string.ascii_letters + string.digits + string.punctuation
+        generated_password = ''.join(random.choice(characters)
+                                     for _ in range(length))
+    return render(request, 'Tools/Security/password_generator.html', {'generated_password': generated_password})
+
+
+def password_strength_checker(request):
+    clear_messages(request)
+    strength_result = None
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        import zxcvbn
+        strength_result = zxcvbn.password_strength(password)
+    return render(request, 'Tools/Security/password_strength_checker.html', {'strength_result': strength_result})
+
+
+def uuid_generator(request):
+    clear_messages(request)
+    generated_uuid = None
+    if request.method == 'POST':
+        import uuid
+        generated_uuid = str(uuid.uuid4())
+    return render(request, 'Tools/Security/uuid_generator.html', {'generated_uuid': generated_uuid})
+
+
+def xss_vulnerability_tester(request):
+    clear_messages(request)
+    xss_result = None
+    if request.method == 'POST':
+        input_text = request.POST.get('input_text')
+        # In a real scenario, you would sanitize and test for XSS vulnerabilities
+        xss_result = input_text
+    return render(request, 'Tools/Security/xss_vulnerability_tester.html', {'xss_result': xss_result})
+
+
+def sql_injection_tester(request):
+    clear_messages(request)
+    sql_result = None
+    if request.method == 'POST':
+        input_query = request.POST.get('input_query')
+        # In a real scenario, you would test the input query against a database for SQL injection vulnerabilities
+        sql_result = "Query received: " + input_query
+    return render(request, 'Tools/Security/sql_injection_tester.html', {'sql_result': sql_result})
+
+
+def bcrypt_argon2_hasher(request):
+    clear_messages(request)
+    hash_result = None
+    if request.method == 'POST':
+        input_text = request.POST.get('input_text')
+        algorithm = request.POST.get('algorithm')
+        if input_text and algorithm:
+            try:
+                if algorithm == 'bcrypt':
+                    hash_result = bcrypt.hashpw(
+                        input_text.encode(), bcrypt.gensalt()).decode()
+                elif algorithm == 'argon2':
+                    hash_result = argon2.PasswordHasher().hash(input_text)
+            except Exception as e:
+                hash_result = f"Error: {str(e)}"
+    return render(request, 'Tools/Security/bcrypt_argon2_hasher.html', {'hash_result': hash_result})
+
+
+def data_encryption_decryption_tool(request):
+    clear_messages(request)
+    result = None
+    if request.method == 'POST':
+        input_text = request.POST.get('input_text')
+        action = request.POST.get('action')
+        algorithm = request.POST.get('algorithm')
+        if input_text and action and algorithm:
+            try:
+                if algorithm == 'aes':
+                    from Crypto.Cipher import AES
+                    from Crypto.Random import get_random_bytes
+                    key = get_random_bytes(16)
+                    cipher = AES.new(key, AES.MODE_EAX)
+                    nonce = cipher.nonce
+                    if action == 'encrypt':
+                        ciphertext, tag = cipher.encrypt_and_digest(
+                            input_text.encode())
+                        result = base64.b64encode(
+                            nonce + ciphertext).decode('utf-8')
+                    elif action == 'decrypt':
+                        data = base64.b64decode(input_text)
+                        nonce = data[:16]
+                        ciphertext = data[16:]
+                        cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
+                        result = cipher.decrypt(ciphertext).decode('utf-8')
+            except Exception as e:
+                result = f"Error: {str(e)}"
+    return render(request, 'Tools/Security/data_encryption_decryption_tool.html', {'result': result})
+
+
+def jwt_expiry_checker(request):
+    clear_messages(request)
+    jwt_result = None
+    error_message = None
+    if request.method == 'POST':
+        input_jwt = request.POST.get('input_jwt')
+        if input_jwt:
+            try:
+                decoded_jwt = jwt.decode(
+                    input_jwt, options={"verify_signature": False})
+                expiry = decoded_jwt.get('exp')
+                if expiry:
+                    expiry_date = datetime.datetime.fromtimestamp(expiry)
+                    jwt_result = f"JWT expires on: {expiry_date}"
+                else:
+                    jwt_result = "No expiry date found in JWT"
+            except jwt.DecodeError:
+                error_message = "Invalid JWT"
+    return render(request, 'Tools/Security/jwt_expiry_checker.html', {'jwt_result': jwt_result, 'error_message': error_message})
