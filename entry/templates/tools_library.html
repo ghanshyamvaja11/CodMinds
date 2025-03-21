@@ -102,6 +102,13 @@
           <p>Decode and generate JSON Web Tokens.</p>
           {% endcomment %}
         </a>
+        <a href="{% url 'url_encoder_decoder' %}" class="example">
+          <i class="material-icons">link</i>
+          <h4>URL Encoder/Decoder</h4>
+          {% comment %}
+          <p>Encode and decode URLs easily.</p>
+          {% endcomment %}
+        </a>
         <a href="{% url 'regex_tester' %}" class="example">
           <i class="material-icons">code</i>
           <h4>Regex Tester</h4>
@@ -257,20 +264,6 @@
           <h4>SQL Injection Tester</h4>
           {% comment %}
           <p>Identify potential SQL injection flaws in input fields.</p>
-          {% endcomment %}
-        </a>
-        <a href="{% url 'bcrypt_argon2_hasher' %}" class="example">
-          <i class="material-icons">lock</i>
-          <h4>Bcrypt & Argon2 Hasher</h4>
-          {% comment %}
-          <p>Securely hash passwords using robust algorithms.</p>
-          {% endcomment %}
-        </a>
-        <a href="{% url 'data_encryption_decryption_tool' %}" class="example">
-          <i class="material-icons">lock</i>
-          <h4>Data Encryption & Decryption Tool</h4>
-          {% comment %}
-          <p>Encrypt or decrypt text using various algorithms.</p>
           {% endcomment %}
         </a>
         <a href="{% url 'jwt_expiry_checker' %}" class="example">

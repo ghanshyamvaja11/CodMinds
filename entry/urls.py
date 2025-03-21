@@ -1,8 +1,14 @@
 from django.urls import path
 from .views import *
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import StaticViewSitemap
+
+sitemaps = {
+    'static': StaticViewSitemap,
+}
 
 urlpatterns = [
-    path('/', home, name='home'),
+    path('', home, name='home'),
     path('about/', about,
          name='about'),  # Redirect after login
     path('servicies/', services, name='servicies'),
@@ -24,57 +30,61 @@ urlpatterns = [
     # Online Tools
     path('tools-library', tools_library, name='tools_library'),
     path("subscribe", subscribe, name='subscribe'),
-    path('tools-library/code-formatter', code_formatter, name='code_formatter'),
-    path('tools-library/json-formatter-validator',
+
+    # Code & Text Utilities
+    path('tools-library/code-and-text-utilities/code-formatter',
+         code_formatter, name='code_formatter'),
+    path('tools-library/code-and-text-utilities/json-formatter-validator',
          json_formatter_validator, name='json_formatter_validator'),
-    path('tools-library/base64-encoder-decoder',
+    path('tools-library/code-and-text-utilities/base64-encoder-decoder',
          base64_encoder_decoder, name='base64_encoder_decoder'),
-    path('tools-library/case-converter', case_converter, name='case_converter'),
-    path('tools-library/string-hash-generator',
+    path('tools-library/code-and-text-utilities/case-converter', case_converter, name='case_converter'),
+    path('tools-library/code-and-text-utilities/string-hash-generator',
          string_hash_generator, name='string_hash_generator'),
-    path('tools-library/url-encoder-decoder',
+    path('tools-library/code-and-text-utilities/url-encoder-decoder',
          url_encoder_decoder, name='url_encoder_decoder'),
-    path('tools-library/jwt-decoder-generator',
+    path('tools-library/code-and-text-utilities/jwt-decoder-generator',
          jwt_decoder_generator, name='jwt_decoder_generator'),
-    path('tools-library/regex-tester', regex_tester, name='regex_tester'),
-    path('tools-library/api-tester', api_tester, name='api_tester'),
-    path('tools-library/network-analyzer',
+    path('tools-library/code-and-text-utilities/regex-tester', regex_tester, name='regex_tester'),
+
+    # API, Network & Web Analysis Tools
+    path('tools-library/api-network-and-web-analysis-tools/api-tester', api_tester, name='api_tester'),
+    path('tools-library/api-network-and-web-analysis-tools/network-analyzer',
          network_analyzer, name='network_analyzer'),
-    path('tools-library/rest-api-tester',
+    path('tools-library/api-network-and-web-analysis-tools/rest-api-tester',
          rest_api_tester, name='rest_api_tester'),
-    path('tools-library/http-headers-inspector',
+    path('tools-library/api-network-and-web-analysis-tools/http-headers-inspector',
          http_headers_inspector, name='http_headers_inspector'),
-    path('tools-library/dns-lookup-tool',
+    path('tools-library/api-network-and-web-analysis-tools/dns-lookup-tool',
          dns_lookup_tool, name='dns_lookup_tool'),
-    path('tools-library/whois-lookup', whois_lookup, name='whois_lookup'),
-    path('tools-library/ip-address-lookup',
+    path('tools-library/api-network-and-web-analysis-tools/whois-lookup', whois_lookup, name='whois_lookup'),
+    path('tools-library/api-network-and-web-analysis-tools/ip-address-lookup',
          ip_address_lookup, name='ip_address_lookup'),
-    path('tools-library/port-scanner', port_scanner, name='port_scanner'),
-    path('tools-library/website-screenshot-api',
+    path('tools-library/api-network-and-web-analysis-tools/port-scanner', port_scanner, name='port_scanner'),
+    path('tools-library/api-network-and-web-analysis-tools/website-screenshot-api',
          website_screenshot_api, name='website_screenshot_api'),
-    path('tools-library/download-screenshot',
+    path('tools-library/api-network-and-web-analysis-tools/download-screenshot',
          download_screenshot, name='download_screenshot'),
-    path('tools-library/meta-tag-analyzer',
+    path('tools-library/api-network-and-web-analysis-tools/meta-tag-analyzer',
          meta_tag_analyzer, name='meta_tag_analyzer'),
-    path('tools-library/robots-txt-sitemap-validator',
+    path('tools-library/api-network-and-web-analysis-tools/robots-txt-sitemap-validator',
          robots_txt_sitemap_validator, name='robots_txt_sitemap_validator'),
-    path('tools-library/ssl-certificate-checker',
+    path('tools-library/api-network-and-web-analysis-tools/ssl-certificate-checker',
          ssl_certificate_checker, name='ssl_certificate_checker'),
 
     # Security & Authentication Tools
-    path('tools-library/password-generator',
+    path('tools-library/security-and-authentication- tools/password-generator',
          password_generator, name='password_generator'),
-    path('tools-library/password-strength-checker',
-         password_strength_checker, name='password_strength_checker'),
-    path('tools-library/uuid-generator', uuid_generator, name='uuid_generator'),
-    path('tools-library/xss-vulnerability-tester',
+    path('tools-library/security-and-authentication- tools/password-strength-checker',password_strength_checker, name='password_strength_checker'),
+    path('tools-library/security-and-authentication- tools/uuid-generator', uuid_generator, name='uuid_generator'),
+    path('tools-library/security-and-authentication- tools/xss-vulnerability-tester',
          xss_vulnerability_tester, name='xss_vulnerability_tester'),
-    path('tools-library/sql-injection-tester',
+    path('tools-library/security-and-authentication- tools/sql-injection-tester',
          sql_injection_tester, name='sql_injection_tester'),
-    path('tools-library/bcrypt-argon2-hasher',
-         bcrypt_argon2_hasher, name='bcrypt_argon2_hasher'),
-    path('tools-library/data-encryption-decryption-tool',
-         data_encryption_decryption_tool, name='data_encryption_decryption_tool'),
-    path('tools-library/jwt-expiry-checker',
+    path('tools-library/security-and-authentication- tools/jwt-expiry-checker',
          jwt_expiry_checker, name='jwt_expiry_checker'),
+    
+    
+    path('crawl/sitemap.xml', sitemap, {'sitemaps': sitemaps},
+         name='django.contrib.sitemaps.views.sitemap'),
 ]

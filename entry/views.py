@@ -1,3 +1,6 @@
+import math
+import time
+import zlib
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
@@ -11,7 +14,9 @@ from carriers.models import *
 import base64
 import json
 import re
-import markdown2
+import string
+import uuid
+import random
 import jwt
 import black
 from pygments.lexers import guess_lexer, get_lexer_by_name
@@ -36,6 +41,9 @@ import whois  # Add this import
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
 import json
+from Crypto.Cipher import AES, DES, DES3, PKCS1_OAEP
+from Crypto.Random import get_random_bytes
+from Crypto.PublicKey import RSA
 
 
 def clear_messages(request):
@@ -323,7 +331,6 @@ def case_converter(request):
                 converted_text = ''.join(
                     char.lower() if char.isupper() else char.upper() for char in input_text)
             elif conversion_type == 'randomcase':
-                import random
                 converted_text = ''.join(char.upper() if random.choice(
                     [True, False]) else char.lower() for char in input_text)
     return render(request, 'Tools/Code&Utilities/case_converter.html', {'converted_text': converted_text})
@@ -841,106 +848,197 @@ def ssl_certificate_checker(request):
     })
 
 
+# Security and Authentication
 def password_generator(request):
     clear_messages(request)
     generated_password = None
     if request.method == 'POST':
         length = int(request.POST.get('length', 12))
-        import string
-        import random
-        characters = string.ascii_letters + string.digits + string.punctuation
-        generated_password = ''.join(random.choice(characters)
-                                     for _ in range(length))
+        include_uppercase = 'uppercase' in request.POST
+        include_lowercase = 'lowercase' in request.POST
+        include_digits = 'digits' in request.POST
+        include_punctuation = 'punctuation' in request.POST
+
+        characters = ''
+        if include_uppercase:
+            characters += string.ascii_uppercase
+        if include_lowercase:
+            characters += string.ascii_lowercase
+        if include_digits:
+            characters += string.digits
+        if include_punctuation:
+            characters += string.punctuation
+
+        if characters:
+            generated_password = ''.join(
+                random.choice(characters) for _ in range(length))
+        else:
+            generated_password = 'Please select at least one character type.'
+
     return render(request, 'Tools/Security/password_generator.html', {'generated_password': generated_password})
-
-
-def password_strength_checker(request):
-    clear_messages(request)
-    strength_result = None
-    if request.method == 'POST':
-        password = request.POST.get('password')
-        import zxcvbn
-        strength_result = zxcvbn.password_strength(password)
-    return render(request, 'Tools/Security/password_strength_checker.html', {'strength_result': strength_result})
 
 
 def uuid_generator(request):
     clear_messages(request)
     generated_uuid = None
     if request.method == 'POST':
-        import uuid
         generated_uuid = str(uuid.uuid4())
     return render(request, 'Tools/Security/uuid_generator.html', {'generated_uuid': generated_uuid})
 
 
+import re
+import html
+from django.shortcuts import render
+from django.contrib.messages import get_messages, add_message, constants as message_constants
+from bs4 import BeautifulSoup
+
+def clear_messages(request):
+    list(get_messages(request))  # Clear any previous messages
+
 def xss_vulnerability_tester(request):
     clear_messages(request)
     xss_result = None
+    error_message = None
+    progress = 0
+    vulnerability_level = "No risk"
+    vulnerability_color = "#33cc33"  # green
+    risk_percentage = 0
+
     if request.method == 'POST':
-        input_text = request.POST.get('input_text')
-        # In a real scenario, you would sanitize and test for XSS vulnerabilities
-        xss_result = input_text
-    return render(request, 'Tools/Security/xss_vulnerability_tester.html', {'xss_result': xss_result})
+        input_text = request.POST.get('input_text', '')
+
+        if input_text.strip():  
+            progress = 50  # Initial progress
+            detected_xss = False  # Flag for XSS detection
+
+            # 1. Check for encoded XSS attempts
+            decoded_input = html.unescape(input_text)  # Decode any encoded characters (e.g., `&lt;script&gt;` -> `<script>`)
+
+            # 2. Check for dangerous HTML elements
+            soup = BeautifulSoup(decoded_input, "html.parser")
+            dangerous_tags = ['script', 'iframe', 'embed', 'object', 'link', 'style', 'meta', 'form', 'input', 'textarea', 'button', 'select', 'option', 'applet', 'marquee', 'blink']
+            found_tags = [tag.name for tag in soup.find_all(dangerous_tags)]
+            
+            # 3. Check for JavaScript event handlers (onmouseover, onload, etc.)
+            event_handlers = re.findall(r'on\w+\s*=\s*["\'].*?["\']', decoded_input, re.IGNORECASE)
+
+            # 4. Check if there's any JavaScript execution attempt
+            js_execution_patterns = re.findall(r'javascript\s*:\s*.*', decoded_input, re.IGNORECASE)
+
+            # 5. Compare sanitized vs unsanitized
+            sanitized_input = html.escape(decoded_input)  # Escaping dangerous characters
+            if sanitized_input != decoded_input:
+                detected_xss = True
+
+            # 6. Risk Calculation
+            total_issues = len(found_tags) + len(event_handlers) + len(js_execution_patterns)
+            if detected_xss or total_issues > 0:
+                xss_result = "Potential XSS vulnerability detected."
+                risk_percentage = min(total_issues * 20, 100)  # Example: 5 issues = 100%
+
+                if risk_percentage > 70:
+                    vulnerability_level = "High risk"
+                    vulnerability_color = "#ff4d4d"  # red
+                elif risk_percentage > 30:
+                    vulnerability_level = "Moderate risk"
+                    vulnerability_color = "#ffa500"  # orange
+                else:
+                    vulnerability_level = "Low risk"
+                    vulnerability_color = "#33cc33"  # green
+
+                progress = 100
+            else:
+                xss_result = "No XSS vulnerability detected."
+                vulnerability_level = "No risk"
+                vulnerability_color = "#33cc33"  # green
+                progress = 100
+        else:
+            error_message = "Please provide input text to test."
+
+    return render(request, 'Tools/Security/xss_vulnerability_tester.html', {
+        'xss_result': xss_result,
+        'error_message': error_message,
+        'progress': progress,
+        'vulnerability_level': vulnerability_level,
+        'vulnerability_color': vulnerability_color,
+        'risk_percentage': risk_percentage
+    })
+
+
+def clear_messages(request):
+    storage = messages.get_messages(request)
+    storage.used = True
+
+
+def clear_messages(request):
+    request.session.pop('_messages', None)
 
 
 def sql_injection_tester(request):
     clear_messages(request)
     sql_result = None
+    risk_percentage = 0
+    risk_level = "Low risk"
+
     if request.method == 'POST':
-        input_query = request.POST.get('input_query')
-        # In a real scenario, you would test the input query against a database for SQL injection vulnerabilities
-        sql_result = "Query received: " + input_query
-    return render(request, 'Tools/Security/sql_injection_tester.html', {'sql_result': sql_result})
+        input_query = request.POST.get('input_query', '').strip()
 
+        # Advanced SQL Injection Detection
+        sql_keywords = [
+            "SELECT", "UNION", "DROP", "INSERT", "UPDATE", "DELETE", "ALTER", "EXEC", "MERGE",
+            "DECLARE", "CAST", "NVARCHAR", "CHAR", "CONVERT", "INFORMATION_SCHEMA", "SYSOBJECTS"
+        ]
+        attack_patterns = [
+            r"(--|#|/\*)",  # SQL comments
+            r"\b(OR|AND)\b.*?[=<>]",  # Boolean-based SQLi
+            r"\bUNION\b.*?\bSELECT\b",  # UNION-based SQLi
+            r"\bSLEEP\(\d+\)|\bWAITFOR DELAY\b",  # Time-based SQLi
+            r"\bCASE\b.*?\bWHEN\b.*?\bTHEN\b",  # Conditional injection
+            r"\bLIKE\b.*?['\"]%.*?['\"]",  # Pattern matching attack
+            r"XP_CMDSHELL|EXEC|EXECUTE",  # OS command execution
+            r"CONCAT\(.*?'.*?'\)",  # String concatenation attacks
+        ]
 
-def bcrypt_argon2_hasher(request):
-    clear_messages(request)
-    hash_result = None
-    if request.method == 'POST':
-        input_text = request.POST.get('input_text')
-        algorithm = request.POST.get('algorithm')
-        if input_text and algorithm:
-            try:
-                if algorithm == 'bcrypt':
-                    hash_result = bcrypt.hashpw(
-                        input_text.encode(), bcrypt.gensalt()).decode()
-                elif algorithm == 'argon2':
-                    hash_result = argon2.PasswordHasher().hash(input_text)
-            except Exception as e:
-                hash_result = f"Error: {str(e)}"
-    return render(request, 'Tools/Security/bcrypt_argon2_hasher.html', {'hash_result': hash_result})
+        # Detect dangerous keywords and attack patterns
+        keyword_count = sum(
+            1 for kw in sql_keywords if kw in input_query.upper())
+        pattern_matches = [pattern for pattern in attack_patterns if re.search(
+            pattern, input_query, re.IGNORECASE)]
+        suspicious_chars = ['=', '--', ';', "'", '"']
+        suspicious_count = sum(input_query.count(char)
+                               for char in suspicious_chars)
 
+        # Risk Scoring System
+        risk_score = keyword_count * 10 + \
+            suspicious_count * 5 + len(pattern_matches) * 15
+        if len(input_query) > 100:
+            risk_score += 20  # Longer queries are riskier
 
-def data_encryption_decryption_tool(request):
-    clear_messages(request)
-    result = None
-    if request.method == 'POST':
-        input_text = request.POST.get('input_text')
-        action = request.POST.get('action')
-        algorithm = request.POST.get('algorithm')
-        if input_text and action and algorithm:
-            try:
-                if algorithm == 'aes':
-                    from Crypto.Cipher import AES
-                    from Crypto.Random import get_random_bytes
-                    key = get_random_bytes(16)
-                    cipher = AES.new(key, AES.MODE_EAX)
-                    nonce = cipher.nonce
-                    if action == 'encrypt':
-                        ciphertext, tag = cipher.encrypt_and_digest(
-                            input_text.encode())
-                        result = base64.b64encode(
-                            nonce + ciphertext).decode('utf-8')
-                    elif action == 'decrypt':
-                        data = base64.b64decode(input_text)
-                        nonce = data[:16]
-                        ciphertext = data[16:]
-                        cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
-                        result = cipher.decrypt(ciphertext).decode('utf-8')
-            except Exception as e:
-                result = f"Error: {str(e)}"
-    return render(request, 'Tools/Security/data_encryption_decryption_tool.html', {'result': result})
+        # Risk Level Classification
+        if risk_score > 70:
+            risk_level = "Critical risk"
+        elif risk_score > 50:
+            risk_level = "High risk"
+        elif risk_score > 30:
+            risk_level = "Moderate risk"
+        else:
+            risk_level = "Low risk"
+        risk_percentage = min(risk_score, 100)
 
+        # Final output
+        sql_result = (
+            f"Input Query: {input_query}\n"
+            f"Detected SQL Keywords: {keyword_count}\n"
+            f"Suspicious Characters Count: {suspicious_count}\n"
+            f"Matched Attack Patterns: {len(pattern_matches)}\n"
+            f"Risk Score: {risk_score} ({risk_level})\n"
+        )
+
+    return render(request, 'Tools/Security/sql_injection_tester.html', {
+        'sql_result': sql_result,
+        'risk_percentage': risk_percentage,
+        'risk_level': risk_level
+    })
 
 def jwt_expiry_checker(request):
     clear_messages(request)
@@ -961,3 +1059,76 @@ def jwt_expiry_checker(request):
             except jwt.DecodeError:
                 error_message = "Invalid JWT"
     return render(request, 'Tools/Security/jwt_expiry_checker.html', {'jwt_result': jwt_result, 'error_message': error_message})
+
+
+def password_strength_checker(request):
+    strength_result = None
+    strength_color = None
+    score = 1  # Default minimum score
+
+    if request.method == 'POST':
+        password = request.POST.get('password', '').strip()
+
+        # Common weak passwords
+        COMMON_PASSWORDS = {"123456", "password", "12345678",
+                            "qwerty", "abc123", "admin", "letmein", "welcome"}
+
+        if password.lower() in COMMON_PASSWORDS:
+            strength_result = "Very Weak"
+            strength_color = "#ff1a1a"  # Dark Red
+            score = 1
+        else:
+            # Base Score Calculation (Max: 4)
+            local_score = 1  # Start at minimum (1)
+
+            # Character set determination
+            charset_size = 0
+            if re.search(r"[a-z]", password):
+                charset_size += 26
+            if re.search(r"[A-Z]", password):
+                charset_size += 26
+            if re.search(r"[0-9]", password):
+                charset_size += 10
+            if re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+                charset_size += 32
+
+            # Entropy Calculation
+            entropy = len(password) * \
+                math.log2(charset_size) if charset_size > 0 else 0
+
+            # Strength Levels Based on Rules
+            has_lower = bool(re.search(r"[a-z]", password))
+            has_upper = bool(re.search(r"[A-Z]", password))
+            has_digit = bool(re.search(r"[0-9]", password))
+            has_special = bool(re.search(r"[!@#$%^&*(),.?\":{}|<>]", password))
+            length_ok = len(password) >= 8
+
+            if length_ok and (has_lower + has_upper + has_digit + has_special) >= 2:
+                local_score = 2
+            if length_ok and has_lower and has_upper and has_digit and has_special:
+                local_score = 3
+            if entropy > 40 and len(password) >= 12:
+                local_score = 4
+
+            # Ensure score stays between 1-4
+            score = max(1, min(local_score, 4))
+
+            # Strength Classification
+            if score == 1:
+                strength_result = "Very Weak"
+                strength_color = "#ff4d4d"  # Red
+            elif score == 2:
+                strength_result = "Weak"
+                strength_color = "#ff9933"  # Orange
+            elif score == 3:
+                strength_result = "Moderate"
+                strength_color = "#ffd700"  # Yellow
+            elif score == 4:
+                strength_result = "Strong"
+                strength_color = "#33cc33"  # Green
+
+    return render(request, 'Tools/Security/password_strength_checker.html', {
+        'strength_result': strength_result,
+        'strength_color': strength_color,
+        'score': score
+    })
