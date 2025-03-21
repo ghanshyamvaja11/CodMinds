@@ -73,15 +73,15 @@ urlpatterns = [
          ssl_certificate_checker, name='ssl_certificate_checker'),
 
     # Security & Authentication Tools
-    path('tools-library/security-and-authentication- tools/password-generator',
+    path('tools-library/security-and-authentication-tools/password-generator',
          password_generator, name='password_generator'),
-    path('tools-library/security-and-authentication- tools/password-strength-checker',password_strength_checker, name='password_strength_checker'),
-    path('tools-library/security-and-authentication- tools/uuid-generator', uuid_generator, name='uuid_generator'),
-    path('tools-library/security-and-authentication- tools/xss-vulnerability-tester',
+    path('tools-library/security-and-authentication-tools/password-strength-checker',password_strength_checker, name='password_strength_checker'),
+    path('tools-library/security-and-authentication-tools/uuid-generator', uuid_generator, name='uuid_generator'),
+    path('tools-library/security-and-authentication-tools/xss-vulnerability-tester',
          xss_vulnerability_tester, name='xss_vulnerability_tester'),
-    path('tools-library/security-and-authentication- tools/sql-injection-tester',
+    path('tools-library/security-and-authentication-tools/sql-injection-tester',
          sql_injection_tester, name='sql_injection_tester'),
-    path('tools-library/security-and-authentication- tools/jwt-expiry-checker',
+    path('tools-library/security-and-authentication-tools/jwt-expiry-checker',
          jwt_expiry_checker, name='jwt_expiry_checker'),
     
     
