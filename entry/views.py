@@ -1145,83 +1145,111 @@ def password_strength_checker(request):
     })
 
 
+def clean_numeric(value):
+    """
+    Cleans numeric values by removing currency symbols and formatting correctly.
+    Handles:
+    - `"$2,000"` → `"2000"`
+    - `"€2.5"` → `"2.5"`
+    - `"2,500.00"` → `"2500.00"`
+    """
+    if value:
+        value = value.strip()
+        if re.match(r'^[^\d]*[\d,\.]+$', value):  # If value contains numbers with optional symbols
+            cleaned = re.sub(r'[^\d,\.]', '', value)  # Remove non-numeric except comma/period
+            cleaned = cleaned.replace(',', '')  # Remove thousands separator
+            try:
+                num = float(cleaned)
+                return num if "." in cleaned else int(num)  # Keep decimals where needed
+            except ValueError:
+                return value
+    return value
+
+def detect_delimiter(csv_text):
+    """
+    Auto-detects the delimiter used in the CSV data.
+    """
+    try:
+        sample = csv_text.split("\n", 3)
+        sample_text = "\n".join(sample)
+        sniffer = csv.Sniffer()
+        dialect = sniffer.sniff(sample_text)
+        return dialect.delimiter
+    except Exception:
+        return ','
+
 def csv_to_json_converter(request):
+    """
+    Converts CSV data (from file or pasted text) into JSON format.
+    """
     clear_messages(request)
     json_data = None
+
     if request.method == 'POST':
         input_method = request.POST.get('input_method')
-        delimiter = request.POST.get('delimiter', ',')
         csv_file = request.FILES.get('csv_file')
         csv_text = request.POST.get('csv_text', '')
-        download = request.POST.get('download')
 
         if input_method == 'upload' and csv_file:
             try:
                 if not csv_file.name.endswith('.csv'):
-                    messages.error(
-                        request, "Invalid file type. Please upload a CSV file.")
+                    messages.error(request, "Invalid file type. Please upload a CSV file.")
                     return redirect('csv_to_json_converter')
+
                 file_data = csv_file.read().decode('utf-8', errors='replace').strip()
+                delimiter = detect_delimiter(file_data)
 
-                first_line = file_data.splitlines(
-                )[0] if file_data.splitlines() else ""
-                counts = {',': first_line.count(','), ';': first_line.count(
-                    ';'), '\t': first_line.count('\t')}
-                delimiter = max(counts, key=counts.get) if max(
-                    counts.values()) > 0 else ','
-
-                reader = csv.DictReader(io.StringIO(
-                    file_data), delimiter=delimiter)
-                json_data = []
-                for row in reader:
-                    clean_row = {key.replace('\ufeff', '').strip(): re.sub(
-                        r'\\tfef', '', value).strip() if value else value for key, value in row.items()}
-                    json_data.append(clean_row)
-                json_data = json.dumps(json_data, indent=4)
             except Exception as e:
-                messages.error(request, f"Error converting file: {str(e)}")
+                messages.error(request, f"Error reading file: {str(e)}")
+                return redirect('csv_to_json_converter')
 
         elif input_method == 'paste' and csv_text.strip():
-            if csv_text:
-                try:
-                    # Check if input is valid JSON (Prevent JSON mistaken as CSV)
-                    if csv_text.startswith("{") or csv_text.startswith("["):
-                        raise ValueError(
-                            "Invalid input: Detected JSON format instead of CSV.")
-
-                    csv_reader = csv.reader(io.StringIO(csv_text))
-                    rows = list(csv_reader)  # Convert CSV reader to list
-
-                    # Ensure we have at least a header and one valid data row
-                    if len(rows) < 2 or any(len(row) == 0 for row in rows):
-                        raise ValueError(
-                            "Invalid CSV format. Ensure proper delimiters and structure.")
-
-                    # Check for consistent column count
-                    col_count = len(rows[0])  # Column count from header
-                    if not all(len(row) == col_count for row in rows[1:] if row):
-                        raise ValueError(
-                            "Invalid CSV format: Inconsistent column count across rows.")
-
-                except ValueError as e:
-                    # Show user-friendly error messages
-                    messages.error(request, str(e))
-                    return redirect('csv_to_json_converter')
-
-                except Exception:
-                    messages.error(
-                        request, "Invalid CSV format. Please check your input.")
-                    return redirect('csv_to_json_converter')
             try:
-                reader = csv.DictReader(io.StringIO(
-                    csv_text.strip()), delimiter=delimiter)
-                json_data = [dict(row) for row in reader]
-                json_data = json.dumps(json_data, indent=4)
-            except Exception as e:
-                messages.error(request, f"Error converting text: {str(e)}")
+                if csv_text.startswith("{") or csv_text.startswith("["):
+                    raise ValueError("Invalid input: Detected JSON format instead of CSV.")
+                csv_text = csv_text.strip()
+                delimiter = detect_delimiter(csv_text)
+
+            except ValueError as e:
+                messages.error(request, str(e))
+                return redirect('csv_to_json_converter')
+
+            except Exception:
+                messages.error(request, "Invalid CSV format. Please check your input.")
+                return redirect('csv_to_json_converter')
+
+        else:
+            messages.error(request, "No valid input provided.")
+            return redirect('csv_to_json_converter')
+
+        try:
+            csv_source = file_data if input_method == 'upload' else csv_text
+            reader = csv.reader(io.StringIO(csv_source), delimiter=delimiter)
+            rows = list(reader)
+
+            if len(rows) < 2:
+                messages.error(request, "Invalid CSV format. Ensure at least two rows (header + data).")
+                return redirect('csv_to_json_converter')
+
+            headers = [col.strip() for col in rows[0]]  # Split headers properly
+            json_list = []
+
+            for row in rows[1:]:
+                if len(row) != len(headers):
+                    continue  # Skip rows with inconsistent column counts.
+                clean_row = {}
+                for i in range(len(headers)):
+                    key = headers[i]
+                    value = row[i]
+                    clean_row[key] = clean_numeric(value)  # Apply numeric cleaning
+                json_list.append(clean_row)
+
+            json_data = json.dumps(json_list, indent=4)
+        except Exception as e:
+            messages.error(request, f"Error processing CSV: {str(e)}")
+            return redirect('csv_to_json_converter')
 
     return render(request, 'Tools/DataConversion/csv_to_json_converter.html', {'json_data': json_data})
-
 
 def json_to_csv_converter(request):
     messages.get_messages(request)  # Clear old messages
