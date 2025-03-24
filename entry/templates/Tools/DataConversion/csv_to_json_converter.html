@@ -1,0 +1,266 @@
+{% extends "Tools/tools_base.html" %} {% block content %}
+<title>CodMinds - CSV to JSON Converter</title>
+
+<style>
+  .container {
+    max-width: 700px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  .title {
+    text-align: center;
+    color: #1e90ff;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-group label {
+    font-size: 15px;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  .btn {
+    width: 100%;
+    background-color: #1e90ff;
+    color: #fff;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background-color: #0066cc;
+  }
+  .radio-group {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+  }
+  .result {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  .loading-spinner {
+    display: none;
+    width: 50px;
+    height: 50px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #1e90ff;
+    border-radius: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+  .result pre {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .copy-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #1e90ff;
+  }
+  .tooltip {
+    position: absolute;
+    top: -15px;
+    right: 10px;
+    background-color: #1e90ff;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: none;
+  }
+  .auto-detect-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  .download-btn {
+    background-color: #ff5722;
+    color: #fff;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .download-btn:hover {
+    background-color: #e64a19;
+  }
+  .center-btn {
+    display: flex;
+    justify-content: center;
+  }
+</style>
+
+<div class="container">
+  <h2 class="title">CSV to JSON Converter</h2>
+  <form method="post" enctype="multipart/form-data" onsubmit="showSpinner()">
+    {% csrf_token %} {% if messages %} {% for message in messages %}
+    <div class="error-message" style="color: red; text-align: center">
+      {{ message }}
+    </div>
+    {% endfor %} {% endif %}
+
+    <div class="radio-group">
+      <label
+        ><input
+          type="radio"
+          name="input_method"
+          value="upload"
+          checked
+          onclick="toggleInput(true)"
+        />
+        Upload CSV</label
+      >
+      <label
+        ><input
+          type="radio"
+          name="input_method"
+          value="paste"
+          onclick="toggleInput(false)"
+        />
+        Paste CSV</label
+      >
+    </div>
+
+    <div class="form-group" id="fileInputSection">
+      <label for="csv_file">Upload CSV:</label>
+      <input type="file" name="csv_file" accept=".csv" />
+    </div>
+
+    <div class="form-group" id="textInputSection" style="display: none">
+      <label for="csv_text">Paste CSV:</label>
+      <textarea name="csv_text" rows="6"></textarea>
+    </div>
+
+    <!-- Delimiter section is shown only for paste input -->
+    <div id="delimiterSection" style="display: none">
+      <div class="form-group delimiter-container">
+        <label for="delimiter">Delimiter:</label>
+        <select name="delimiter">
+          <option value=",">Comma</option>
+          <option value=";">Semicolon</option>
+          <option value="\t">Tab</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Auto-detect checkbox: for upload, it is forced checked -->
+    <div>
+      <label for="auto_delimiter">Auto Detect Delimiter</label>
+      <input
+        type="checkbox"
+        id="auto_delimiter"
+        name="auto_delimiter"
+        value="1"
+        checked
+      />
+    </div>
+
+    <button type="submit" class="btn">Convert</button>
+  </form>
+
+  <div class="loading-spinner" id="loadingSpinner"></div>
+
+  {% if json_data %}
+  <div class="result" style="position: relative">
+    <i class="copy-icon" onclick="copyToClipboard()">📋</i>
+    <div class="tooltip">Copied!</div>
+    <h3>Converted JSON:</h3>
+    <pre>{{ json_data }}</pre>
+    <div class="center-btn">
+      <button class="download-btn" onclick="downloadJSON()">
+        Download JSON
+      </button>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  window.onload = function () {
+    const autoDelimiter = document.getElementById("auto_delimiter");
+    autoDelimiter.checked = true;
+    autoDelimiter.disabled = true;
+  };
+  function toggleInput(showFile) {
+    document.getElementById("fileInputSection").style.display = showFile
+      ? "block"
+      : "none";
+    document.getElementById("textInputSection").style.display = showFile
+      ? "none"
+      : "block";
+    document.getElementById("delimiterSection").style.display = showFile
+      ? "none"
+      : "block";
+
+    const autoDelimiter = document.getElementById("auto_delimiter");
+    if (showFile) {
+      autoDelimiter.checked = true;
+      autoDelimiter.disabled = true;
+    } else {
+      autoDelimiter.checked = false;
+      autoDelimiter.disabled = false;
+    }
+  }
+  function showSpinner() {
+    document.getElementById("loadingSpinner").style.display = "block";
+  }
+  function copyToClipboard() {
+    const codeContent = document.querySelector(".result pre").innerText;
+    navigator.clipboard.writeText(codeContent).then(() => {
+      const tooltip = document.querySelector(".tooltip");
+      tooltip.style.display = "block";
+      setTimeout(() => {
+        tooltip.style.display = "none";
+      }, 1000);
+    });
+  }
+  function downloadJSON() {
+    const jsonContent = "{{ json_data|escapejs }}";
+    const blob = new Blob([jsonContent], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "converted.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+{% endblock %}

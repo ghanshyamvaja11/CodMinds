@@ -142,16 +142,14 @@
           {% endcomment %}
         </a>
         <!-- New tools from line 190: add 'new-tool' class -->
-        <a href="{% url 'rest_api_tester' %}" class="example">
+        {% comment %} <a href="{% url 'rest_api_tester' %}" class="example">
           <i class="material-icons">http</i>
           <h4>REST API Tester</h4>
-          {% comment %}
           <p>
             Send requests to API endpoints with custom headers and body
             payloads.
           </p>
-          {% endcomment %}
-        </a>
+        </a> {% endcomment %}
         <a href="{% url 'http_headers_inspector' %}" class="example">
           <i class="material-icons">http</i>
           <h4>HTTP Headers Inspector</h4>
@@ -194,22 +192,6 @@
           <p>Scan a domain or IP for open ports.</p>
           {% endcomment %}
         </a>
-        <a href="{% url 'website_screenshot_api' %}" class="example">
-          <i class="material-icons">camera_alt</i>
-          <h4>Website Screenshot API</h4>
-          {% comment %}
-          <p>Capture full-page screenshots of websites.</p>
-          {% endcomment %}
-        </a>
-        {% comment %}
-        <a href="{% url 'robots_txt_sitemap_validator' %}" class="example">
-          <i class="material-icons">robot</i>
-          <h4>Robots.txt & Sitemap Validator</h4>
-          <p>
-            Validate and analyze a website’s robots.txt and sitemap.xml files.
-          </p>
-        </a>
-        {% endcomment %}
         <a href="{% url 'ssl_certificate_checker' %}" class="example">
           <i class="material-icons">https</i>
           <h4>SSL Certificate Checker</h4>
@@ -283,79 +265,56 @@
       <p>Convert data and handle file processing.</p>
       {% endcomment %}
       <div class="examples">
-        <div class="example new-tool">
-          <i class="material-icons">table_chart</i>
-          <h4>CSV to JSON Converter</h4>
-          {% comment %}
-          <p>Convert CSV files to JSON format.</p>
-          {% endcomment %}
-        </div>
+      <a href="{% url 'csv_to_json_converter' %}" class="example">
+        <i class="material-icons">table_chart</i>
+        <h4>CSV to JSON Converter</h4>
         {% comment %}
-        <div class="example new-tool">
-          <i class="material-icons">picture_as_pdf</i>
-          <h4>PDF to Text Extractor</h4>
-          <p>Extract text from PDF files.</p>
-        </div>
+        <p>Convert CSV files to JSON format.</p>
         {% endcomment %}
-        <!-- New tools -->
-        <div class="example new-tool">
-          <i class="material-icons">table_chart</i>
-          <h4>JSON to CSV Converter</h4>
-          {% comment %}
-          <p>Convert JSON data into CSV format.</p>
-          {% endcomment %}
-        </div>
-        <div class="example new-tool">
-          <i class="material-icons">image</i>
-          <h4>Image to Base64 Converter</h4>
-          {% comment %}
-          <p>Convert images to Base64 strings.</p>
-          {% endcomment %}
-        </div>
-        <div class="example new-tool">
-          <i class="material-icons">table_chart</i>
-          <h4>HTML Table to JSON Converter</h4>
-          {% comment %}
-          <p>Convert HTML table data into JSON format.</p>
-          {% endcomment %}
-        </div>
-        <div class="example new-tool">
-          <i class="material-icons">code</i>
-          <h4>XML to JSON Converter</h4>
-          {% comment %}
-          <p>Transform XML data into JSON.</p>
-          {% endcomment %}
-        </div>
-        <div class="example new-tool">
-          <i class="material-icons">code</i>
-          <h4>YAML to JSON Converter</h4>
-          {% comment %}
-          <p>Convert YAML files into JSON.</p>
-          {% endcomment %}
-        </div>
-        <div class="example new-tool">
-          <i class="material-icons">cleaning_services</i>
-          <h4>Data Cleaner</h4>
-          {% comment %}
-          <p>Remove duplicates and normalize text data.</p>
-          {% endcomment %}
-        </div>
+      </a>
+      <a href="{% url 'json_to_csv_converter' %}" class="example">
+        <i class="material-icons">table_chart</i>
+        <h4>JSON to CSV Converter</h4>
         {% comment %}
-        <div class="example new-tool">
-          <i class="material-icons">description</i>
-          <h4>File Format Converter</h4>
-          <p>Convert between plain text and other file formats.</p>
-        </div>
+        <p>Convert JSON data into CSV format.</p>
         {% endcomment %}
-        <div class="example new-tool">
-          <i class="material-icons">merge_type</i>
-          <h4>Data Aggregator</h4>
-          {% comment %}
-          <p>Merge or split datasets.</p>
-          {% endcomment %}
-        </div>
+      </a>
+      <a href="{% url 'html_table_to_json_converter' %}" class="example">
+        <i class="material-icons">table_chart</i>
+        <h4>HTML Table to JSON Converter</h4>
+        {% comment %}
+        <p>Convert HTML table data into JSON format.</p>
+        {% endcomment %}
+      </a>
+      <a href="{% url 'html_table_to_csv_converter' %}" class="example">
+        <i class="material-icons">table_chart</i>
+        <h4>HTML Table to CSV Converter</h4>
+        {% comment %}
+        <p>Convert HTML table data into CSV format.</p>
+        {% endcomment %}
+      </a>
+      <a href="{% url 'xml_to_json_converter' %}" class="example">
+        <i class="material-icons">code</i>
+        <h4>XML to JSON Converter</h4>
+        {% comment %}
+        <p>Transform XML data into JSON.</p>
+        {% endcomment %}
+      </a>
+      <a href="{% url 'yaml_to_json_converter' %}" class="example">
+        <i class="material-icons">code</i>
+        <h4>YAML to JSON Converter</h4>
+        {% comment %}
+        <p>Convert YAML files into JSON.</p>
+        {% endcomment %}
+      </a>
+      {% comment %} <a href="{% url 'image_to_base64_converter' %}" class="example">
+        <i class="material-icons">image</i>
+        <h4>Image to Base64 Converter</h4>
+        <p>Convert images to Base64 strings.</p>
+      </a> {% endcomment %}
       </div>
     </div>
+
     <!-- Category: QR, Barcode & Imaging Tools -->
     <div class="category">
       <i class="material-icons">qr_code</i>

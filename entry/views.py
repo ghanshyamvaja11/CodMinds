@@ -1,3 +1,7 @@
+from collections import defaultdict
+from django.contrib.messages import get_messages, add_message, constants as message_constants
+from django.shortcuts import render
+import html
 import math
 import time
 import zlib
@@ -38,12 +42,16 @@ import ssl
 import datetime
 import os
 import whois  # Add this import
+import yaml  # Add this import
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
 import json
 from Crypto.Cipher import AES, DES, DES3, PKCS1_OAEP
 from Crypto.Random import get_random_bytes
 from Crypto.PublicKey import RSA
+import csv
+import io
+import xml.etree.ElementTree as ET
 
 
 def clear_messages(request):
@@ -886,14 +894,9 @@ def uuid_generator(request):
     return render(request, 'Tools/Security/uuid_generator.html', {'generated_uuid': generated_uuid})
 
 
-import re
-import html
-from django.shortcuts import render
-from django.contrib.messages import get_messages, add_message, constants as message_constants
-from bs4 import BeautifulSoup
-
 def clear_messages(request):
     list(get_messages(request))  # Clear any previous messages
+
 
 def xss_vulnerability_tester(request):
     clear_messages(request)
@@ -907,34 +910,41 @@ def xss_vulnerability_tester(request):
     if request.method == 'POST':
         input_text = request.POST.get('input_text', '')
 
-        if input_text.strip():  
+        if input_text.strip():
             progress = 50  # Initial progress
             detected_xss = False  # Flag for XSS detection
 
             # 1. Check for encoded XSS attempts
-            decoded_input = html.unescape(input_text)  # Decode any encoded characters (e.g., `&lt;script&gt;` -> `<script>`)
+            # Decode any encoded characters (e.g., `&lt;script&gt;` -> `<script>`)
+            decoded_input = html.unescape(input_text)
 
             # 2. Check for dangerous HTML elements
             soup = BeautifulSoup(decoded_input, "html.parser")
-            dangerous_tags = ['script', 'iframe', 'embed', 'object', 'link', 'style', 'meta', 'form', 'input', 'textarea', 'button', 'select', 'option', 'applet', 'marquee', 'blink']
+            dangerous_tags = ['script', 'iframe', 'embed', 'object', 'link', 'style', 'meta', 'form',
+                              'input', 'textarea', 'button', 'select', 'option', 'applet', 'marquee', 'blink']
             found_tags = [tag.name for tag in soup.find_all(dangerous_tags)]
-            
+
             # 3. Check for JavaScript event handlers (onmouseover, onload, etc.)
-            event_handlers = re.findall(r'on\w+\s*=\s*["\'].*?["\']', decoded_input, re.IGNORECASE)
+            event_handlers = re.findall(
+                r'on\w+\s*=\s*["\'].*?["\']', decoded_input, re.IGNORECASE)
 
             # 4. Check if there's any JavaScript execution attempt
-            js_execution_patterns = re.findall(r'javascript\s*:\s*.*', decoded_input, re.IGNORECASE)
+            js_execution_patterns = re.findall(
+                r'javascript\s*:\s*.*', decoded_input, re.IGNORECASE)
 
             # 5. Compare sanitized vs unsanitized
-            sanitized_input = html.escape(decoded_input)  # Escaping dangerous characters
+            # Escaping dangerous characters
+            sanitized_input = html.escape(decoded_input)
             if sanitized_input != decoded_input:
                 detected_xss = True
 
             # 6. Risk Calculation
-            total_issues = len(found_tags) + len(event_handlers) + len(js_execution_patterns)
+            total_issues = len(found_tags) + \
+                len(event_handlers) + len(js_execution_patterns)
             if detected_xss or total_issues > 0:
                 xss_result = "Potential XSS vulnerability detected."
-                risk_percentage = min(total_issues * 20, 100)  # Example: 5 issues = 100%
+                risk_percentage = min(
+                    total_issues * 20, 100)  # Example: 5 issues = 100%
 
                 if risk_percentage > 70:
                     vulnerability_level = "High risk"
@@ -1040,6 +1050,7 @@ def sql_injection_tester(request):
         'risk_level': risk_level
     })
 
+
 def jwt_expiry_checker(request):
     clear_messages(request)
     jwt_result = None
@@ -1131,4 +1142,421 @@ def password_strength_checker(request):
         'strength_result': strength_result,
         'strength_color': strength_color,
         'score': score
+    })
+
+
+def csv_to_json_converter(request):
+    clear_messages(request)
+    json_data = None
+    if request.method == 'POST':
+        input_method = request.POST.get('input_method')
+        delimiter = request.POST.get('delimiter', ',')
+        csv_file = request.FILES.get('csv_file')
+        csv_text = request.POST.get('csv_text', '')
+        download = request.POST.get('download')
+
+        if input_method == 'upload' and csv_file:
+            try:
+                if not csv_file.name.endswith('.csv'):
+                    messages.error(
+                        request, "Invalid file type. Please upload a CSV file.")
+                    return redirect('csv_to_json_converter')
+                file_data = csv_file.read().decode('utf-8', errors='replace').strip()
+
+                first_line = file_data.splitlines(
+                )[0] if file_data.splitlines() else ""
+                counts = {',': first_line.count(','), ';': first_line.count(
+                    ';'), '\t': first_line.count('\t')}
+                delimiter = max(counts, key=counts.get) if max(
+                    counts.values()) > 0 else ','
+
+                reader = csv.DictReader(io.StringIO(
+                    file_data), delimiter=delimiter)
+                json_data = []
+                for row in reader:
+                    clean_row = {key.replace('\ufeff', '').strip(): re.sub(
+                        r'\\tfef', '', value).strip() if value else value for key, value in row.items()}
+                    json_data.append(clean_row)
+                json_data = json.dumps(json_data, indent=4)
+            except Exception as e:
+                messages.error(request, f"Error converting file: {str(e)}")
+
+        elif input_method == 'paste' and csv_text.strip():
+            if csv_text:
+                try:
+                    # Check if input is valid JSON (Prevent JSON mistaken as CSV)
+                    if csv_text.startswith("{") or csv_text.startswith("["):
+                        raise ValueError(
+                            "Invalid input: Detected JSON format instead of CSV.")
+
+                    csv_reader = csv.reader(io.StringIO(csv_text))
+                    rows = list(csv_reader)  # Convert CSV reader to list
+
+                    # Ensure we have at least a header and one valid data row
+                    if len(rows) < 2 or any(len(row) == 0 for row in rows):
+                        raise ValueError(
+                            "Invalid CSV format. Ensure proper delimiters and structure.")
+
+                    # Check for consistent column count
+                    col_count = len(rows[0])  # Column count from header
+                    if not all(len(row) == col_count for row in rows[1:] if row):
+                        raise ValueError(
+                            "Invalid CSV format: Inconsistent column count across rows.")
+
+                except ValueError as e:
+                    # Show user-friendly error messages
+                    messages.error(request, str(e))
+                    return redirect('csv_to_json_converter')
+
+                except Exception:
+                    messages.error(
+                        request, "Invalid CSV format. Please check your input.")
+                    return redirect('csv_to_json_converter')
+            try:
+                reader = csv.DictReader(io.StringIO(
+                    csv_text.strip()), delimiter=delimiter)
+                json_data = [dict(row) for row in reader]
+                json_data = json.dumps(json_data, indent=4)
+            except Exception as e:
+                messages.error(request, f"Error converting text: {str(e)}")
+
+    return render(request, 'Tools/DataConversion/csv_to_json_converter.html', {'json_data': json_data})
+
+
+def json_to_csv_converter(request):
+    messages.get_messages(request)  # Clear old messages
+    csv_data = None
+
+    if request.method == 'POST':
+        input_method = request.POST.get('input_method')
+        json_file = request.FILES.get('json_file')
+        json_text = request.POST.get('json_text', '').strip()
+
+        try:
+            # Step 1: Load JSON Data
+            if input_method == 'upload' and json_file:
+                if not json_file.name.endswith('.json'):
+                    messages.error(
+                        request, "Invalid file type. Please upload a JSON file.")
+                    return redirect('json_to_csv_converter')
+
+                file_data = json_file.read().decode('utf-8', errors='replace').strip()
+                json_content = json.loads(file_data)
+
+            elif input_method == 'paste' and json_text:
+                json_content = json.loads(json_text)
+            else:
+                messages.error(request, "Invalid input method or empty input.")
+                return redirect('json_to_csv_converter')
+
+            # Step 2: Extract rows from nested JSON
+            def flatten_dict(d, parent_key='', sep='_'):
+                """ Recursively flatten a dictionary """
+                items = {}
+                for k, v in d.items():
+                    new_key = f"{parent_key}{sep}{k}" if parent_key else k
+                    if isinstance(v, dict):
+                        items.update(flatten_dict(v, new_key, sep=sep))
+                    else:
+                        items[new_key] = v
+                return items
+
+            def extract_rows(data):
+                """
+                Extracts rows from JSON.
+                If a dictionary contains a key with a list of dicts (e.g. 'person'),
+                return each dict in the list as a row.
+                Otherwise, flatten the dict.
+                """
+                rows = []
+                if isinstance(data, list):
+                    for item in data:
+                        rows.extend(extract_rows(item))
+                    return rows
+                elif isinstance(data, dict):
+                    # Check if this dict has a nested dict that holds a list of rows.
+                    # For example: { "people": { "person": [ {..}, {..} ] } }
+                    if len(data) == 1:
+                        key = next(iter(data))
+                        value = data[key]
+                        if isinstance(value, dict):
+                            for subkey, subval in value.items():
+                                if isinstance(subval, list) and all(isinstance(x, dict) for x in subval):
+                                    # Return each record from the nested list (flattened)
+                                    return [flatten_dict(record, parent_key='') for record in subval]
+                    # Otherwise, simply flatten this dict and return it as one row.
+                    return [flatten_dict(data, parent_key='')]
+                return []
+
+            all_rows = extract_rows(json_content)
+
+            if not all_rows:
+                messages.error(request, "Invalid JSON structure.")
+                return redirect('json_to_csv_converter')
+
+            # Step 3: Generate CSV output
+            output = io.StringIO()
+            # Use all keys across rows (sorted for consistency)
+            fieldnames = sorted(
+                {key for row in all_rows for key in row.keys()})
+            writer = csv.DictWriter(output, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(all_rows)
+            csv_data = output.getvalue()
+
+        except json.JSONDecodeError:
+            messages.error(
+                request, "Invalid JSON format. Please check your input.")
+        except Exception as e:
+            messages.error(request, f"Error converting JSON to CSV: {str(e)}")
+
+    return render(request, 'Tools/DataConversion/json_to_csv_converter.html', {'csv_data': csv_data})
+
+
+def image_to_base64_converter(request):
+    clear_messages(request)
+    # ...your image-to-base64 logic...
+    return render(request, 'Tools/DataConversion/image_to_base64_converter.html')
+
+
+def html_table_to_json_converter(request):
+    clear_messages(request)
+    json_data = None
+    error_message = None
+
+    if request.method == 'POST':
+        html_content = request.POST.get('html_content', '').strip()
+        html_file = request.FILES.get('html_file')
+
+        if html_file:
+            try:
+                if not html_file.name.endswith('.html'):
+                    raise ValueError(
+                        "Invalid file type. Please upload an HTML file.")
+                file_data = html_file.read().decode('utf-8', errors='replace').strip()
+                soup = BeautifulSoup(file_data, 'html.parser')
+            except Exception as e:
+                error_message = f"Error reading HTML file: {str(e)}"
+        elif html_content:
+            try:
+                soup = BeautifulSoup(html_content, 'html.parser')
+            except Exception as e:
+                error_message = f"Error parsing HTML content: {str(e)}"
+        else:
+            error_message = "Please provide HTML content or upload an HTML file."
+
+        if not error_message:
+            try:
+                table = soup.find('table')
+
+                if not table:
+                    raise ValueError(
+                        "No table found in the provided HTML content.")
+
+                headers = [th.get_text(strip=True)
+                           for th in table.find_all('th')]
+                if not headers:
+                    raise ValueError("No headers found in the table.")
+
+                rows = []
+                for tr in table.find_all('tr')[1:]:
+                    cells = tr.find_all(['td', 'th'])
+                    if len(cells) != len(headers):
+                        raise ValueError(
+                            "Row length does not match header length.")
+                    row = {headers[i]: cells[i].get_text(
+                        strip=True) for i in range(len(headers))}
+                    rows.append(row)
+
+                json_data = json.dumps(rows, indent=4)
+            except Exception as e:
+                error_message = f"Error converting HTML table: {str(e)}"
+
+    return render(request, 'Tools/DataConversion/html_table_to_json_converter.html', {
+        'json_data': json_data,
+        'error_message': error_message
+    })
+
+
+def ET_to_dict(node):
+    """
+    Recursively converts an ElementTree node into a dictionary.
+    If the node has no children, returns its text.
+    Otherwise, each child is processed and if a tag appears multiple times,
+    a list is created.
+    """
+    # Base case: if no children, return the text value (stripped) or empty string
+    if not list(node):
+        return node.text.strip() if node.text else ""
+
+    result = {}
+    for child in node:
+        child_dict = ET_to_dict(child)
+        tag = child.tag
+        if tag in result:
+            # If key exists, ensure it's a list
+            if isinstance(result[tag], list):
+                result[tag].append(child_dict)
+            else:
+                result[tag] = [result[tag], child_dict]
+        else:
+            result[tag] = child_dict
+
+    # Include node attributes (prefixing with '@' to distinguish)
+    if node.attrib:
+        for key, value in node.attrib.items():
+            result[f"@{key}"] = value
+
+    return result
+
+
+def xml_to_json_converter(request):
+    # Clear previous messages if applicable
+    json_data = None
+
+    if request.method == 'POST':
+        input_method = request.POST.get('input_method')
+        xml_file = request.FILES.get('xml_file')
+        xml_text = request.POST.get('xml_text', '')
+
+        try:
+            # Load XML from file or pasted text
+            if input_method == 'upload' and xml_file:
+                if not xml_file.name.endswith('.xml'):
+                    messages.error(
+                        request, "Invalid file type. Please upload an XML file.")
+                    return redirect('xml_to_json_converter')
+                file_data = xml_file.read().decode('utf-8', errors='replace').strip()
+                root = ET.fromstring(file_data)
+            elif input_method == 'paste' and xml_text.strip():
+                root = ET.fromstring(xml_text.strip())
+            else:
+                messages.error(request, "Invalid input method or empty input.")
+                return redirect('xml_to_json_converter')
+
+            # If the root has children, treat each child as a separate record.
+            if len(root) > 0:
+                records = []
+                for child in root:
+                    record = ET_to_dict(child)
+                    records.append(record)
+                json_data = json.dumps(records, indent=4)
+            else:
+                # If root has no children, output a single record in a list.
+                json_data = json.dumps([ET_to_dict(root)], indent=4)
+
+        except Exception as e:
+            messages.error(request, f"Error converting XML: {str(e)}")
+
+    return render(request, 'Tools/DataConversion/xml_to_json_converter.html', {'json_data': json_data})
+
+
+def yaml_to_json_converter(request):
+    clear_messages(request)
+    json_data = None
+
+    if request.method == 'POST':
+        input_method = request.POST.get('input_method')
+        yaml_file = request.FILES.get('yaml_file')
+        yaml_text = request.POST.get('yaml_text', '').strip()
+
+        try:
+            # Load YAML from file or pasted text
+            if input_method == 'upload' and yaml_file:
+                if not (yaml_file.name.endswith('.yaml') or yaml_file.name.endswith('.yml')):
+                    messages.error(
+                        request, "Invalid file type. Please upload a YAML file.")
+                    return redirect('yaml_to_json_converter')
+                file_data = yaml_file.read().decode('utf-8', errors='replace').strip()
+                yaml_content = yaml.safe_load(file_data)
+            elif input_method == 'paste':
+                if not yaml_text:
+                    messages.error(
+                        request, "Empty YAML text provided. Please enter valid YAML content.")
+                    return redirect('yaml_to_json_converter')
+                try:
+                    yaml_content = yaml.safe_load(yaml_text)
+                except yaml.YAMLError as e:
+                    messages.error(
+                        request, f"Error parsing YAML text: {str(e)}")
+                    return redirect('yaml_to_json_converter')
+
+                # Additional validation: Ensure parsed content is not None
+                if yaml_content is None:
+                    messages.error(
+                        request, "Parsed YAML content is empty. Please check your input.")
+                    return redirect('yaml_to_json_converter')
+            else:
+                messages.error(request, "Invalid input method or empty input.")
+                return redirect('yaml_to_json_converter')
+
+            json_data = json.dumps(yaml_content, indent=4)
+
+        except yaml.YAMLError as e:
+            messages.error(request, f"Error converting YAML: {str(e)}")
+        except Exception as e:
+            messages.error(request, f"Unexpected error: {str(e)}")
+
+    return render(request, 'Tools/DataConversion/yaml_to_json_converter.html', {'json_data': json_data})
+
+def html_table_to_csv_converter(request):
+    clear_messages(request)
+    csv_data = None
+    error_message = None
+
+    if request.method == 'POST':
+        html_content = request.POST.get('html_content', '').strip()
+        html_file = request.FILES.get('html_file')
+
+        if html_file:
+            try:
+                if not html_file.name.endswith('.html'):
+                    raise ValueError(
+                        "Invalid file type. Please upload an HTML file.")
+                file_data = html_file.read().decode('utf-8', errors='replace').strip()
+                soup = BeautifulSoup(file_data, 'html.parser')
+            except Exception as e:
+                error_message = f"Error reading HTML file: {str(e)}"
+        elif html_content:
+            try:
+                soup = BeautifulSoup(html_content, 'html.parser')
+            except Exception as e:
+                error_message = f"Error parsing HTML content: {str(e)}"
+        else:
+            error_message = "Please provide HTML content or upload an HTML file."
+
+        if not error_message:
+            try:
+                table = soup.find('table')
+
+                if not table:
+                    raise ValueError(
+                        "No table found in the provided HTML content.")
+
+                headers = [th.get_text(strip=True)
+                           for th in table.find_all('th')]
+                if not headers:
+                    raise ValueError("No headers found in the table.")
+
+                rows = []
+                for tr in table.find_all('tr')[1:]:
+                    cells = tr.find_all(['td', 'th'])
+                    if len(cells) != len(headers):
+                        raise ValueError(
+                            "Row length does not match header length.")
+                    row = {headers[i]: cells[i].get_text(
+                        strip=True) for i in range(len(headers))}
+                    rows.append(row)
+
+                output = io.StringIO()
+                writer = csv.DictWriter(output, fieldnames=headers)
+                writer.writeheader()
+                writer.writerows(rows)
+                csv_data = output.getvalue()
+            except Exception as e:
+                error_message = f"Error converting HTML table: {str(e)}"
+
+    return render(request, 'Tools/DataConversion/html_table_to_csv_converter.html', {
+        'csv_data': csv_data,
+        'error_message': error_message
     })
