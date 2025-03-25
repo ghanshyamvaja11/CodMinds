@@ -257,6 +257,7 @@
         </a>
       </div>
     </div>
+    
     <!-- Category: Data Conversion & Processing Tools -->
     <div class="category">
       <i class="material-icons">compare_arrows</i>
@@ -338,13 +339,11 @@
           {% endcomment %}
         </div>
         <!-- New tools -->
-        {% comment %}
         <div class="example new-tool">
           <i class="material-icons">qr_code_scanner</i>
           <h4>QR Code Scanner</h4>
-          <p>Decode QR codes using camera input or file upload.</p>
+          {% comment %} <p>Decode QR codes using camera input or file upload.</p> {% endcomment %}
         </div>
-        {% endcomment %}
         <div class="example new-tool">
           <i class="material-icons">image</i>
           <h4>EXIF Data Viewer</h4>
@@ -359,19 +358,11 @@
           <p>Compress image files to reduce size.</p>
           {% endcomment %}
         </div>
-        {% comment %}
-        <div class="example new-tool">
-          <i class="material-icons">crop</i>
-          <h4>Image Resizer & Cropper</h4>
-          <p>Resize and crop images online.</p>
-        </div>
-        {% endcomment %} {% comment %}
         <div class="example new-tool">
           <i class="material-icons">image</i>
           <h4>Image Format Converter</h4>
-          <p>Convert images between formats.</p>
+          {% comment %} <p>Convert images between formats.</p> {% endcomment %}
         </div>
-        {% endcomment %}
         <div class="example new-tool">
           <i class="material-icons">palette</i>
           <h4>Color Palette Extractor</h4>

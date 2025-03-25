@@ -1155,15 +1155,19 @@ def clean_numeric(value):
     """
     if value:
         value = value.strip()
-        if re.match(r'^[^\d]*[\d,\.]+$', value):  # If value contains numbers with optional symbols
-            cleaned = re.sub(r'[^\d,\.]', '', value)  # Remove non-numeric except comma/period
+        # If value contains numbers with optional symbols
+        if re.match(r'^[^\d]*[\d,\.]+$', value):
+            # Remove non-numeric except comma/period
+            cleaned = re.sub(r'[^\d,\.]', '', value)
             cleaned = cleaned.replace(',', '')  # Remove thousands separator
             try:
                 num = float(cleaned)
-                return num if "." in cleaned else int(num)  # Keep decimals where needed
+                # Keep decimals where needed
+                return num if "." in cleaned else int(num)
             except ValueError:
                 return value
     return value
+
 
 def detect_delimiter(csv_text):
     """
@@ -1177,6 +1181,7 @@ def detect_delimiter(csv_text):
         return dialect.delimiter
     except Exception:
         return ','
+
 
 def csv_to_json_converter(request):
     """
@@ -1193,7 +1198,8 @@ def csv_to_json_converter(request):
         if input_method == 'upload' and csv_file:
             try:
                 if not csv_file.name.endswith('.csv'):
-                    messages.error(request, "Invalid file type. Please upload a CSV file.")
+                    messages.error(
+                        request, "Invalid file type. Please upload a CSV file.")
                     return redirect('csv_to_json_converter')
 
                 file_data = csv_file.read().decode('utf-8', errors='replace').strip()
@@ -1206,7 +1212,8 @@ def csv_to_json_converter(request):
         elif input_method == 'paste' and csv_text.strip():
             try:
                 if csv_text.startswith("{") or csv_text.startswith("["):
-                    raise ValueError("Invalid input: Detected JSON format instead of CSV.")
+                    raise ValueError(
+                        "Invalid input: Detected JSON format instead of CSV.")
                 csv_text = csv_text.strip()
                 delimiter = detect_delimiter(csv_text)
 
@@ -1215,7 +1222,8 @@ def csv_to_json_converter(request):
                 return redirect('csv_to_json_converter')
 
             except Exception:
-                messages.error(request, "Invalid CSV format. Please check your input.")
+                messages.error(
+                    request, "Invalid CSV format. Please check your input.")
                 return redirect('csv_to_json_converter')
 
         else:
@@ -1228,10 +1236,12 @@ def csv_to_json_converter(request):
             rows = list(reader)
 
             if len(rows) < 2:
-                messages.error(request, "Invalid CSV format. Ensure at least two rows (header + data).")
+                messages.error(
+                    request, "Invalid CSV format. Ensure at least two rows (header + data).")
                 return redirect('csv_to_json_converter')
 
-            headers = [col.strip() for col in rows[0]]  # Split headers properly
+            headers = [col.strip()
+                       for col in rows[0]]  # Split headers properly
             json_list = []
 
             for row in rows[1:]:
@@ -1241,7 +1251,8 @@ def csv_to_json_converter(request):
                 for i in range(len(headers)):
                     key = headers[i]
                     value = row[i]
-                    clean_row[key] = clean_numeric(value)  # Apply numeric cleaning
+                    clean_row[key] = clean_numeric(
+                        value)  # Apply numeric cleaning
                 json_list.append(clean_row)
 
             json_data = json.dumps(json_list, indent=4)
@@ -1250,6 +1261,7 @@ def csv_to_json_converter(request):
             return redirect('csv_to_json_converter')
 
     return render(request, 'Tools/DataConversion/csv_to_json_converter.html', {'json_data': json_data})
+
 
 def json_to_csv_converter(request):
     messages.get_messages(request)  # Clear old messages
@@ -1339,12 +1351,6 @@ def json_to_csv_converter(request):
             messages.error(request, f"Error converting JSON to CSV: {str(e)}")
 
     return render(request, 'Tools/DataConversion/json_to_csv_converter.html', {'csv_data': csv_data})
-
-
-def image_to_base64_converter(request):
-    clear_messages(request)
-    # ...your image-to-base64 logic...
-    return render(request, 'Tools/DataConversion/image_to_base64_converter.html')
 
 
 def html_table_to_json_converter(request):
@@ -1526,6 +1532,7 @@ def yaml_to_json_converter(request):
             messages.error(request, f"Unexpected error: {str(e)}")
 
     return render(request, 'Tools/DataConversion/yaml_to_json_converter.html', {'json_data': json_data})
+
 
 def html_table_to_csv_converter(request):
     clear_messages(request)

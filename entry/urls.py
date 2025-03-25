@@ -10,7 +10,7 @@ sitemaps = {
 urlpatterns = [
     path('', home, name='home'),
     path('about/', about,
-         name='about'),  # Redirect after login
+         name='about'),
     path('servicies/', services, name='servicies'),
     path('contact/', contact, name='contact'),
     path('terms-and-conditions/', T_and_C, name='T&C'),
@@ -102,10 +102,26 @@ urlpatterns = [
          html_table_to_csv_converter, name='html_table_to_csv_converter'),
     path('tools-library/data-conversion-and-processing-tools/xml-to-json-converter',
          xml_to_json_converter, name='xml_to_json_converter'),
-    path('tools-library/data-conversion-and-processing-tools/image-to-base64-converter',
-         image_to_base64_converter, name='image_to_base64_converter'),
     path('tools-library/data-conversion-and-processing-tools/yaml-to-json-converter',
          yaml_to_json_converter, name='yaml_to_json_converter'),
+
+    # QR Code and Imaging Tools
+#     path('tools-library/qr-code-tools/qr-code-generator',
+#          qr_code_generator, name='qr_code_generator'),
+#     path('tools-library/qr-code-tools/barcode-generator',
+#          barcode_generator, name='barcode_generator'),
+#     path('tools-library/qr-code-tools/qr-code-scanner',
+#          qr_code_scanner, name='qr_code_scanner'),
+#     path('tools-library/imaging-tools/exif-data-viewer',
+#          exif_data_viewer, name='exif_data_viewer'),
+#     path('tools-library/imaging-tools/image-compression-tool',
+#          image_compression_tool, name='image_compression_tool'),
+#     path('tools-library/imaging-tools/image-format-converter',
+#          image_format_converter, name='image_format_converter'),
+#     path('tools-library/imaging-tools/color-palette-extractor',
+#          color_palette_extractor, name='color_palette_extractor'),
+#     path('tools-library/imaging-tools/photo-metadata-remover',
+#          photo_metadata_remover, name='photo_metadata_remover'),
 
     path('crawl/sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap'),

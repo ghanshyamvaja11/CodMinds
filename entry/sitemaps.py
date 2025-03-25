@@ -17,7 +17,7 @@ class StaticViewSitemap(Sitemap):
             'rest_api_tester', 'http_headers_inspector', 'dns_lookup_tool', 'whois_lookup',
             'ip_address_lookup', 'port_scanner',
             'meta_tag_analyzer', 'ssl_certificate_checker',
-            'password_generator', 'uuid_generator', 'xss_vulnerability_tester', 'sql_injection_tester', 'jwt_expiry_checker'
+            'password_generator', 'uuid_generator', 'xss_vulnerability_tester', 'sql_injection_tester', 'jwt_expiry_checker', 'csv_to_json_converter', 'json_to_csv_converter', 'html_table_to_json_converter', 'html_table_to_csv_converter', 'xml_to_json_converter', 'yaml_to_json_converter'
         ]
 
     def location(self, item):
