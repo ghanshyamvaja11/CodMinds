@@ -1,7 +1,6 @@
 {% extends "Tools/tools_base.html" %} {% block content %}
 <title>CodMinds - QR Code Scanner</title>
 <style>
-  /* ...existing styling from qr_code_generator.html... */
   .container {
     max-width: 700px;
     margin: 50px auto;
@@ -84,6 +83,7 @@
     margin-bottom: 15px;
   }
 </style>
+
 <div class="container">
   <h2 class="title">QR Code Scanner</h2>
   <div class="form-group">
@@ -99,7 +99,7 @@
       </label>
     </div>
   </div>
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" onsubmit="showSpinner()">
     {% csrf_token %}
     <div class="form-group">
       <label for="qr_image">Upload QR Code Image:</label>
@@ -113,39 +113,49 @@
     </div>
     <button type="submit" class="btn">Scan QR Code</button>
   </form>
+
+  <div class="loading-spinner" id="loadingSpinner"></div>
+
   {% if error_message %}
   <div class="result" style="color: red">{{ error_message }}</div>
   {% endif %} {% if scanned_data %}
   <div class="result">
     <h3>Scanned QR Code Data:</h3>
     <p id="scannedText">{{ scanned_data }}</p>
-    {% if scanned_data|slice:":7" == "http://" or scanned_data|slice:":8" ==
-    "https://" %}
+
+    {% if scanned_data|slice:":7" == "http://" %}
+    <button class="btn" onclick="visitWebsite()">Visit Website</button>
+    {% elif scanned_data|slice:":8" == "https://" %}
     <button class="btn" onclick="visitWebsite()">Visit Website</button>
     {% endif %}
   </div>
   {% endif %}
 </div>
+
 <script>
-  // ...existing code...
   document
     .querySelector('input[name="file_option"][value="gallery"]')
     .addEventListener("change", function () {
       var fileInput = document.getElementById("qr_image");
       fileInput.removeAttribute("capture");
     });
+
   document
     .querySelector('input[name="file_option"][value="camera"]')
     .addEventListener("change", function () {
       var fileInput = document.getElementById("qr_image");
       fileInput.setAttribute("capture", "environment");
-      // Automatically trigger the file input if camera option is selected
       fileInput.click();
     });
+
+  function showSpinner() {
+    document.getElementById("loadingSpinner").style.display = "block";
+  }
+
   function visitWebsite() {
     var url = document.getElementById("scannedText").innerText;
     window.open(url, "_blank");
   }
-  // ...existing code...
 </script>
+
 {% endblock %}
