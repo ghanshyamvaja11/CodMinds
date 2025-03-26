@@ -1638,7 +1638,7 @@ def qr_code_generator(request):
                         factor = 4
                         size_w = int(img_w / factor)
                         size_h = int(img_h / factor)
-                        logo = logo.resize((size_w, size_h), Image.ANTIALIAS)
+                        logo = logo.resize((size_w, size_h), Image.LANCZOS)
                         pos = ((img_w - size_w) // 2, (img_h - size_h) // 2)
                         img.paste(logo, pos, mask=logo if logo.mode ==
                                   'RGBA' else None)
@@ -1828,53 +1828,5 @@ def exif_viewer(request):
 
     return render(request, 'Tools/QRandImaging/exif_viewer.html', {
         'exif_data': exif_data,
-        'error_message': error_message
-    })
-
-
-def qr_core_generator(request):
-    clear_messages(request)
-    generated_qr_url = None
-    error_message = None
-    if request.method == 'POST':
-        qr_data = request.POST.get('qr_data')
-        fill_color = request.POST.get('fill_color', 'black')
-        back_color = request.POST.get('back_color', 'white')
-        logo_file = request.FILES.get('logo_image')
-        if qr_data:
-            try:
-                qr = qrcode.QRCode(
-                    error_correction=qrcode.constants.ERROR_CORRECT_H,
-                    box_size=10,
-                    border=4,
-                )
-                qr.add_data(qr_data)
-                qr.make(fit=True)
-                img = qr.make_image(fill_color=fill_color,
-                                    back_color=back_color).convert('RGB')
-                if logo_file:
-                    try:
-                        logo = Image.open(logo_file)
-                        img_w, img_h = img.size
-                        factor = 4
-                        size_w = int(img_w / factor)
-                        size_h = int(img_h / factor)
-                        logo = logo.resize((size_w, size_h), Image.LANCZOS)
-                        pos = ((img_w - size_w) // 2, (img_h - size_h) // 2)
-                        img.paste(logo, pos, mask=logo if logo.mode ==
-                                  'RGBA' else None)
-                    except Exception as e:
-                        error_message = f"Error processing logo image: {str(e)}"
-                buffer = io.BytesIO()
-                img.save(buffer, format='PNG')
-                buffer.seek(0)
-                qr_b64 = base64.b64encode(buffer.read()).decode('utf-8')
-                generated_qr_url = f"data:image/png;base64,{qr_b64}"
-            except Exception as e:
-                error_message = f"Error generating QR code: {str(e)}"
-        else:
-            error_message = "QR data is required."
-    return render(request, 'Tools/QRandImaging/qr_core_generator.html', {
-        'generated_qr_url': generated_qr_url,
         'error_message': error_message
     })
