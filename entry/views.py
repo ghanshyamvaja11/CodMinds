@@ -1772,23 +1772,20 @@ def photo_metadata_remover(request):
     error_message = None
     if request.method == 'POST' and request.FILES.get('image_file'):
         image_file = request.FILES['image_file']
-        if image_file.size > 1 * 1024 * 1024:  # Check if file size is more than 1MB
-            error_message = "Image file size should not exceed 1MB."
-        else:
-            try:
-                img = Image.open(image_file)
-                # Re-save the image to strip off metadata
-                buffer = io.BytesIO()
-                fmt = img.format if img.format else 'JPEG'
-                if fmt.upper() == 'JPEG':
-                    img.save(buffer, format='JPEG', quality=95)
-                else:
-                    img.save(buffer, format=fmt)
-                buffer.seek(0)
-                image_b64 = base64.b64encode(buffer.read()).decode('utf-8')
-                cleaned_image_url = f"data:image/{fmt.lower()};base64,{image_b64}"
-            except Exception as e:
-                error_message = f"Error processing image: {str(e)}"
+        try:
+            img = Image.open(image_file)
+            # Re-save the image to strip off metadata
+            buffer = io.BytesIO()
+            fmt = img.format if img.format else 'JPEG'
+            if fmt.upper() == 'JPEG':
+                img.save(buffer, format='JPEG', quality=95)
+            else:
+                img.save(buffer, format=fmt)
+            buffer.seek(0)
+            image_b64 = base64.b64encode(buffer.read()).decode('utf-8')
+            cleaned_image_url = f"data:image/{fmt.lower()};base64,{image_b64}"
+        except Exception as e:
+            error_message = f"Error processing image: {str(e)}"
     return render(request, 'Tools/QRandImaging/photo_metadata_remover.html', {
         'cleaned_image_url': cleaned_image_url,
         'error_message': error_message
@@ -1802,29 +1799,22 @@ def exif_viewer(request):
 
     if request.method == 'POST' and request.FILES.get('image_file'):
         image_file = request.FILES['image_file']
-
-        if image_file.size > 1 * 1024 * 1024:  # Check if file size is more than 1MB
-            error_message = "Image file size should not exceed 1MB."
-        else:
-            try:
-                # Open image using Pillow
-                img = Image.open(image_file)
-                exif = img.getexif()
-
-                if exif:
-                    # Extract and format EXIF metadata
-                    exif_data = {TAGS.get(tag, tag): exif.get(tag)
-                                 for tag in exif.keys()}
-
-                    # Convert bytes values (e.g., MakerNote) to strings for better readability
-                    for key, value in exif_data.items():
-                        if isinstance(value, bytes):
-                            exif_data[key] = value.hex()  # Convert binary to hex
-                else:
-                    error_message = "No EXIF metadata found in the image."
-
-            except Exception as e:
-                error_message = f"Error retrieving EXIF data: {str(e)}"
+        try:
+            # Open image using Pillow
+            img = Image.open(image_file)
+            exif = img.getexif()
+            if exif:
+                # Extract and format EXIF metadata
+                exif_data = {TAGS.get(tag, tag): exif.get(tag)
+                             for tag in exif.keys()}
+                # Convert bytes values (e.g., MakerNote) to strings for better readability
+                for key, value in exif_data.items():
+                    if isinstance(value, bytes):
+                        exif_data[key] = value.hex()  # Convert binary to hex
+            else:
+                error_message = "No EXIF metadata found in the image."
+        except Exception as e:
+            error_message = f"Error retrieving EXIF data: {str(e)}"
 
     return render(request, 'Tools/QRandImaging/exif_viewer.html', {
         'exif_data': exif_data,
