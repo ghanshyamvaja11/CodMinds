@@ -1,0 +1,129 @@
+{% extends "Tools/tools_base.html" %} {% block content %}
+<title>CodMinds - Color Palette Extractor</title>
+
+    <style>
+      .container {
+        max-width: 700px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      .title {
+        text-align: center;
+        color: #1e90ff;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .btn {
+        width: 100%;
+        background-color: #1e90ff;
+        color: #fff;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background-color: #0066cc;
+      }
+      .container .result {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 20px;
+        text-align: center;
+      }
+      .palette-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .palette-item {
+        display: flex;
+        align-items: center;
+        margin: 5px;
+      }
+      .palette-item .color-box {
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+        border: 1px solid #ccc;
+      }
+      .palette-item .color-code {
+        font-size: 14px;
+      }
+      /* Spinner styles added */
+      .loading-spinner {
+        display: none;
+        width: 50px;
+        height: 50px;
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #1e90ff;
+        border-radius: 50%;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="title">Color Palette Extractor</h2>
+      <form method="post" enctype="multipart/form-data" onsubmit="showSpinner()">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="image_file">Upload an image:</label>
+          <input type="file" id="image_file" name="image_file" accept="image/*" />
+        </div>
+        <button type="submit" class="btn">Extract Color Palette</button>
+      </form>
+      <!-- Spinner element added -->
+      <div class="loading-spinner" id="loadingSpinner"></div>
+      {% if color_palette %}
+      <div class="result">
+        <h3>Extracted Color Palette:</h3>
+        <div class="palette-container">
+          {% for color in color_palette %}
+          <div class="palette-item">
+            <div class="color-box" style="background-color: {{ color.rgb }};"></div>
+            <span class="color-code">{{ color.hex }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <!-- Spinner function added -->
+    <script>
+      function showSpinner() {
+        document.getElementById("loadingSpinner").style.display = "block";
+      }
+    </script>
+{% endblock %}
+</body>
+</html>

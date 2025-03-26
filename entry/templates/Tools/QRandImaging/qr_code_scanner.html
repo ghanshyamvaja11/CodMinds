@@ -1,0 +1,151 @@
+{% extends "Tools/tools_base.html" %} {% block content %}
+<title>CodMinds - QR Code Scanner</title>
+<style>
+  /* ...existing styling from qr_code_generator.html... */
+  .container {
+    max-width: 700px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  .title {
+    text-align: center;
+    color: #1e90ff;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .btn {
+    width: 100%;
+    background-color: #1e90ff;
+    color: #fff;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background-color: #0066cc;
+  }
+  .result {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .center-btn {
+    display: flex;
+    justify-content: center;
+  }
+  .loading-spinner {
+    display: none;
+    width: 50px;
+    height: 50px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #1e90ff;
+    border-radius: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+  .radio-group {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+  }
+</style>
+<div class="container">
+  <h2 class="title">QR Code Scanner</h2>
+  <div class="form-group">
+    <label for="file_option">Choose Input Method:</label>
+    <div class="radio-group">
+      <label>
+        <input type="radio" name="file_option" value="gallery" checked />
+        Select from Gallery
+      </label>
+      <label>
+        <input type="radio" name="file_option" value="camera" />
+        Open Camera
+      </label>
+    </div>
+  </div>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="qr_image">Upload QR Code Image:</label>
+      <input
+        type="file"
+        id="qr_image"
+        name="qr_image"
+        accept="image/*"
+        required
+      />
+    </div>
+    <button type="submit" class="btn">Scan QR Code</button>
+  </form>
+  {% if error_message %}
+  <div class="result" style="color: red">{{ error_message }}</div>
+  {% endif %} {% if scanned_data %}
+  <div class="result">
+    <h3>Scanned QR Code Data:</h3>
+    <p id="scannedText">{{ scanned_data }}</p>
+    {% if scanned_data|slice:":7" == "http://" or scanned_data|slice:":8" ==
+    "https://" %}
+    <button class="btn" onclick="visitWebsite()">Visit Website</button>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+<script>
+  // ...existing code...
+  document
+    .querySelector('input[name="file_option"][value="gallery"]')
+    .addEventListener("change", function () {
+      var fileInput = document.getElementById("qr_image");
+      fileInput.removeAttribute("capture");
+    });
+  document
+    .querySelector('input[name="file_option"][value="camera"]')
+    .addEventListener("change", function () {
+      var fileInput = document.getElementById("qr_image");
+      fileInput.setAttribute("capture", "environment");
+      // Automatically trigger the file input if camera option is selected
+      fileInput.click();
+    });
+  function visitWebsite() {
+    var url = document.getElementById("scannedText").innerText;
+    window.open(url, "_blank");
+  }
+  // ...existing code...
+</script>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "Tools/tools_base.html" %}
+{% block content %}
+<title>CodMinds - EXIF Viewer</title>
+<style>
+  /* ...existing code... */
+  .container {
+    max-width: 700px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  .title {
+    text-align: center;
+    color: #1e90ff;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .form-group { margin-bottom: 15px; }
+  .form-group label { display: block; margin-bottom: 5px; color: #333; }
+  .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+  .btn {
+    width: 100%;
+    background-color: #1e90ff;
+    color: #fff;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .btn:hover { background-color: #0066cc; }
+  .result {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: left;
+    white-space: pre-wrap;
+    font-family: monospace;
+  }
+  .download-btn {
+    background-color: #ff5722;
+    color: #fff;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .download-btn:hover { background-color: #e64a19; }
+  .center-btn {
+    display: flex;
+    justify-content: center;
+  }
+  /* Added spinner styles */
+  .loading-spinner {
+    display: none;
+    width: 50px;
+    height: 50px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #1e90ff;
+    border-radius: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+</style>
+<body>
+  <div class="container">
+    <h2 class="title">EXIF Viewer</h2>
+    <form method="post" enctype="multipart/form-data" onsubmit="showSpinner()">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="image_file">Upload an image:</label>
+        <input type="file" id="image_file" name="image_file" required />
+      </div>
+      <button type="submit" class="btn">View EXIF Data</button>
+    </form>
+    <!-- Added spinner element -->
+    <div class="loading-spinner" id="loadingSpinner"></div>
+    {% if exif_data or error_message %}
+    <div class="result">
+      {% if exif_data %}
+        <h3>EXIF Data:</h3>
+        <pre>{{ exif_data|json_script:"exifData" }}</pre>
+        <script>
+          const exif = JSON.parse(document.getElementById("exifData").textContent);
+          document.querySelector('.result').textContent = JSON.stringify(exif, null, 4);
+        </script>
+      {% else %}
+        <h3>Error:</h3>
+        <p>{{ error_message }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+    <script>
+      function showSpinner() {
+        document.getElementById("loadingSpinner").style.display = "block";
+      }
+    </script>
+  </div>
+{% endblock %}
+</body>
+</html>

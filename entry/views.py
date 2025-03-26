@@ -43,6 +43,10 @@ import datetime
 import os
 import whois  # Add this import
 import yaml  # Add this import
+import barcode
+from barcode.writer import ImageWriter
+import base64
+import io
 # from selenium import webdriver
 # from selenium.webdriver.chrome.options import Options
 import json
@@ -52,6 +56,16 @@ from Crypto.PublicKey import RSA
 import csv
 import io
 import xml.etree.ElementTree as ET
+from PIL import Image
+from colorthief import ColorThief
+from django.core.files.storage import default_storage  # new import
+from django.core.files.base import ContentFile         # new import
+import io
+import uuid
+from PIL import Image
+from PIL.ExifTags import TAGS
+import qrcode
+from pyzbar.pyzbar import decode  # new import for QR code decoding
 
 
 def clear_messages(request):
@@ -1593,5 +1607,265 @@ def html_table_to_csv_converter(request):
 
     return render(request, 'Tools/DataConversion/html_table_to_csv_converter.html', {
         'csv_data': csv_data,
+        'error_message': error_message
+    })
+
+
+def qr_code_generator(request):
+    clear_messages(request)
+    generated_qr_url = None
+    error_message = None
+    if request.method == 'POST':
+        qr_data = request.POST.get('qr_data')
+        fill_color = request.POST.get('fill_color', 'black')
+        back_color = request.POST.get('back_color', 'white')
+        logo_file = request.FILES.get('logo_image')
+        if qr_data:
+            try:
+                qr = qrcode.QRCode(
+                    error_correction=qrcode.constants.ERROR_CORRECT_H,
+                    box_size=10,
+                    border=4,
+                )
+                qr.add_data(qr_data)
+                qr.make(fit=True)
+                img = qr.make_image(fill_color=fill_color,
+                                    back_color=back_color).convert('RGB')
+                if logo_file:
+                    try:
+                        logo = Image.open(logo_file)
+                        img_w, img_h = img.size
+                        factor = 4
+                        size_w = int(img_w / factor)
+                        size_h = int(img_h / factor)
+                        logo = logo.resize((size_w, size_h), Image.ANTIALIAS)
+                        pos = ((img_w - size_w) // 2, (img_h - size_h) // 2)
+                        img.paste(logo, pos, mask=logo if logo.mode ==
+                                  'RGBA' else None)
+                    except Exception as e:
+                        error_message = f"Error processing logo image: {str(e)}"
+                buffer = io.BytesIO()
+                img.save(buffer, format='PNG')
+                buffer.seek(0)
+                qr_b64 = base64.b64encode(buffer.read()).decode('utf-8')
+                generated_qr_url = f"data:image/png;base64,{qr_b64}"
+            except Exception as e:
+                error_message = f"Error generating QR code: {str(e)}"
+        else:
+            error_message = "QR data is required."
+    return render(request, 'Tools/QRandImaging/qr_code_generator.html', {
+        'generated_qr_url': generated_qr_url,
+        'error_message': error_message
+    })
+
+
+def barcode_generator(request):
+    clear_messages(request)
+    generated_barcode_url = None
+    if request.method == 'POST':
+        data_to_encode = request.POST.get('barcode_data', '').strip()
+        if data_to_encode:
+            # Generate barcode
+            code128 = barcode.get_barcode_class('code128')
+            my_code = code128(data_to_encode, writer=ImageWriter())
+
+            # Save to memory
+            buffer = io.BytesIO()
+            my_code.write(buffer)
+            buffer.seek(0)
+
+            # Convert to base64
+            barcode_b64 = base64.b64encode(buffer.read()).decode('utf-8')
+            generated_barcode_url = f"data:image/png;base64,{barcode_b64}"
+
+    return render(request, 'Tools/QRandImaging/barcode_generator.html', {
+        'generated_barcode_url': generated_barcode_url
+    })
+
+
+def qr_code_scanner(request):
+    clear_messages(request)
+    scanned_data = None
+    error_message = None
+    if request.method == 'POST' and request.FILES.get('qr_image'):
+        try:
+            image_file = request.FILES['qr_image']
+            img = Image.open(image_file)
+            decoded_objects = decode(img)
+            if decoded_objects:
+                scanned_data = decoded_objects[0].data.decode('utf-8')
+            else:
+                error_message = "No QR code detected."
+        except Exception as e:
+            error_message = f"Error scanning QR code: {str(e)}"
+    return render(request, 'Tools/QRandImaging/qr_code_scanner.html', {
+        'scanned_data': scanned_data,
+        'error_message': error_message
+    })
+
+
+def image_compression_tool(request):
+    clear_messages(request)
+    compressed_image_url = None
+    if request.method == 'POST' and request.FILES.get('image_file'):
+        image_file = request.FILES['image_file']
+        img = Image.open(image_file)
+        buffer = io.BytesIO()
+        img.save(buffer, format='JPEG', optimize=True, quality=60)
+        buffer.seek(0)
+
+        image_b64 = base64.b64encode(buffer.read()).decode('utf-8')
+        compressed_image_url = f"data:image/jpeg;base64,{image_b64}"
+
+    return render(request, 'Tools/QRandImaging/image_compression_tool.html', {
+        'compressed_image_url': compressed_image_url
+    })
+
+
+def image_format_converter(request):
+    clear_messages(request)
+    converted_image_url = None
+    if request.method == 'POST' and request.FILES.get('image_file'):
+        image_file = request.FILES['image_file']
+        desired_format = request.POST.get('desired_format', 'PNG')
+        img = Image.open(image_file)
+        buffer = io.BytesIO()
+        img.save(buffer, format=desired_format)
+        buffer.seek(0)
+
+        image_b64 = base64.b64encode(buffer.read()).decode('utf-8')
+        converted_image_url = f"data:image/{desired_format.lower()};base64,{image_b64}"
+
+    return render(request, 'Tools/QRandImaging/image_format_converter.html', {
+        'converted_image_url': converted_image_url
+    })
+
+
+def color_palette_extractor(request):
+    clear_messages(request)
+    color_palette = None
+    if request.method == 'POST' and request.FILES.get('image_file'):
+        image_file = request.FILES['image_file']
+        color_thief = ColorThief(image_file)
+        palette = color_thief.get_palette(color_count=6)
+
+        def rgb_to_hex(r, g, b):
+            return f'#{r:02x}{g:02x}{b:02x}'
+
+        color_palette = [
+            {
+                'rgb': f'rgb({r},{g},{b})',
+                'hex': rgb_to_hex(r, g, b)
+            }
+            for r, g, b in palette
+        ]
+    return render(
+        request,
+        'Tools/QRandImaging/color_palette_extractor.html',
+        {'color_palette': color_palette}
+    )
+
+
+def photo_metadata_remover(request):
+    clear_messages(request)
+    cleaned_image_url = None
+    if request.method == 'POST' and request.FILES.get('image_file'):
+        image_file = request.FILES['image_file']
+        try:
+            img = Image.open(image_file)
+            # Re-save the image to strip off metadata
+            buffer = io.BytesIO()
+            fmt = img.format if img.format else 'JPEG'
+            if fmt.upper() == 'JPEG':
+                img.save(buffer, format='JPEG', quality=95)
+            else:
+                img.save(buffer, format=fmt)
+            buffer.seek(0)
+            image_b64 = base64.b64encode(buffer.read()).decode('utf-8')
+            cleaned_image_url = f"data:image/{fmt.lower()};base64,{image_b64}"
+        except Exception as e:
+            # ...handle error if needed...
+            pass
+    return render(request, 'Tools/QRandImaging/photo_metadata_remover.html', {'cleaned_image_url': cleaned_image_url})
+
+
+def exif_viewer(request):
+    clear_messages(request)
+    exif_data = None
+    error_message = None
+
+    if request.method == 'POST' and request.FILES.get('image_file'):
+        image_file = request.FILES['image_file']
+
+        try:
+            # Open image using Pillow
+            img = Image.open(image_file)
+            exif = img.getexif()
+
+            if (exif):
+                # Extract and format EXIF metadata
+                exif_data = {TAGS.get(tag, tag): exif.get(tag)
+                             for tag in exif.keys()}
+
+                # Convert bytes values (e.g., MakerNote) to strings for better readability
+                for key, value in exif_data.items():
+                    if isinstance(value, bytes):
+                        exif_data[key] = value.hex()  # Convert binary to hex
+            else:
+                error_message = "No EXIF metadata found in the image."
+
+        except Exception as e:
+            error_message = f"Error retrieving EXIF data: {str(e)}"
+
+    return render(request, 'Tools/QRandImaging/exif_viewer.html', {
+        'exif_data': exif_data,
+        'error_message': error_message
+    })
+
+
+def qr_core_generator(request):
+    clear_messages(request)
+    generated_qr_url = None
+    error_message = None
+    if request.method == 'POST':
+        qr_data = request.POST.get('qr_data')
+        fill_color = request.POST.get('fill_color', 'black')
+        back_color = request.POST.get('back_color', 'white')
+        logo_file = request.FILES.get('logo_image')
+        if qr_data:
+            try:
+                qr = qrcode.QRCode(
+                    error_correction=qrcode.constants.ERROR_CORRECT_H,
+                    box_size=10,
+                    border=4,
+                )
+                qr.add_data(qr_data)
+                qr.make(fit=True)
+                img = qr.make_image(fill_color=fill_color,
+                                    back_color=back_color).convert('RGB')
+                if logo_file:
+                    try:
+                        logo = Image.open(logo_file)
+                        img_w, img_h = img.size
+                        factor = 4
+                        size_w = int(img_w / factor)
+                        size_h = int(img_h / factor)
+                        logo = logo.resize((size_w, size_h), Image.ANTIALIAS)
+                        pos = ((img_w - size_w) // 2, (img_h - size_h) // 2)
+                        img.paste(logo, pos, mask=logo if logo.mode ==
+                                  'RGBA' else None)
+                    except Exception as e:
+                        error_message = f"Error processing logo image: {str(e)}"
+                buffer = io.BytesIO()
+                img.save(buffer, format='PNG')
+                buffer.seek(0)
+                qr_b64 = base64.b64encode(buffer.read()).decode('utf-8')
+                generated_qr_url = f"data:image/png;base64,{qr_b64}"
+            except Exception as e:
+                error_message = f"Error generating QR code: {str(e)}"
+        else:
+            error_message = "QR data is required."
+    return render(request, 'Tools/QRandImaging/qr_core_generator.html', {
+        'generated_qr_url': generated_qr_url,
         'error_message': error_message
     })

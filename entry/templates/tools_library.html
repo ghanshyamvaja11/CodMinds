@@ -324,59 +324,63 @@
       <p>Generate/scan codes and handle images.</p>
       {% endcomment %}
       <div class="examples">
-        <div class="example new-tool">
+        <a href="{% url 'qr_code_generator' %}" class="example">
           <i class="material-icons">qr_code</i>
           <h4>QR Code Generator</h4>
           {% comment %}
           <p>Generate QR codes.</p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'barcode_generator' %}" class="example">
           <i class="material-icons">qr_code</i>
           <h4>Barcode Generator</h4>
           {% comment %}
           <p>Generate barcodes.</p>
           {% endcomment %}
-        </div>
+        </a>
         <!-- New tools -->
-        <div class="example new-tool">
+        <a href="{% url 'qr_code_scanner' %}" class="example">
           <i class="material-icons">qr_code_scanner</i>
           <h4>QR Code Scanner</h4>
-          {% comment %} <p>Decode QR codes using camera input or file upload.</p> {% endcomment %}
-        </div>
-        <div class="example new-tool">
+          {% comment %}
+          <p>Decode QR codes using camera input or file upload.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'exif_viewer' %}" class="example">
           <i class="material-icons">image</i>
           <h4>EXIF Data Viewer</h4>
           {% comment %}
           <p>Display image metadata.</p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'image_compression_tool' %}" class="example">
           <i class="material-icons">compress</i>
           <h4>Image Compression Tool</h4>
           {% comment %}
           <p>Compress image files to reduce size.</p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'image_format_converter' %}" class="example">
           <i class="material-icons">image</i>
           <h4>Image Format Converter</h4>
-          {% comment %} <p>Convert images between formats.</p> {% endcomment %}
-        </div>
-        <div class="example new-tool">
+          {% comment %}
+          <p>Convert images between formats.</p>
+          {% endcomment %}
+        </a>
+        <a href="{% url 'color_palette_extractor' %}" class="example">
           <i class="material-icons">palette</i>
           <h4>Color Palette Extractor</h4>
           {% comment %}
           <p>Extract dominant colors from an image.</p>
           {% endcomment %}
-        </div>
-        <div class="example new-tool">
+        </a>
+        <a href="{% url 'photo_metadata_remover' %}" class="example">
           <i class="material-icons">remove_circle</i>
           <h4>Photo Metadata Remover</h4>
           {% comment %}
           <p>Strip EXIF data from images.</p>
           {% endcomment %}
-        </div>
+        </a>
       </div>
     </div>
     <!-- Category: Time, Date & Calculation Tools -->

@@ -1,0 +1,265 @@
+{% extends "Tools/tools_base.html" %} {% block content %}
+<title>CodMinds - QR Code Generator</title>
+<style>
+  /* ...existing code... */
+  .container {
+    max-width: 700px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  .title {
+    text-align: center;
+    color: #1e90ff;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .btn {
+    width: 100%;
+    background-color: #1e90ff;
+    color: #fff;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background-color: #0066cc;
+  }
+  .result {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .download-btn {
+    background-color: #ff5722;
+    color: #fff;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .download-btn:hover {
+    background-color: #e64a19;
+  }
+  .center-btn {
+    display: flex;
+    justify-content: center;
+  }
+  .loading-spinner {
+    display: none;
+    width: 50px;
+    height: 50px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #1e90ff;
+    border-radius: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+  /* New styling for interactive color inputs */
+  input[type="color"] {
+    -webkit-appearance: none;
+    border: none;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 5px;
+    transition: transform 0.2s, border 0.2s;
+  }
+  input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  input[type="color"]::-webkit-color-swatch {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+  }
+  input[type="color"]:hover {
+    transform: scale(1.1);
+  }
+  input[type="color"]:focus {
+    outline: none;
+    border: 2px solid #1e90ff;
+  }
+  /* New styles for color swatches */
+  .color-swatches {
+    margin-top: 5px;
+  }
+  .swatch {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .swatch:hover {
+    border-color: #777;
+  }
+  .color-value {
+    font-size: 14px;
+    margin-top: 3px;
+    display: block;
+  }
+</style>
+<div class="container">
+  <h2 class="title">QR Code Generator</h2>
+  <form method="post" enctype="multipart/form-data" onsubmit="showSpinner()">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="qr_data">Enter data for QR Code:</label>
+      <input type="text" id="qr_data" name="qr_data" required />
+    </div>
+    <div class="form-group">
+      <label for="fill_color">Select QR Code Fill Color:</label>
+      <input type="color" id="fill_color" name="fill_color" value="#000000" />
+      <!-- New fill color swatches -->
+      <div class="color-swatches" id="fillColorSwatches">
+        <span
+          class="swatch"
+          style="background-color: #000000"
+          onclick="setFillColor('#000000')"
+        ></span>
+        <span
+          class="swatch"
+          style="background-color: #1e90ff"
+          onclick="setFillColor('#1e90ff')"
+        ></span>
+        <span
+          class="swatch"
+          style="background-color: #ff5722"
+          onclick="setFillColor('#ff5722')"
+        ></span>
+        <span
+          class="swatch"
+          style="background-color: #ff0000"
+          onclick="setFillColor('#ff0000')"
+        ></span>
+        <span
+          class="swatch"
+          style="background-color: #008000"
+          onclick="setFillColor('#008000')"
+        ></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="back_color">Select QR Code Background Color:</label>
+      <input type="color" id="back_color" name="back_color" value="#ffffff" />
+      <!-- New background color swatches -->
+      <div class="color-swatches" id="backColorSwatches">
+        <span
+          class="swatch"
+          style="background-color: #ffffff"
+          onclick="setBackColor('#ffffff')"
+        ></span>
+        <span
+          class="swatch"
+          style="background-color: #f5f5f5"
+          onclick="setBackColor('#f5f5f5')"
+        ></span>
+        <span
+          class="swatch"
+          style="background-color: #cccccc"
+          onclick="setBackColor('#cccccc')"
+        ></span>
+        <span
+          class="swatch"
+          style="background-color: #000000"
+          onclick="setBackColor('#000000')"
+        ></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="logo_image">Upload Logo (optional):</label>
+      <input type="file" id="logo_image" name="logo_image" accept="image/*" />
+    </div>
+    <button type="submit" class="btn">Generate QR Code</button>
+  </form>
+  <div class="loading-spinner" id="loadingSpinner"></div>
+  {% if error_message %}
+  <div class="result" style="color: red">{{ error_message }}</div>
+  {% endif %} {% if generated_qr_url %}
+  <div class="result">
+    <h3>Generated QR Code:</h3>
+    <img src="{{ generated_qr_url }}" alt="Generated QR Code" />
+    <div class="center-btn">
+      <button class="download-btn" onclick="downloadQRCode()">
+        Download QR Code
+      </button>
+    </div>
+  </div>
+  <script>
+    function downloadQRCode() {
+      var link = document.createElement("a");
+      link.href = "{{ generated_qr_url }}";
+      link.download = "qr_code.png";
+      link.click();
+    }
+  </script>
+  {% endif %}
+  <script>
+    function showSpinner() {
+      document.getElementById("loadingSpinner").style.display = "block";
+    }
+    // Update fill color both on swatch click and manual input change
+    function setFillColor(color) {
+      var fillInput = document.getElementById("fill_color");
+      fillInput.value = color;
+      fillInput.style.backgroundColor = color;
+    }
+    // Update background color both on swatch click and manual input change
+    function setBackColor(color) {
+      var backInput = document.getElementById("back_color");
+      backInput.value = color;
+      backInput.style.backgroundColor = color;
+    }
+    // Make the input interactive on manual change
+    document
+      .getElementById("fill_color")
+      .addEventListener("input", function () {
+        this.style.backgroundColor = this.value;
+      });
+    document
+      .getElementById("back_color")
+      .addEventListener("input", function () {
+        this.style.backgroundColor = this.value;
+      });
+  </script>
+</div>
+{% endblock %}
