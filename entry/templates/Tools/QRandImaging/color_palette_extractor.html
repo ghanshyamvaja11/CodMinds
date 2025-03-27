@@ -138,6 +138,32 @@
       function showSpinner() {
         document.getElementById("loadingSpinner").style.display = "block";
       }
+      // Add setupDropzone function to enable drag and drop
+      function setupDropzone(dropzoneId, inputId) {
+        const dropzone = document.getElementById(dropzoneId);
+        const fileInput = document.getElementById(inputId);
+        
+        dropzone.addEventListener("click", () => fileInput.click());
+        
+        dropzone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          dropzone.classList.add("dragover");
+        });
+        
+        dropzone.addEventListener("dragleave", (e) => {
+          e.preventDefault();
+          dropzone.classList.remove("dragover");
+        });
+        
+        dropzone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropzone.classList.remove("dragover");
+          if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            e.dataTransfer.clearData();
+          }
+        });
+      }
       // Initialize dropzone for image file input
       window.addEventListener("load", () => {
         setupDropzone("dropzone_image", "image_file");
