@@ -119,6 +119,18 @@
     display: flex;
     justify-content: center;
   }
+  .dropzone {
+    border: 2px dashed #1e90ff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  .dropzone.dragover {
+    background-color: #e9f5ff;
+  }
 </style>
 
 <div class="container">
@@ -139,31 +151,40 @@
         ><input
           type="radio"
           name="input_method"
-          value="paste"
+          value="upload"
           checked
-          onclick="toggleInput(true)"
+          onclick="toggleInput(false)"
         />
-        Paste HTML</label
+        Upload HTML</label
       >
       <label
         ><input
           type="radio"
           name="input_method"
-          value="upload"
-          onclick="toggleInput(false)"
+          value="paste"
+          onclick="toggleInput(true)"
         />
-        Upload HTML</label
+        Paste HTML</label
       >
     </div>
 
-    <div class="form-group" id="textInputSection">
-      <label for="html_content">Paste HTML Table:</label>
-      <textarea name="html_content" rows="10"></textarea>
+    <div class="form-group" id="fileInputSection" style="display: block">
+      <label for="html_file">Upload HTML File:</label>
+      <div class="dropzone" id="dropzone_html_json">
+        <input
+          type="file"
+          name="html_file"
+          id="html_file"
+          accept=".html"
+          style="display: none"
+        />
+        <p>Drag & drop HTML file here or click to select</p>
+      </div>
     </div>
 
-    <div class="form-group" id="fileInputSection" style="display: none">
-      <label for="html_file">Upload HTML File:</label>
-      <input type="file" name="html_file" accept=".html" />
+    <div class="form-group" id="textInputSection" style="display: none">
+      <label for="html_content">Paste HTML Table:</label>
+      <textarea name="html_content" rows="10"></textarea>
     </div>
 
     <button type="submit" class="btn">Convert</button>
@@ -218,5 +239,32 @@
     link.click();
     URL.revokeObjectURL(url);
   }
+  function setupDropzone(dropzoneId, inputId) {
+    const dropzone = document.getElementById(dropzoneId);
+    const fileInput = document.getElementById(inputId);
+    dropzone.addEventListener("click", () => fileInput.click());
+    dropzone.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.add("dragover");
+    });
+    dropzone.addEventListener("dragleave", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove("dragover");
+    });
+    dropzone.addEventListener("drop", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove("dragover");
+      if (e.dataTransfer && e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        dropzone.querySelector("p").textContent = e.dataTransfer.files[0].name;
+      }
+    });
+  }
+  window.addEventListener("load", () => {
+    setupDropzone("dropzone_html_json", "html_file");
+  });
 </script>
 {% endblock %}

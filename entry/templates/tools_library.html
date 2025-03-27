@@ -331,6 +331,13 @@
           <p>Generate QR codes.</p>
           {% endcomment %}
         </a>
+        <a href="{% url 'qr_code_scanner' %}" class="example">
+          <i class="material-icons">qr_code_scanner</i>
+          <h4>QR Code Scanner</h4>
+          {% comment %}
+          <p>Decode QR codes using camera input or file upload.</p>
+          {% endcomment %}
+        </a>
         <a href="{% url 'barcode_generator' %}" class="example">
           <i class="material-icons">qr_code</i>
           <h4>Barcode Generator</h4>
@@ -339,13 +346,6 @@
           {% endcomment %}
         </a>
         <!-- New tools -->
-        <a href="{% url 'qr_code_scanner' %}" class="example">
-          <i class="material-icons">qr_code_scanner</i>
-          <h4>QR Code Scanner</h4>
-          {% comment %}
-          <p>Decode QR codes using camera input or file upload.</p>
-          {% endcomment %}
-        </a>
         <a href="{% url 'exif_viewer' %}" class="example">
           <i class="material-icons">image</i>
           <h4>EXIF Data Viewer</h4>

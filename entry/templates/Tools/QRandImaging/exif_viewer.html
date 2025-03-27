@@ -75,6 +75,16 @@
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
   }
+  .dropzone {
+    border: 2px dashed #1e90ff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  .dropzone.dragover { background-color: #e9f5ff; }
 </style>
 <body>
   <div class="container">
@@ -83,7 +93,10 @@
       {% csrf_token %}
       <div class="form-group">
         <label for="image_file">Upload an image:</label>
-        <input type="file" id="image_file" name="image_file" required />
+        <div class="dropzone" id="dropzone_exif">
+          <input type="file" id="image_file" name="image_file" required style="display:none;" />
+          <p>Drag & drop image here or click to select</p>
+        </div>
       </div>
       <button type="submit" class="btn">View EXIF Data</button>
     </form>
@@ -108,6 +121,31 @@
       function showSpinner() {
         document.getElementById("loadingSpinner").style.display = "block";
       }
+      function setupDropzone(dropzoneId, inputId) {
+        const dropzone = document.getElementById(dropzoneId);
+        const fileInput = document.getElementById(inputId);
+        dropzone.addEventListener('click', () => fileInput.click());
+        dropzone.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('dragover');
+        });
+        dropzone.addEventListener('dragleave', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('dragover');
+        });
+        dropzone.addEventListener('drop', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('dragover');
+          if(e.dataTransfer && e.dataTransfer.files.length){
+            fileInput.files = e.dataTransfer.files;
+            dropzone.querySelector('p').textContent = e.dataTransfer.files[0].name;
+          }
+        });
+      }
+      window.addEventListener("load", () => { setupDropzone("dropzone_exif", "image_file"); });
     </script>
   </div>
 {% endblock %}

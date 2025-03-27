@@ -95,6 +95,18 @@
       transform: translate(-50%, -50%) rotate(360deg);
     }
   }
+  .dropzone {
+    border: 2px dashed #1e90ff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  .dropzone.dragover {
+    background-color: #e9f5ff;
+  }
 </style>
 <body>
   <div class="container">
@@ -103,7 +115,39 @@
       {% csrf_token %}
       <div class="form-group">
         <label for="image_file">Upload an image:</label>
-        <input type="file" id="image_file" name="image_file" required />
+        <div class="dropzone" id="dropzone_compress">
+          <input
+            type="file"
+            id="image_file"
+            name="image_file"
+            required
+            style="display: none"
+          />
+          <p>Drag & drop image here or click to select</p>
+        </div>
+      </div>
+      <!-- Wrap the quality slider in a container initially hidden -->
+      <div id="qualityContainer" style="display: none">
+        <div class="form-group">
+          <label for="quality">
+            Compression Quality (10-100):
+            <span id="qualityValue">60</span>
+          </label>
+          <input
+            type="range"
+            id="quality"
+            name="quality"
+            value="60"
+            min="10"
+            max="100"
+            step="1"
+            style="width: 100%"
+          />
+        </div>
+      </div>
+      <!-- New: Estimated Size Display (initially hidden) -->
+      <div id="estSizeDisplay" style="margin-bottom: 15px; display: none">
+        Estimated Compressed Size: N/A
       </div>
       <button type="submit" class="btn">Compress Image</button>
     </form>
@@ -133,6 +177,81 @@
       function showSpinner() {
         document.getElementById("loadingSpinner").style.display = "block";
       }
+      function setupDropzone(dropzoneId, inputId) {
+        const dropzone = document.getElementById(dropzoneId);
+        const fileInput = document.getElementById(inputId);
+        dropzone.addEventListener("click", () => fileInput.click());
+        dropzone.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add("dragover");
+        });
+        dropzone.addEventListener("dragleave", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove("dragover");
+        });
+        dropzone.addEventListener("drop", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove("dragover");
+          if (e.dataTransfer && e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            dropzone.querySelector("p").textContent =
+              e.dataTransfer.files[0].name;
+          }
+        });
+      }
+      window.addEventListener("load", () => {
+        setupDropzone("dropzone_compress", "image_file");
+      });
+      function updateEstimatedSize() {
+        const fileInput = document.getElementById("image_file");
+        const qualityContainer = document.getElementById("qualityContainer");
+        const qualityInput = document.getElementById("quality");
+        const qualityValue = document.getElementById("qualityValue");
+        const display = document.getElementById("estSizeDisplay");
+        const quality = parseInt(qualityInput.value, 10);
+        qualityValue.textContent = quality;
+        if (fileInput.files && fileInput.files[0]) {
+          qualityContainer.style.display = "block";
+          display.style.display = "block";
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const img = new Image();
+            img.onload = function () {
+              const canvas = document.createElement("canvas");
+              canvas.width = img.width;
+              canvas.height = img.height;
+              const ctx = canvas.getContext("2d");
+              ctx.drawImage(img, 0, 0);
+              canvas.toBlob(
+                function (blob) {
+                  const finalSize = Math.min(blob.size, file.size);
+                  const sizeKB = Math.round(finalSize / 1024);
+                  display.textContent =
+                    "Estimated Compressed Size: " + sizeKB + " KB";
+                },
+                "image/jpeg",
+                quality / 100
+              );
+            };
+            img.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          qualityContainer.style.display = "none";
+          display.style.display = "none";
+          display.textContent = "Estimated Compressed Size: N/A";
+        }
+      }
+      document
+        .getElementById("quality")
+        .addEventListener("input", updateEstimatedSize);
+      document
+        .getElementById("image_file")
+        .addEventListener("change", updateEstimatedSize);
     </script>
   </div>
   {% endblock %}

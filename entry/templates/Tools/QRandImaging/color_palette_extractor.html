@@ -89,6 +89,18 @@
         0% { transform: translate(-50%, -50%) rotate(0deg); }
         100% { transform: translate(-50%, -50%) rotate(360deg); }
       }
+      .dropzone {
+        border: 2px dashed #1e90ff;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        color: #666;
+        border-radius: 5px;
+        margin-bottom: 15px;
+      }
+      .dropzone.dragover {
+        background-color: #e9f5ff;
+      }
     </style>
   </head>
   <body>
@@ -98,7 +110,10 @@
         {% csrf_token %}
         <div class="form-group">
           <label for="image_file">Upload an image:</label>
-          <input type="file" id="image_file" name="image_file" accept="image/*" />
+          <div class="dropzone" id="dropzone_image">
+            <input type="file" id="image_file" name="image_file" accept="image/*" style="display: none" />
+            <p>Drag & drop image here or click to select</p>
+          </div>
         </div>
         <button type="submit" class="btn">Extract Color Palette</button>
       </form>
@@ -123,6 +138,10 @@
       function showSpinner() {
         document.getElementById("loadingSpinner").style.display = "block";
       }
+      // Initialize dropzone for image file input
+      window.addEventListener("load", () => {
+        setupDropzone("dropzone_image", "image_file");
+      });
     </script>
 {% endblock %}
 </body>

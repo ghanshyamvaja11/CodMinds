@@ -1709,14 +1709,28 @@ def image_compression_tool(request):
     compressed_image_url = None
     if request.method == 'POST' and request.FILES.get('image_file'):
         image_file = request.FILES['image_file']
+        # Save the original file size for comparison
+        original_size = image_file.size
         img = Image.open(image_file)
         buffer = io.BytesIO()
-        img.save(buffer, format='JPEG', optimize=True, quality=60)
+        quality_str = request.POST.get('quality', '60')
+        try:
+            quality = int(quality_str)
+        except ValueError:
+            quality = 60
+        if quality < 10:
+            quality = 10
+        elif quality > 100:
+            quality = 100
+        # Save compressed image
+        img.save(buffer, format='JPEG', optimize=True, quality=quality)
         buffer.seek(0)
-
-        image_b64 = base64.b64encode(buffer.read()).decode('utf-8')
-        compressed_image_url = f"data:image/jpeg;base64,{image_b64}"
-
+        comp_data = buffer.getvalue()
+        # If compression results in a larger file than original, use the original file data
+        if len(comp_data) > original_size:
+            image_file.seek(0)
+            comp_data = image_file.read()
+        compressed_image_url = f"data:image/jpeg;base64,{base64.b64encode(comp_data).decode('utf-8')}"
     return render(request, 'Tools/QRandImaging/image_compression_tool.html', {
         'compressed_image_url': compressed_image_url
     })
@@ -1747,11 +1761,11 @@ def color_palette_extractor(request):
     if request.method == 'POST' and request.FILES.get('image_file'):
         image_file = request.FILES['image_file']
         color_thief = ColorThief(image_file)
-        palette = color_thief.get_palette(color_count=6)
 
         def rgb_to_hex(r, g, b):
             return f'#{r:02x}{g:02x}{b:02x}'
 
+        palette = color_thief.get_palette(color_count=6)
         color_palette = [
             {
                 'rgb': f'rgb({r},{g},{b})',
@@ -1759,11 +1773,9 @@ def color_palette_extractor(request):
             }
             for r, g, b in palette
         ]
-    return render(
-        request,
-        'Tools/QRandImaging/color_palette_extractor.html',
-        {'color_palette': color_palette}
-    )
+    return render(request, 'Tools/QRandImaging/color_palette_extractor.html', {
+        'color_palette': color_palette
+    })
 
 
 def photo_metadata_remover(request):

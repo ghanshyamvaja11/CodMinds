@@ -126,6 +126,18 @@
     display: flex;
     justify-content: center;
   }
+  .dropzone {
+    border: 2px dashed #1e90ff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  .dropzone.dragover {
+    background-color: #e9f5ff;
+  }
 </style>
 
 <div class="container">
@@ -161,7 +173,16 @@
 
     <div class="form-group" id="fileInputSection">
       <label for="yaml_file">Upload YAML:</label>
-      <input type="file" name="yaml_file" accept=".yaml, .yml" />
+      <div class="dropzone" id="dropzone_yaml_file">
+        <input
+          type="file"
+          name="yaml_file"
+          id="yaml_file"
+          accept=".yaml, .yml"
+          style="display: none"
+        />
+        <p>Drag & drop YAML here or click to select</p>
+      </div>
     </div>
 
     <div class="form-group" id="textInputSection" style="display: none">
@@ -221,5 +242,32 @@
     link.click();
     URL.revokeObjectURL(url);
   }
+  function setupDropzone(dropzoneId, inputId) {
+    const dropzone = document.getElementById(dropzoneId);
+    const fileInput = document.getElementById(inputId);
+    dropzone.addEventListener("click", () => fileInput.click());
+    dropzone.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.add("dragover");
+    });
+    dropzone.addEventListener("dragleave", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove("dragover");
+    });
+    dropzone.addEventListener("drop", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove("dragover");
+      if (e.dataTransfer && e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        dropzone.querySelector("p").textContent = e.dataTransfer.files[0].name;
+      }
+    });
+  }
+  window.addEventListener("load", () => {
+    setupDropzone("dropzone_yaml_file", "yaml_file");
+  });
 </script>
 {% endblock %}

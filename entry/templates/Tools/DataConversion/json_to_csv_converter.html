@@ -126,6 +126,18 @@
     display: flex;
     justify-content: center;
   }
+  .dropzone {
+    border: 2px dashed #1e90ff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  .dropzone.dragover {
+    background-color: #e9f5ff;
+  }
 </style>
 
 <div class="container">
@@ -161,7 +173,16 @@
 
     <div class="form-group" id="fileInputSection">
       <label for="json_file">Upload JSON:</label>
-      <input type="file" name="json_file" accept=".json" />
+      <div class="dropzone" id="dropzone_json_file">
+        <input
+          type="file"
+          name="json_file"
+          id="json_file"
+          accept=".json"
+          style="display: none"
+        />
+        <p>Drag & drop JSON here or click to select</p>
+      </div>
     </div>
 
     <div class="form-group" id="textInputSection" style="display: none">
@@ -188,11 +209,12 @@
 </div>
 
 <script>
-  window.onload = function () {
+  window.addEventListener("load", () => {
+    setupDropzone("dropzone_json_file", "json_file");
     const autoDelimiter = document.getElementById("auto_delimiter");
     autoDelimiter.checked = true;
     autoDelimiter.disabled = true;
-  };
+  });
   function toggleInput(showFile) {
     document.getElementById("fileInputSection").style.display = showFile
       ? "block"
@@ -203,6 +225,30 @@
   }
   function showSpinner() {
     document.getElementById("loadingSpinner").style.display = "block";
+  }
+  function setupDropzone(dropzoneId, inputId) {
+    const dropzone = document.getElementById(dropzoneId);
+    const fileInput = document.getElementById(inputId);
+    dropzone.addEventListener("click", () => fileInput.click());
+    dropzone.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.add("dragover");
+    });
+    dropzone.addEventListener("dragleave", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove("dragover");
+    });
+    dropzone.addEventListener("drop", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove("dragover");
+      if (e.dataTransfer && e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        dropzone.querySelector("p").textContent = e.dataTransfer.files[0].name;
+      }
+    });
   }
   function copyToClipboard() {
     const codeContent = document.querySelector(".result pre").innerText;

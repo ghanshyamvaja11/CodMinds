@@ -2,9 +2,62 @@
 <html>
   <head>
     <title>Image to Base64 Converter</title>
+    <style>
+      .dropzone {
+        border: 2px dashed #1e90ff;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        color: #666;
+        border-radius: 5px;
+        margin: 15px 0;
+      }
+      .dropzone.dragover {
+        background-color: #e9f5ff;
+      }
+    </style>
   </head>
   <body>
     <h1>Image to Base64 Converter</h1>
-    <!-- ...additional content... -->
+    <!-- Replace plain file input with a dropzone -->
+    <div class="dropzone" id="dropzone_image_base64">
+      <input
+        type="file"
+        id="image_base64"
+        name="image_base64"
+        style="display: none"
+      />
+      <p>Drag & drop image here or click to select</p>
+    </div>
+    <script>
+      function setupDropzone(dropzoneId, inputId) {
+        const dropzone = document.getElementById(dropzoneId);
+        const fileInput = document.getElementById(inputId);
+        dropzone.addEventListener("click", () => fileInput.click());
+        dropzone.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add("dragover");
+        });
+        dropzone.addEventListener("dragleave", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove("dragover");
+        });
+        dropzone.addEventListener("drop", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove("dragover");
+          if (e.dataTransfer && e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            dropzone.querySelector("p").textContent =
+              e.dataTransfer.files[0].name;
+          }
+        });
+      }
+      window.addEventListener("load", () => {
+        setupDropzone("dropzone_image_base64", "image_base64");
+      });
+    </script>
   </body>
 </html>
