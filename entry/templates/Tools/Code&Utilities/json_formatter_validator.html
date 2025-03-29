@@ -111,6 +111,73 @@
       transform: translate(-50%, -50%) rotate(360deg);
     }
   }
+
+  .seo-article {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .seo-article h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .seo-article ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .seo-article ul li {
+    margin-bottom: 10px;
+  }
+
+  .seo-article ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
+
+  .seo-article p {
+    margin-bottom: 15px;
+  }
+
+  .tips-section {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .tips-section h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .tips-section ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .tips-section ul li {
+    margin-bottom: 10px;
+  }
+
+  .tips-section ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
 </style>
 <div class="styled-form-container">
   <h2 class="page-title">JSON Formatter & Validator</h2>
@@ -136,6 +203,47 @@
   {% endif %} {% if error_message %}
   <div class="error-message">{{ error_message }}</div>
   {% endif %}
+</div>
+<div class="tips-section">
+  <h3>Tips for Using the JSON Formatter/Validator:</h3>
+  <ul>
+    <li>
+      Paste the JSON data to be formatted or validated in the input field.
+    </li>
+    <li>
+      Use the tool to:
+      <ul>
+        <li>Format JSON data for better readability.</li>
+        <li>Validate JSON data for syntax errors.</li>
+      </ul>
+    </li>
+    <li>
+      Copy the formatted or validated JSON for further use or sharing with your
+      team.
+    </li>
+  </ul>
+</div>
+<div class="seo-article">
+  <h3>What is the JSON Formatter/Validator?</h3>
+  <p>
+    The JSON Formatter/Validator is a user-friendly utility designed to format
+    and validate JSON data. It helps users ensure proper syntax and improve
+    readability for JSON files.
+  </p>
+  <h3>How to Use the Tool:</h3>
+  <ul>
+    <li>Paste the JSON data in the input field.</li>
+    <li>Select the desired action: Format or Validate.</li>
+    <li>Click the "Submit" button to process the JSON data.</li>
+    <li>View the results in an easy-to-read format.</li>
+    <li>Copy the results for further use or sharing.</li>
+  </ul>
+  <h3>Why Choose Our JSON Formatter/Validator?</h3>
+  <p>
+    Whether you're a developer, data analyst, or student, our JSON
+    Formatter/Validator provides accurate and quick results to simplify your
+    tasks. It ensures clean and error-free JSON data.
+  </p>
 </div>
 <script>
   function copyToClipboard() {

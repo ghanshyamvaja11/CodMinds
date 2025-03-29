@@ -83,6 +83,11 @@
     margin-bottom: 15px;
   }
   .dropzone.dragover { background-color: #e9f5ff; }
+  .result h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-top: 20px;
+  }
 </style>
 <body>
   <div class="container">
@@ -101,7 +106,7 @@
     <div class="loading-spinner" id="loadingSpinner"></div>
     {% if cleaned_image_url %}
     <div class="result">
-      <h3>Cleaned Image Preview:</h3>
+      <h2>Cleaned Image Preview:</h2>
       <img src="{{ cleaned_image_url }}" alt="Cleaned Image" />
       <div class="center-btn">
         <button class="download-btn" onclick="downloadCleanedImage()">Download Cleaned Image</button>

@@ -138,6 +138,11 @@
   .dropzone.dragover {
     background-color: #e9f5ff;
   }
+  .result h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-top: 20px;
+  }
 </style>
 
 <div class="container">
@@ -231,7 +236,7 @@
   <div class="result" style="position: relative">
     <i class="copy-icon" onclick="copyToClipboard()">📋</i>
     <div class="tooltip">Copied!</div>
-    <h3>Converted JSON:</h3>
+    <h2>Converted JSON:</h2>
     <pre>{{ json_data }}</pre>
     <div class="center-btn">
       <button class="download-btn" onclick="downloadJSON()">

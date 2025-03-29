@@ -117,6 +117,42 @@
       transform: translate(-50%, -50%) rotate(360deg);
     }
   }
+
+  .seo-article {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .seo-article h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .seo-article ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .seo-article ul li {
+    margin-bottom: 10px;
+  }
+
+  .seo-article ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
+
+  .seo-article p {
+    margin-bottom: 15px;
+  }
 </style>
 <div class="styled-form-container">
   <h2 class="page-title">HTTP Headers Inspector</h2>
@@ -139,6 +175,45 @@
   {% endif %} {% if error_message %}
   <div class="error-message">{{ error_message }}</div>
   {% endif %}
+</div>
+<div class="seo-article">
+  <h3>Tips for Using the HTTP Headers Inspector:</h3>
+  <ul>
+    <li>
+      Ensure the URL is entered correctly, including the protocol (http:// or
+      https://).
+    </li>
+    <li>
+      Use the tool to analyze server response headers for debugging purposes.
+    </li>
+    <li>
+      Check for security headers like Content-Security-Policy and
+      X-Frame-Options.
+    </li>
+    <li>Copy the results for further analysis or sharing with your team.</li>
+  </ul>
+</div>
+<div class="seo-article">
+  <h3>What is the HTTP Headers Inspector?</h3>
+  <p>
+    The HTTP Headers Inspector is a user-friendly utility designed to fetch and
+    display HTTP headers for any URL. It helps users analyze server responses,
+    debug issues, and understand the communication between clients and servers.
+  </p>
+  <h3>How to Use the Tool:</h3>
+  <ul>
+    <li>Enter the URL in the input field.</li>
+    <li>Click the "Inspect Headers" button to fetch HTTP headers.</li>
+    <li>View the results in an easy-to-read format.</li>
+    <li>Copy the results for further analysis or sharing.</li>
+  </ul>
+  <h3>Why Choose Our HTTP Headers Inspector?</h3>
+  <p>
+    Whether you're a developer, security analyst, or curious user, our HTTP
+    Headers Inspector provides accurate and detailed insights into HTTP headers.
+    It helps you debug issues, analyze server configurations, and ensure
+    compliance with web standards.
+  </p>
 </div>
 <script>
   function copyToClipboard() {

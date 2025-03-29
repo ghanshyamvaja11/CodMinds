@@ -105,8 +105,79 @@
   }
 
   @keyframes spin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .seo-article {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .seo-article h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .seo-article ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .seo-article ul li {
+    margin-bottom: 10px;
+  }
+
+  .seo-article ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
+
+  .seo-article p {
+    margin-bottom: 15px;
+  }
+
+  .tips-section {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .tips-section h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .tips-section ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .tips-section ul li {
+    margin-bottom: 10px;
+  }
+
+  .tips-section ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
   }
 </style>
 
@@ -129,11 +200,49 @@
     <div class="tooltip">Copied!</div>
     <pre>{{ meta_tags }}</pre>
   </div>
-  {% endif %}
-
-  {% if error_message %}
+  {% endif %} {% if error_message %}
   <div class="error-message">{{ error_message }}</div>
   {% endif %}
+</div>
+
+<div class="tips-section">
+  <h3>Tips for Using the Meta Tag Analyzer:</h3>
+  <ul>
+    <li>Ensure the website URL is entered correctly.</li>
+    <li>
+      Use the tool to verify:
+      <ul>
+        <li>SEO-related meta tags like title, description, and keywords.</li>
+        <li>Social media meta tags like Open Graph and Twitter Cards.</li>
+      </ul>
+    </li>
+    <li>Analyze the meta tags to improve website SEO and social sharing.</li>
+    <li>Copy the results for further analysis or sharing.</li>
+  </ul>
+</div>
+
+<div class="seo-article">
+  <h3>What is the Meta Tag Analyzer?</h3>
+  <p>
+    The Meta Tag Analyzer is a user-friendly utility designed to extract and
+    analyze meta tags from a website. It helps users optimize their website's
+    SEO and social media presence by providing detailed insights into meta tag
+    configurations.
+  </p>
+  <h3>How to Use the Tool:</h3>
+  <ul>
+    <li>Enter the website URL in the input field.</li>
+    <li>Click the "Analyze Meta Tags" button to fetch the meta tags.</li>
+    <li>View the results in an easy-to-read format.</li>
+    <li>Copy the results for further analysis or sharing.</li>
+  </ul>
+  <h3>Why Choose Our Meta Tag Analyzer?</h3>
+  <p>
+    Whether you're a website owner, SEO specialist, or developer, our Meta Tag
+    Analyzer provides accurate and detailed insights into your website's meta
+    tags. It helps you optimize your website for search engines and social media
+    platforms, ensuring better visibility and engagement.
+  </p>
 </div>
 
 <script>

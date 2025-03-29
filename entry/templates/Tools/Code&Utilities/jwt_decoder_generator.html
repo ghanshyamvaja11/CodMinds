@@ -111,7 +111,73 @@
       transform: translate(-50%, -50%) rotate(360deg);
     }
   }
-  
+
+  .seo-article {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .seo-article h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .seo-article ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .seo-article ul li {
+    margin-bottom: 10px;
+  }
+
+  .seo-article ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
+
+  .seo-article p {
+    margin-bottom: 15px;
+  }
+
+  .tips-section {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .tips-section h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .tips-section ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .tips-section ul li {
+    margin-bottom: 10px;
+  }
+
+  .tips-section ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
 </style>
 <div class="styled-form-container">
   <h2 class="page-title">JWT Decoder/Generator</h2>
@@ -143,6 +209,42 @@
   {% endif %} {% if error_message %}
   <div class="error-message">{{ error_message }}</div>
   {% endif %}
+</div>
+<div class="tips-section">
+  <h3>Tips for Using the JWT Decoder/Generator:</h3>
+  <ul>
+    <li>Enter the JWT to decode or payload to generate a new token.</li>
+    <li>
+      Use the tool to:
+      <ul>
+        <li>Decode JWTs to view their payload and header.</li>
+        <li>Generate new JWTs with custom payloads.</li>
+      </ul>
+    </li>
+    <li>Copy the results for further analysis or sharing with your team.</li>
+  </ul>
+</div>
+<div class="seo-article">
+  <h3>What is the JWT Decoder/Generator?</h3>
+  <p>
+    The JWT Decoder/Generator is a user-friendly utility designed to decode JSON
+    Web Tokens (JWTs) or generate new ones. It helps users analyze token
+    payloads and create secure tokens.
+  </p>
+  <h3>How to Use the Tool:</h3>
+  <ul>
+    <li>Enter the JWT in the input field to decode it.</li>
+    <li>Enter the payload and secret to generate a new JWT.</li>
+    <li>Click the "Decode" or "Generate" button to process the token.</li>
+    <li>View the results in an easy-to-read format.</li>
+    <li>Copy the results for further analysis or sharing.</li>
+  </ul>
+  <h3>Why Choose Our JWT Decoder/Generator?</h3>
+  <p>
+    Whether you're a developer, security analyst, or tester, our JWT
+    Decoder/Generator provides accurate and detailed results to simplify your
+    tasks. It ensures secure token handling and debugging.
+  </p>
 </div>
 <script>
   function copyToClipboard() {

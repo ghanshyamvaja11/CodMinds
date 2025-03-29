@@ -126,6 +126,141 @@
     }
   }
 
+  .seo-article {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .seo-article h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .seo-article ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .seo-article ul li {
+    margin-bottom: 10px;
+  }
+
+  .seo-article ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
+
+  .seo-article p {
+    margin-bottom: 15px;
+  }
+
+  .article-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .article-container h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .article-container ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .article-container ul li {
+    margin-bottom: 10px;
+  }
+
+  .tips-container {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .tips-box {
+    flex: 1 1 calc(50% - 20px);
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .tips-box h3 {
+    color: #1e90ff;
+    margin-bottom: 10px;
+  }
+
+  .tips-box ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .tips-box ul li {
+    margin-bottom: 8px;
+  }
+
+  .tips-box.advanced {
+    border-left-color: #0066cc;
+  }
+
+  .tips-box.advanced h3 {
+    color: #0066cc;
+  }
+
+  .article-container p {
+    margin-bottom: 15px;
+  }
+
+  .tips-section {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .tips-section h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .tips-section ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .tips-section ul li {
+    margin-bottom: 10px;
+  }
+
+  .tips-section ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
 </style>
 <div class="styled-form-container">
   <h2 class="page-title">API Tester</h2>
@@ -149,7 +284,6 @@
       <option value="POST">POST</option>
       <option value="PUT">PUT</option>
       <option value="DELETE">DELETE</option>
-      <!-- Add more methods as needed -->
     </select>
     <label for="request_headers" class="form-label"
       >Request Headers (JSON format):</label
@@ -159,7 +293,6 @@
       name="request_headers"
       class="form-textarea"
     ></textarea>
-
     <label for="request_body" class="form-label"
       >Request Body (JSON format):</label
     >
@@ -180,6 +313,65 @@
   {% endif %} {% if error_message %}
   <div class="error-message">{{ error_message }}</div>
   {% endif %}
+</div>
+<div class="tips-section">
+  <h3>Tips for Using the API Tester:</h3>
+  <ul>
+    <li>Ensure the API endpoint is correct and accessible.</li>
+    <li>Use valid request headers and body formats.</li>
+    <li>
+      Test with different HTTP methods:
+      <ul>
+        <li>GET for retrieving data.</li>
+        <li>POST for creating resources.</li>
+        <li>PUT for updating resources.</li>
+        <li>DELETE for removing resources.</li>
+      </ul>
+    </li>
+    <li>Check for proper error handling in API responses.</li>
+  </ul>
+</div>
+<div class="seo-article">
+  <h3>What is the API Tester Tool?</h3>
+  <p>
+    The API Tester Tool is a versatile utility for developers and testers to
+    validate and debug APIs. It simplifies the process of sending requests and
+    analyzing responses.
+  </p>
+  <h3>Key Features:</h3>
+  <ul>
+    <li>
+      Send HTTP requests:
+      <ul>
+        <li>GET</li>
+        <li>POST</li>
+        <li>PUT</li>
+        <li>DELETE</li>
+      </ul>
+    </li>
+    <li>
+      Inspect API responses:
+      <ul>
+        <li>Status codes</li>
+        <li>Headers</li>
+        <li>Body content</li>
+      </ul>
+    </li>
+    <li>Debug and optimize API performance.</li>
+  </ul>
+  <h3>How to Use the Tool:</h3>
+  <ul>
+    <li>Enter the API URL in the input field.</li>
+    <li>Select the HTTP request method (e.g., GET, POST).</li>
+    <li>Optionally provide headers and a request body in JSON format.</li>
+    <li>Click "Send Request" to view the response in real-time.</li>
+  </ul>
+  <h3>Why Choose Our API Tester Tool?</h3>
+  <p>
+    Whether you're building a new API or testing an existing one, our API Tester
+    Tool is here to streamline your workflow. Try it today and ensure your APIs
+    are functioning as expected.
+  </p>
 </div>
 <script>
   function showSpinner() {

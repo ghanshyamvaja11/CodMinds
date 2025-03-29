@@ -146,6 +146,11 @@
     width: 100%;
     height: auto;
   }
+  .result h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-top: 20px;
+  }
 </style>
 <div class="container">
   <h2 class="title">QR Code Generator</h2>
@@ -225,7 +230,7 @@
   <div class="result" style="color: red">{{ error_message }}</div>
   {% endif %} {% if generated_qr_url %}
   <div class="result">
-    <h3>Generated QR Code:</h3>
+    <h2>Generated QR Code:</h2>
     <img src="{{ generated_qr_url }}" alt="Generated QR Code" />
     <div class="center-btn">
       <button class="download-btn" onclick="downloadQRCode()">

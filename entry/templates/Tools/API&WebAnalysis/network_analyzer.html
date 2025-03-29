@@ -120,6 +120,73 @@
       transform: translate(-50%, -50%) rotate(360deg);
     }
   }
+
+  .seo-article {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .seo-article h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .seo-article ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .seo-article ul li {
+    margin-bottom: 10px;
+  }
+
+  .seo-article ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
+
+  .seo-article p {
+    margin-bottom: 15px;
+  }
+
+  .tips-section {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .tips-section h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .tips-section ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .tips-section ul li {
+    margin-bottom: 10px;
+  }
+
+  .tips-section ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
 </style>
 <div class="styled-form-container">
   <h2 class="page-title">Network Analyzer</h2>
@@ -145,6 +212,42 @@
   {% endif %} {% if error_message %}
   <div class="error-message">{{ error_message }}</div>
   {% endif %}
+</div>
+<div class="tips-section">
+  <h3>Tips for Using the Network Analyzer:</h3>
+  <ul>
+    <li>Ensure the network data is entered correctly in the input field.</li>
+    <li>
+      Use the tool to:
+      <ul>
+        <li>Identify bottlenecks in the network.</li>
+        <li>Monitor latency and packet loss for better performance.</li>
+      </ul>
+    </li>
+    <li>Copy the results for further analysis or sharing with your team.</li>
+  </ul>
+</div>
+<div class="seo-article">
+  <h3>What is the Network Analyzer?</h3>
+  <p>
+    The Network Analyzer is a user-friendly utility designed to analyze network
+    data and troubleshoot connectivity issues. It provides insights into network
+    performance and identifies potential problems.
+  </p>
+  <h3>How to Use the Tool:</h3>
+  <ul>
+    <li>Enter the network data in the input field.</li>
+    <li>Click the "Analyze" button to process the data.</li>
+    <li>View the results in an easy-to-read format.</li>
+    <li>Copy the results for further analysis or sharing.</li>
+  </ul>
+  <h3>Why Choose Our Network Analyzer?</h3>
+  <p>
+    Whether you're a network administrator or a curious user, our Network
+    Analyzer provides accurate and detailed results to make your tasks easier.
+    It helps you troubleshoot network issues, monitor performance, and ensure
+    optimal connectivity.
+  </p>
 </div>
 <script>
   function showSpinner() {

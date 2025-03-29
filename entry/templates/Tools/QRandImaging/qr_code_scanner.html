@@ -94,6 +94,173 @@
   .dropzone.dragover {
     background-color: #e9f5ff;
   }
+  .result h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-top: 20px;
+  }
+  .tips {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-left: 5px solid #1e90ff;
+    border-radius: 5px;
+    color: #333;
+  }
+  .tips ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .tips ul li {
+    margin-bottom: 10px;
+  }
+  .advanced-tips {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e9f5ff;
+    border-left: 5px solid #0066cc;
+    border-radius: 5px;
+    color: #333;
+  }
+  .advanced-tips ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .advanced-tips ul li {
+    margin-bottom: 10px;
+  }
+  .visit-website-btn {
+    display: inline-block;
+    margin-top: 15px;
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .visit-website-btn:hover {
+    background-color: #218838;
+  }
+  .tips-container {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .tips-box {
+    flex: 1 1 calc(50% - 20px);
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .tips-box h3 {
+    color: #1e90ff;
+    margin-bottom: 10px;
+  }
+
+  .tips-box ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .tips-box ul li {
+    margin-bottom: 8px;
+  }
+
+  .tips-box.advanced {
+    border-left-color: #0066cc;
+  }
+
+  .tips-box.advanced h3 {
+    color: #0066cc;
+  }
+
+  .result p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .result a {
+    margin-top: 10px;
+    display: inline-block;
+  }
+
+  .seo-article {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .seo-article h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .seo-article ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .seo-article ul li {
+    margin-bottom: 10px;
+  }
+
+  .seo-article ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
+
+  .seo-article p {
+    margin-bottom: 15px;
+  }
+
+  .tips-section {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .tips-section h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .tips-section ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .tips-section ul li {
+    margin-bottom: 10px;
+  }
+
+  .tips-section ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
 </style>
 
 <div class="container">
@@ -136,18 +303,72 @@
   <div class="result" style="color: red">{{ error_message }}</div>
   {% endif %} {% if scanned_data %}
   <div class="result">
-    <h3>Scanned QR Code Data:</h3>
+    <h2>Scanned QR Code Data:</h2>
     <p id="scannedText">{{ scanned_data }}</p>
 
-    {% if scanned_data|slice:":7" == "http://" %}
-    <button class="btn" onclick="visitWebsite()">Visit Website</button>
-    {% elif scanned_data|slice:":8" == "https://" %}
-    <button class="btn" onclick="visitWebsite()">Visit Website</button>
-    {% endif %}
+    {% with scanned_data|lower as lower_scanned_data %} {% if
+    lower_scanned_data|slice:":7" == "http://" or lower_scanned_data|slice:":8"
+    == "https://" %}
+    <a
+      href="{{ scanned_data }}"
+      class="btn visit-website-btn"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Visit Website
+    </a>
+    {% endwith %}
   </div>
   {% endif %}
 </div>
-
+<div class="tips-section">
+  <h3>Tips for Using the QR Code Scanner:</h3>
+  <ul>
+    <li>Ensure the QR code is well-lit and not blurry.</li>
+    <li>Use high-contrast QR codes with clear edges.</li>
+    <li>Avoid reflections or shadows on the QR code.</li>
+    <li>Try scanning QR codes with standard black-and-white colors.</li>
+    <li>
+      For advanced scanning:
+      <ul>
+        <li>Ensure the QR code is not rotated or distorted.</li>
+        <li>Increase the size of the QR code if it is too small.</li>
+        <li>Use a high-resolution image for better detection.</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<div class="seo-article">
+  <h3>What is the QR Code Scanner?</h3>
+  <p>
+    The QR Code Scanner is a simple and efficient tool to decode QR codes. It
+    allows users to extract information from QR codes quickly and accurately.
+  </p>
+  <h3>Key Features:</h3>
+  <ul>
+    <li>
+      Supports various QR code formats:
+      <ul>
+        <li>Standard QR codes</li>
+        <li>Custom QR codes</li>
+      </ul>
+    </li>
+    <li>Quickly scans and decodes QR codes.</li>
+    <li>Provides a user-friendly interface for easy usage.</li>
+  </ul>
+  <h3>How to Use the Tool:</h3>
+  <ul>
+    <li>Upload a QR code image using the input field.</li>
+    <li>Click the "Scan QR Code" button to decode the QR code.</li>
+    <li>View the extracted data in the results section.</li>
+  </ul>
+  <h3>Why Choose Our QR Code Scanner?</h3>
+  <p>
+    Whether you're scanning QR codes for personal or professional use, our QR
+    Code Scanner ensures fast and accurate results. Try it today and simplify
+    your QR code decoding process.
+  </p>
+</div>
 <script>
   document
     .querySelector('input[name="file_option"][value="gallery"]')

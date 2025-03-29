@@ -107,6 +107,11 @@
   .dropzone.dragover {
     background-color: #e9f5ff;
   }
+  .result h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-top: 20px;
+  }
 </style>
 <body>
   <div class="container">
@@ -155,7 +160,7 @@
     <div class="loading-spinner" id="loadingSpinner"></div>
     {% if compressed_image_url %}
     <div class="result">
-      <h3>Compressed Image Preview:</h3>
+      <h2>Compressed Image Preview:</h2>
       <img src="{{ compressed_image_url }}" alt="Compressed Image" />
       <div class="center-btn">
         <button class="download-btn" onclick="downloadCompressedImage()">

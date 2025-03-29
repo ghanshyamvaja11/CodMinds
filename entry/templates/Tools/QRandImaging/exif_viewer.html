@@ -85,6 +85,11 @@
     margin-bottom: 15px;
   }
   .dropzone.dragover { background-color: #e9f5ff; }
+  .result h2 {
+    text-align: center;
+    color: #1e90ff;
+    margin-top: 20px;
+  }
 </style>
 <body>
   <div class="container">
@@ -105,7 +110,7 @@
     {% if exif_data or error_message %}
     <div class="result">
       {% if exif_data %}
-        <h3>EXIF Data:</h3>
+        <h2>EXIF Data:</h2>
         <pre>{{ exif_data|json_script:"exifData" }}</pre>
         <script>
           const exif = JSON.parse(document.getElementById("exifData").textContent);

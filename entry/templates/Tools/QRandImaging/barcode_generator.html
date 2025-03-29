@@ -93,6 +93,11 @@
         width: 100%;
         height: auto;
       }
+      .result h2 {
+        text-align: center;
+        color: #1e90ff;
+        margin-top: 20px;
+      }
     </style>
   </head>
     <div class="container">
@@ -109,7 +114,7 @@
       <div class="loading-spinner" id="loadingSpinner"></div>
       {% if generated_barcode_url %}
       <div class="result">
-        <h3>Generated Barcode:</h3>
+        <h2>Generated Barcode:</h2>
         <!-- Example placeholder for showing the barcode -->
         <img src="{{ generated_barcode_url }}" alt="Generated Barcode" />
         <div class="center-btn">
