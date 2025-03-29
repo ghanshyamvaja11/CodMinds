@@ -33,6 +33,32 @@
         border: 1px solid #ccc;
         border-radius: 5px;
       }
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #f9f9f9;
+        color: #333;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      .form-group select:focus {
+        border-color: #1e90ff;
+        box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+        outline: none;
+      }
+
+      .form-group select option {
+        padding: 10px;
+        background-color: #fff;
+        color: #333;
+      }
+
+      .form-group select option:hover {
+        background-color: #f0f8ff;
+      }
       .btn {
         width: 100%;
         background-color: #1e90ff;
@@ -98,6 +124,71 @@
         color: #1e90ff;
         margin-top: 20px;
       }
+      .seo-article {
+        max-width: 800px;
+        margin: 40px auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 5px solid #1e90ff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .seo-article h3 {
+        color: #1e90ff;
+        margin-bottom: 15px;
+      }
+
+      .seo-article ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .seo-article ul li {
+        margin-bottom: 10px;
+      }
+
+      .seo-article ul li ul {
+        margin-top: 5px;
+        padding-left: 20px;
+        list-style-type: circle;
+      }
+
+      .seo-article p {
+        margin-bottom: 15px;
+      }
+      .tips-section {
+        max-width: 800px;
+        margin: 40px auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 5px solid #1e90ff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        color: #333;
+      }
+
+      .tips-section h3 {
+        color: #1e90ff;
+        margin-bottom: 15px;
+      }
+
+      .tips-section ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .tips-section ul li {
+        margin-bottom: 10px;
+      }
+
+      .tips-section ul li ul {
+        margin-top: 5px;
+        padding-left: 20px;
+        list-style-type: circle;
+      }
     </style>
   </head>
     <div class="container">
@@ -106,12 +197,23 @@
         {% csrf_token %}
         <div class="form-group">
           <label for="barcode_data">Enter data for Barcode:</label>
-          <input type="text" id="barcode_data" name="barcode_data" />
+          <input type="text" id="barcode_data" name="barcode_data" required />
+        </div>
+        <div class="form-group">
+          <label for="barcode_type">Select Barcode Type:</label>
+          <select id="barcode_type" name="barcode_type" required>
+            <option value="code128">Code 128 (General Purpose)</option>
+            <option value="upc">UPC (Retail Products)</option>
+            <option value="ean">EAN (International Retail Products)</option>
+          </select>
         </div>
         <button type="submit" class="btn">Generate Barcode</button>
       </form>
       <!-- Spinner element added -->
       <div class="loading-spinner" id="loadingSpinner"></div>
+      {% if error_message %}
+      <div class="result" style="color: red; margin-top: 15px;">{{ error_message }}</div>
+      {% endif %}
       {% if generated_barcode_url %}
       <div class="result">
         <h2>Generated Barcode:</h2>
@@ -139,4 +241,51 @@
         }
       </script>
     </div>
+<div class="tips-section">
+  <h3>Tips for Using the Barcode Generator Tool:</h3>
+  <ul>
+    <li>Ensure the data entered is accurate and complete.</li>
+    <li>
+      Choose the appropriate barcode format based on your requirements:
+      <ul>
+        <li>Code 128 for general-purpose barcodes.</li>
+        <li>UPC for retail products.</li>
+        <li>EAN for international retail products.</li>
+      </ul>
+    </li>
+    <li>Preview the barcode before downloading to ensure it meets your needs.</li>
+    <li>Use high-quality printing for better barcode readability.</li>
+  </ul>
+</div>
+<div class="seo-article">
+  <h3>What is the Barcode Generator Tool?</h3>
+  <p>
+    The Barcode Generator Tool is a simple and efficient utility designed to create barcodes for various purposes. It helps users generate barcodes quickly and easily for products, inventory, or other needs.
+  </p>
+  <h3>Key Features:</h3>
+  <ul>
+    <li>
+      Generate barcodes in multiple formats:
+      <ul>
+        <li>Code 128</li>
+        <li>UPC</li>
+        <li>EAN</li>
+      </ul>
+    </li>
+    <li>Customize barcode size and format.</li>
+    <li>Download barcodes for printing or sharing.</li>
+  </ul>
+  <h3>How to Use the Tool:</h3>
+  <ul>
+    <li>Enter the data you want to encode in the barcode.</li>
+    <li>Select the desired barcode type from the dropdown menu.</li>
+    <li>Click the "Generate Barcode" button to create the barcode.</li>
+    <li>Preview the generated barcode on the screen.</li>
+    <li>Download the barcode for your use.</li>
+  </ul>
+  <h3>Why Choose Our Barcode Generator Tool?</h3>
+  <p>
+    Whether you're managing inventory, labeling products, or creating custom barcodes, our Barcode Generator Tool is the perfect solution. It is fast, reliable, and easy to use, making it ideal for businesses and individuals alike.
+  </p>
+</div>
 {% endblock %}

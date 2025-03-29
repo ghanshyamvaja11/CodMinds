@@ -90,6 +90,72 @@
     color: #1e90ff;
     margin-top: 20px;
   }
+  .seo-article {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .seo-article h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .seo-article ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .seo-article ul li {
+    margin-bottom: 10px;
+  }
+
+  .seo-article ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
+
+  .seo-article p {
+    margin-bottom: 15px;
+  }
+
+  .tips-section {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1e90ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .tips-section h3 {
+    color: #1e90ff;
+    margin-bottom: 15px;
+  }
+
+  .tips-section ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .tips-section ul li {
+    margin-bottom: 10px;
+  }
+
+  .tips-section ul li ul {
+    margin-top: 5px;
+    padding-left: 20px;
+    list-style-type: circle;
+  }
 </style>
 <body>
   <div class="container">
@@ -152,6 +218,38 @@
       }
       window.addEventListener("load", () => { setupDropzone("dropzone_exif", "image_file"); });
     </script>
+  </div>
+  <div class="tips-section">
+    <h3>Tips for Using the EXIF Viewer Tool:</h3>
+    <ul>
+      <li>Ensure the uploaded image is in a supported format (e.g., JPEG).</li>
+      <li>Preview the EXIF data to verify the information extracted.</li>
+      <li>Use this tool to analyze image metadata for professional or personal use.</li>
+      <li>Save the extracted EXIF data securely for future reference.</li>
+    </ul>
+  </div>
+  <div class="seo-article">
+    <h3>What is the EXIF Viewer Tool?</h3>
+    <p>
+      The EXIF Viewer Tool is a simple and efficient utility designed to extract metadata from images. It helps users analyze and understand the information embedded in photos.
+    </p>
+    <h3>Key Features:</h3>
+    <ul>
+      <li>Extracts detailed EXIF metadata from images.</li>
+      <li>Supports various image formats.</li>
+      <li>Provides a user-friendly interface for easy usage.</li>
+    </ul>
+    <h3>How to Use the Tool:</h3>
+    <ul>
+      <li>Upload an image using the input field.</li>
+      <li>Click the "View EXIF Data" button to extract metadata.</li>
+      <li>Preview the extracted EXIF data on the screen.</li>
+      <li>Save the EXIF data for your use.</li>
+    </ul>
+    <h3>Why Choose Our EXIF Viewer Tool?</h3>
+    <p>
+      Whether you're analyzing images for professional or personal use, our EXIF Viewer Tool ensures fast and accurate results. Try it today and simplify your metadata extraction process.
+    </p>
   </div>
 {% endblock %}
 </body>

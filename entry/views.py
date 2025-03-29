@@ -1665,24 +1665,51 @@ def qr_code_generator(request):
 def barcode_generator(request):
     clear_messages(request)
     generated_barcode_url = None
+    error_message = None
     if request.method == 'POST':
         data_to_encode = request.POST.get('barcode_data', '').strip()
+        barcode_type = request.POST.get('barcode_type', 'code128').lower()
         if data_to_encode:
-            # Generate barcode
-            code128 = barcode.get_barcode_class('code128')
-            my_code = code128(data_to_encode, writer=ImageWriter())
+            try:
+                # Validate data for specific barcode types
+                if barcode_type == 'upc' and not data_to_encode.isdigit():
+                    raise ValueError("UPC requires numeric data.")
+                if barcode_type == 'upc' and len(data_to_encode) != 12:
+                    raise ValueError("UPC requires exactly 12 digits.")
+                if barcode_type == 'ean' and not data_to_encode.isdigit():
+                    raise ValueError("EAN requires numeric data.")
+                if barcode_type == 'ean' and len(data_to_encode) != 13:
+                    raise ValueError("EAN requires exactly 13 digits.")
 
-            # Save to memory
-            buffer = io.BytesIO()
-            my_code.write(buffer)
-            buffer.seek(0)
+                # Select the appropriate barcode class
+                if barcode_type == 'code128':
+                    barcode_class = barcode.get_barcode_class('code128')
+                elif barcode_type == 'upc':
+                    barcode_class = barcode.get_barcode_class('upc')
+                elif barcode_type == 'ean':
+                    barcode_class = barcode.get_barcode_class('ean13')
+                else:
+                    raise ValueError("Unsupported barcode type selected.")
 
-            # Convert to base64
-            barcode_b64 = base64.b64encode(buffer.read()).decode('utf-8')
-            generated_barcode_url = f"data:image/png;base64,{barcode_b64}"
+                # Generate barcode
+                my_code = barcode_class(data_to_encode, writer=ImageWriter())
+
+                # Save to memory
+                buffer = io.BytesIO()
+                my_code.write(buffer)
+                buffer.seek(0)
+
+                # Convert to base64
+                barcode_b64 = base64.b64encode(buffer.read()).decode('utf-8')
+                generated_barcode_url = f"data:image/png;base64,{barcode_b64}"
+            except Exception as e:
+                error_message = f"Error generating barcode: {str(e)}"
+        else:
+            error_message = "Barcode data is required."
 
     return render(request, 'Tools/QRandImaging/barcode_generator.html', {
-        'generated_barcode_url': generated_barcode_url
+        'generated_barcode_url': generated_barcode_url,
+        'error_message': error_message
     })
 
 
