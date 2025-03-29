@@ -67,7 +67,7 @@ from PIL.ExifTags import TAGS
 import qrcode
 from pyzbar.pyzbar import decode  # new import for QR code decoding
 from PIL import ImageEnhance  # Add this import
-import cv2  # Add this import
+# import cv2  # Add this import
 import numpy as np  # Add this import
 
 
@@ -1718,45 +1718,45 @@ def qr_code_scanner(request):
     scanned_data = None
     error_message = None
 
-    if request.method == 'POST' and request.FILES.get('qr_image'):
-        try:
-            # Load the uploaded image
-            image_file = request.FILES['qr_image']
-            img = Image.open(image_file).convert('RGB')
-            img_cv = np.array(img)
+    # if request.method == 'POST' and request.FILES.get('qr_image'):
+    #     try:
+    #         # Load the uploaded image
+    #         image_file = request.FILES['qr_image']
+    #         img = Image.open(image_file).convert('RGB')
+    #         img_cv = np.array(img)
 
-            # Convert to OpenCV format (BGR)
-            img_cv = cv2.cvtColor(img_cv, cv2.COLOR_RGB2BGR)
+    #         # Convert to OpenCV format (BGR)
+    #         img_cv = cv2.cvtColor(img_cv, cv2.COLOR_RGB2BGR)
 
-            # Convert to HSV for better color detection
-            hsv = cv2.cvtColor(img_cv, cv2.COLOR_BGR2HSV)
+    #         # Convert to HSV for better color detection
+    #         hsv = cv2.cvtColor(img_cv, cv2.COLOR_BGR2HSV)
 
-            # Create a mask for the QR code (detecting different colors)
-            mask = cv2.inRange(hsv, (0, 0, 50), (180, 255, 255))
+    #         # Create a mask for the QR code (detecting different colors)
+    #         mask = cv2.inRange(hsv, (0, 0, 50), (180, 255, 255))
 
-            # Apply mask and extract QR code
-            img_qr = cv2.bitwise_and(img_cv, img_cv, mask=mask)
-            img_gray = cv2.cvtColor(img_qr, cv2.COLOR_BGR2GRAY)
+    #         # Apply mask and extract QR code
+    #         img_qr = cv2.bitwise_and(img_cv, img_cv, mask=mask)
+    #         img_gray = cv2.cvtColor(img_qr, cv2.COLOR_BGR2GRAY)
 
-            # Apply contrast enhancement
-            img_gray = cv2.equalizeHist(img_gray)
+    #         # Apply contrast enhancement
+    #         img_gray = cv2.equalizeHist(img_gray)
 
-            # Try OpenCV's built-in QR code detector
-            qr_detector = cv2.QRCodeDetector()
-            decoded_text, pts, _ = qr_detector.detectAndDecode(img_gray)
+    #         # Try OpenCV's built-in QR code detector
+    #         qr_detector = cv2.QRCodeDetector()
+    #         decoded_text, pts, _ = qr_detector.detectAndDecode(img_gray)
 
-            if decoded_text:
-                scanned_data = decoded_text
-            else:
-                # Try Pyzbar as a backup
-                decoded_objects = decode(img_gray)
-                if decoded_objects:
-                    scanned_data = decoded_objects[0].data.decode('utf-8')
-                else:
-                    error_message = "No QR code detected. Try adjusting brightness or contrast."
+    #         if decoded_text:
+    #             scanned_data = decoded_text
+    #         else:
+    #             # Try Pyzbar as a backup
+    #             decoded_objects = decode(img_gray)
+    #             if decoded_objects:
+    #                 scanned_data = decoded_objects[0].data.decode('utf-8')
+    #             else:
+    #                 error_message = "No QR code detected. Try adjusting brightness or contrast."
 
-        except Exception as e:
-            error_message = f"Error scanning QR code: {str(e)}"
+    #     except Exception as e:
+    #         error_message = f"Error scanning QR code: {str(e)}"
 
     return render(request, 'Tools/QRandImaging/qr_code_scanner.html', {
         'scanned_data': scanned_data,
